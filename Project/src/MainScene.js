@@ -23,7 +23,7 @@ export default class MainScene extends THREE.Scene {
   resources;
 
   playerInstance;
-  playerPosition = new THREE.Vector3(0, 2, 1);
+  playerPosition = new THREE.Vector3(11, 13, 1);
 
   instructionTextColor;
   platformColor;
@@ -116,7 +116,7 @@ export default class MainScene extends THREE.Scene {
   }
 
   createPlayer() {
-    this.playerInstance = new Player(4, 7, this.playerPosition);
+    this.playerInstance = new Player(6, 7, this.playerPosition);
     this.physicsWorld.addBody(this.playerInstance.playerBody);
 
     this.add(this.playerInstance.group);

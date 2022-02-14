@@ -10,6 +10,11 @@ export default [
     path: "/NetherFights.png",
   },
   {
+    name: "Photo",
+    type: "texture",
+    path: "/Photo.png",
+  },
+  {
     name: "ElMessiri",
     type: "font",
     path: "/El_Messiri_SemiBold_Regular.json",

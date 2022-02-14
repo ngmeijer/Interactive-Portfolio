@@ -25,10 +25,10 @@ export default class AboutMe {
   overrideColours() {}
 
   initializeArea() {
-    //this.createDoor();
     this.createLighting();
     this.creatAboutMeText();
     this.createAboutMeGeometry();
+    this.createPhoto();
 
     if (this.door == null) this.canUpdate = false;
   }
@@ -82,12 +82,28 @@ export default class AboutMe {
     let ground = new Cube(
       "AboutMe_Ground",
       new THREE.Vector3(50, 1, 50),
-      new THREE.Vector3(31, 5, -10),
+      new THREE.Vector3(31, 6.5, -10),
       this.environmentColor,
       true,
       0
     );
     ground.addToScene(this.scene, this.physicsWorld);
+  }
+
+  createPhoto() {
+    const geo = new THREE.PlaneBufferGeometry(4, 6);
+
+    const material = new THREE.MeshBasicMaterial({
+      map: this.resources.items.Photo,
+    });
+
+    const photo = new THREE.Mesh(geo, material);
+
+    photo.position.x = 20;
+    photo.position.y = 10;
+    photo.position.z = -6;
+
+    this.scene.add(photo);
   }
 
   creatAboutMeText() {
@@ -105,32 +121,27 @@ export default class AboutMe {
     ]);
 
     titleMesh.position.x = 7.5;
-    titleMesh.position.y = 11;
+    titleMesh.position.y = 13;
     titleMesh.position.z = -6.5;
     titleMesh.castShadow = true;
     scene.add(titleMesh);
 
     let textContent =
-      "Lorem ipsum dolor sit amet, " +
-      "\nconsectetur adipiscing elit," +
-      "\nsed do eiusmod tempor incididunt" +
-      "\nut labore et dolore magna aliqua. " +
-      "\nUt enim ad minim veniam, quis nostrud" +
-      "\nexercitation ullamco laboris nisi ut aliquip";
+      "Hi! My name is Nils Meijer, currently a student \nat Saxion Universities in Enschede, The Netherlands. \nI'm doing the engineering direction. I hope my website \nleaves a good impression of the work I do!";
 
     const informationText = new Text(
       textContent,
       this.resources.items.ElMessiri,
       0.3,
       textCol,
-      new THREE.Vector3(8, 10, -6)
+      new THREE.Vector3(7.5, 12, -6.5)
     );
     scene.add(informationText.mesh);
   }
 
   createLighting() {
     this.light = new THREE.PointLight(0xffba08, 5, 30);
-    this.light.position.set(15, 7, 0);
+    this.light.position.set(15, 9, 0);
     this.light.castShadow = true;
     this.scene.add(this.light);
   }

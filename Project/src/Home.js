@@ -51,7 +51,7 @@ export default class Home {
     wall.addToScene(this.scene, this.physicsWorld);
 
     let ground = new Cube(
-      "PortfolioGround",
+      "Home_Ground",
       new THREE.Vector3(10, 0.5, 15),
       new THREE.Vector3(-2, -1, 0),
       this.environmentColor,
@@ -64,7 +64,7 @@ export default class Home {
       this.environmentColor,
       this.eventManager
     );
-    //this.elevator.createText(this.fontLoader, this.scene);
+    this.elevator.createText(this.resources.items.ElMessiri, this.scene);
     this.elevator.addToScene(this.scene, this.physicsWorld);
     this.elevator.playerInstance = this.playerInstance;
   }
@@ -86,8 +86,17 @@ export default class Home {
       new THREE.Vector3(-7, 0.5, -6)
     );
 
+    const roleText = new Text(
+      "Game Developer\nGame Designer\nWeb Developer",
+      this.resources.items.ElMessiri,
+      0.4,
+      this.instructionTextColor,
+      new THREE.Vector3(-7, 3.5, -6)
+    );
+
     this.scene.add(titleText.mesh);
     this.scene.add(hintText.mesh);
+    this.scene.add(roleText.mesh);
   }
 
   createLighting() {

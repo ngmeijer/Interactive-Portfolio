@@ -1,8 +1,9 @@
-import * as THREE from 'three';
-import CANNON from 'cannon';
+import * as THREE from "three";
+import CANNON from "cannon";
 import TWEEN from "@tweenjs/tween.js";
 import Text from "./Text.js";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
+import { Vector3 } from "three";
 
 export default class Elevator extends THREE.Object3D {
   spineMesh;
@@ -10,16 +11,18 @@ export default class Elevator extends THREE.Object3D {
   platformBody;
   fenceMesh;
   fenceBody;
+  fenceOffset;
   colour;
   playerInstance;
   moveFloorUp = false;
   moveFloorDown = false;
   currentFloor = 0;
-  maxFloors = 3;
+  maxFloors = 2;
   eventManager;
   animationPlaying = false;
 
-  boundTextCreation;
+  hintText;
+  textOffset;
 
   constructor(pPosition, pColour, pEventManager) {
     super();
@@ -30,7 +33,9 @@ export default class Elevator extends THREE.Object3D {
     this.createSpine();
     this.createPlatform();
     this.createFence();
-    this.initializeInputEvents(this, this.eventManager);
+    this.initializeInputEvents(this);
+
+    this.boundUnlockAnimation = this.unlockAnimation.bind(this);
   }
 
   createSpine() {
@@ -62,6 +67,7 @@ export default class Elevator extends THREE.Object3D {
   }
 
   createFence() {
+    this.fenceOffset = new Vector3(-1.55, 0, 0);
     const fenceShape = new CANNON.Box(new CANNON.Vec3(0.1, 0.5, 2));
     this.fenceBody = new CANNON.Body({ mass: this.mass });
 
@@ -74,22 +80,17 @@ export default class Elevator extends THREE.Object3D {
     this.fenceMesh.castShadow = true;
   }
 
-  createText(pFontLoader, pScene){
-    pFontLoader.load(
-      "/El_Messiri_SemiBold_Regular.json",
-
-      function (font) {
-        const hintText = new Text(
-          "W to ascend\nS to descend",
-          font,
-          0.3,
-          0xff0000,
-          new THREE.Vector3(2, 2, -6)
-        );
-
-        pScene.add(hintText.mesh);
-      }
+  createText(pFont, pScene) {
+    this.hintText = new Text(
+      "W to ascend\nS to descend",
+      pFont,
+      0.3,
+      0xff0000,
+      new THREE.Vector3(3.3, 1, -1)
     );
+
+    this.textOffset = new Vector3(-1.3, 2, -2);
+    pScene.add(this.hintText.mesh);
   }
 
   update() {
@@ -98,23 +99,29 @@ export default class Elevator extends THREE.Object3D {
 
   updateTransform() {
     this.fenceBody.position.set(
-      this.platformBody.position.x - 1.55,
-      this.platformBody.position.y,
-      this.platformBody.position.z
-    );
-    this.platformMesh.position.set(
-      this.platformBody.position.x,
-      this.platformBody.position.y,
-      this.platformBody.position.z
+      this.platformBody.position.x + this.fenceOffset.x,
+      this.platformBody.position.y + this.fenceOffset.y,
+      this.platformBody.position.z + this.fenceOffset.z
     );
     this.fenceMesh.position.set(
       this.fenceBody.position.x,
       this.fenceBody.position.y,
       this.fenceBody.position.z
     );
+    this.platformMesh.position.set(
+      this.platformBody.position.x,
+      this.platformBody.position.y,
+      this.platformBody.position.z
+    );
+
+    this.hintText.mesh.position.set(
+      this.platformBody.position.x + this.textOffset.x,
+      this.platformBody.position.y + this.textOffset.y,
+      this.platformBody.position.z + this.textOffset.z,
+    );
   }
 
-  initializeInputEvents(pThis, pEventManager) {
+  initializeInputEvents(pThis) {
     document.addEventListener("keydown", function (event) {
       if (event.key == "w" || event.key == "W") {
         pThis.checkDirection(1);
@@ -140,6 +147,11 @@ export default class Elevator extends THREE.Object3D {
     this.checkPlayerDistance();
   }
 
+  unlockAnimation() {
+    this.eventManager.dispatchEvent({ type: "Event_enableMove" });
+    this.animationPlaying = false;
+  }
+
   checkPlayerDistance() {
     if (this.animationPlaying) return;
 
@@ -150,58 +162,86 @@ export default class Elevator extends THREE.Object3D {
     if (distance <= 1.5) {
       this.eventManager.dispatchEvent({ type: "Event_disableMove" });
       if (this.moveFloorUp && this.currentFloor < this.maxFloors) {
-        this.startFenceAnimation();
-        this.startAscendingAnimation(this.eventManager);
+        this.startAscendingAnimation();
       }
 
       if (this.moveFloorDown && this.currentFloor > 0) {
-        this.startFenceAnimation();
         this.startDescendingAnimation(this.eventManager);
       }
     }
   }
 
-  startFenceAnimation() {
+  startAscendingAnimation() {
+    this.animationPlaying = true;
 
-  }
+    const tweenFenceUp = new TWEEN.Tween(this.fenceOffset)
+      .to(
+        {
+          x: this.fenceOffset.x,
+          y: this.fenceOffset.y + 1,
+          z: this.fenceOffset.z,
+        },
+        1000
+      )
+      .easing(TWEEN.Easing.Linear.None);
 
-  startAscendingAnimation(pEventManager) {
-    let targetPos = new THREE.Vector3(
+    let elevatorTargetPos = new THREE.Vector3(
       this.platformBody.position.x,
-      this.platformBody.position.y + 6.5,
+      this.platformBody.position.y + 8,
       this.platformBody.position.z
     );
 
-    this.animationPlaying = true;
-
     const tweenToFloorUp = new TWEEN.Tween(this.platformBody.position)
-      .to({ x: targetPos.x, y: targetPos.y, z: targetPos.z }, 3000)
+      .to(
+        {
+          x: elevatorTargetPos.x,
+          y: elevatorTargetPos.y,
+          z: elevatorTargetPos.z,
+        },
+        2000
+      )
       .easing(TWEEN.Easing.Linear.None)
-      .start()
-      .onComplete(function () {
-        pEventManager.dispatchEvent({ type: "Event_enableMove" });
-      });
-    this.animationPlaying = false;
+      .onComplete(this.boundUnlockAnimation);
+
+    if (this.currentFloor == 0) {
+      tweenFenceUp.chain(tweenToFloorUp);
+      tweenFenceUp.start();
+    } else tweenToFloorUp.start();
+
     this.currentFloor++;
     this.moveFloorUp = false;
   }
 
   startDescendingAnimation(pEventManager) {
+    this.animationPlaying = true;
+
+    const tweenFenceDown = new TWEEN.Tween(this.fenceOffset)
+      .to(
+        {
+          x: this.fenceOffset.x,
+          y: this.fenceOffset.y - 1,
+          z: this.fenceOffset.z,
+        },
+        1000
+      )
+      .easing(TWEEN.Easing.Linear.None);
+
     let targetPos = new THREE.Vector3(
       this.platformBody.position.x,
-      this.platformBody.position.y - 6.5,
+      this.platformBody.position.y - 8,
       this.platformBody.position.z
     );
 
-    this.animationPlaying = true;
-
     const tweenToFloorDown = new TWEEN.Tween(this.platformBody.position)
-      .to({ x: targetPos.x, y: targetPos.y, z: targetPos.z }, 3000)
+      .to({ x: targetPos.x, y: targetPos.y, z: targetPos.z }, 2000)
       .easing(TWEEN.Easing.Linear.None)
-      .start()
       .onComplete(function () {
         pEventManager.dispatchEvent({ type: "Event_enableMove" });
       });
+
+    tweenToFloorDown.chain(tweenFenceDown);
+    tweenToFloorDown.start();
+
     this.animationPlaying = false;
     this.currentFloor--;
     this.moveFloorDown = false;

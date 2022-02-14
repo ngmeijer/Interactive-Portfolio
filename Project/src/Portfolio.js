@@ -106,7 +106,7 @@ export default class Portfolio {
       this.resources.items.ElMessiri,
       new THREE.Vector2(4, 2.36),
       new THREE.Vector3(3.9, 2.2),
-      new THREE.Vector3(12, 0.8, 0),
+      new THREE.Vector3(10, 0.8, 0),
       textCol,
       platformCol
     );
@@ -117,7 +117,7 @@ export default class Portfolio {
       this.resources.items.ElMessiri,
       new THREE.Vector2(4, 2.36),
       new THREE.Vector3(3.9, 2.2),
-      new THREE.Vector3(18, 0.8, 0),
+      new THREE.Vector3(14.1, 0.8, 0),
       textCol,
       platformCol
     );
@@ -128,7 +128,7 @@ export default class Portfolio {
       this.resources.items.ElMessiri,
       new THREE.Vector2(4, 2.36),
       new THREE.Vector3(3.9, 2.2),
-      new THREE.Vector3(24, 0.8, 0),
+      new THREE.Vector3(18.2, 0.8, 0),
       textCol,
       platformCol
     );

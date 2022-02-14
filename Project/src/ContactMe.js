@@ -27,9 +27,9 @@ export default class ContactMe {
 
   createContactMeGeometry() {
     let ground = new Cube(
-      "Portfolio_Ground",
-      new THREE.Vector3(50, 1, 30),
-      new THREE.Vector3(31, 11.5, -10),
+      "ContactMe_Ground",
+      new THREE.Vector3(50, 1, 50),
+      new THREE.Vector3(31, 14.5, -10),
       this.environmentColor,
       true,
       0
@@ -38,7 +38,7 @@ export default class ContactMe {
     ground.addToScene(this.scene, this.physicsWorld);
 
     let backgroundLeft = new Cube(
-      "Portfolio_BackgroundLeft",
+      "ContactMe_BackgroundLeft",
       new THREE.Vector3(1, 20, 30),
       new THREE.Vector3(6.5, -0.5, -16),
       this.environmentColor,

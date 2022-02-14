@@ -1,8 +1,9 @@
-import * as THREE from 'three';
+import * as THREE from "three";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 
 export default class Text extends THREE.Object3D {
-    mesh;
+  mesh;
+  
   constructor(pTextContent, pFont, pFontSize, pColour, pPosition) {
     super();
 
