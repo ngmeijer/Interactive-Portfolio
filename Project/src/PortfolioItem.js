@@ -13,7 +13,7 @@ export default class PortfolioItem extends THREE.Object3D {
   textColour;
   platformColour;
   image;
-  imageFileName;
+  image;
   imageOffset;
   textureLoader;
   textMesh;
@@ -32,7 +32,8 @@ export default class PortfolioItem extends THREE.Object3D {
 
   constructor(
     pID,
-    pImageFileName,
+    pImage,
+    pFont,
     pOuterSize,
     pInnerSize,
     pPosition,
@@ -42,7 +43,8 @@ export default class PortfolioItem extends THREE.Object3D {
   ) {
     super();
     this.ID = pID;
-    this.imageFileName = pImageFileName;
+    this.image = pImage;
+    this.font = pFont
     this.itemPosition = pPosition;
     this.outerSize = pOuterSize;
     this.innerSize = pInnerSize;
@@ -118,9 +120,8 @@ export default class PortfolioItem extends THREE.Object3D {
       this.innerSize.y
     );
 
-    let image = THREE.Cache.get("NetherFights_Image");
     const material = new THREE.MeshBasicMaterial({
-      map: image,
+      map:this.image,
     });
 
 
@@ -148,7 +149,7 @@ export default class PortfolioItem extends THREE.Object3D {
     this.platform.mesh.castShadow = false;
   }
 
-  createText(pFont) {
+  createText() {
     const geometry = new THREE.TextGeometry("Press F", {
       font: this.customFont,
       size: 0.4,

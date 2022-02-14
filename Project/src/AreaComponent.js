@@ -5,10 +5,9 @@ export default class AreaComponent {
   
     canUpdate = true;
   
-    constructor(pScene, pPhysicsWorld, pTextureLoader, pFontloader) {
+    constructor(pScene, pPhysicsWorld, pResources) {
       this.scene = pScene;
       this.physicsWorld = pPhysicsWorld;
-      this.textureLoader = pTextureLoader;
-      this.fontLoader = pFontloader;
+      this.resources;
     }
   }

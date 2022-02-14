@@ -6,15 +6,20 @@ import Text from "./Text.js";
 import AreaComponent from "./AreaComponent.js";
 import Door from "./Door.js";
 
-export default class AboutMe extends AreaComponent {
+export default class AboutMe {
   door;
   playerInstance;
   moveableObjects = [];
   doorMaxDistance = 6;
   light;
+  resources;
+  scene;
+  physicsWorld;
 
-  constructor(pScene, pPhysicsWorld, pTextureLoader, pFontloader) {
-    super(pScene, pPhysicsWorld, pTextureLoader, pFontloader);
+  constructor(pScene, pPhysicsWorld, pResources) {
+    this.scene = pScene;
+    this.physicsWorld = pPhysicsWorld;
+    this.resources = pResources;
   }
 
   overrideColours() {}
@@ -89,44 +94,38 @@ export default class AboutMe extends AreaComponent {
     let scene = this.scene;
     let textCol = this.instructionTextColor;
 
-    this.fontLoader.load(
-      "/El_Messiri_SemiBold_Regular.json",
+    const titleGeo = new TextGeometry("About me", {
+      font: this.resources.items.ElMessiri,
+      size: 0.7,
+      height: 0.01,
+    });
+    const titleMesh = new THREE.Mesh(titleGeo, [
+      new THREE.MeshPhongMaterial({ color: textCol }),
+      new THREE.MeshPhongMaterial({ color: textCol }),
+    ]);
 
-      function (font) {
-        const titleGeo = new TextGeometry("About me", {
-          font: font,
-          size: 0.7,
-          height: 0.01,
-        });
-        const titleMesh = new THREE.Mesh(titleGeo, [
-          new THREE.MeshPhongMaterial({ color: textCol }),
-          new THREE.MeshPhongMaterial({ color: textCol }),
-        ]);
+    titleMesh.position.x = 7.5;
+    titleMesh.position.y = 11;
+    titleMesh.position.z = -6.5;
+    titleMesh.castShadow = true;
+    scene.add(titleMesh);
 
-        titleMesh.position.x = 7.5;
-        titleMesh.position.y = 11;
-        titleMesh.position.z = -6.5;
-        titleMesh.castShadow = true;
-        scene.add(titleMesh);
+    let textContent =
+      "Lorem ipsum dolor sit amet, " +
+      "\nconsectetur adipiscing elit," +
+      "\nsed do eiusmod tempor incididunt" +
+      "\nut labore et dolore magna aliqua. " +
+      "\nUt enim ad minim veniam, quis nostrud" +
+      "\nexercitation ullamco laboris nisi ut aliquip";
 
-        let textContent =
-          "Lorem ipsum dolor sit amet, " +
-          "\nconsectetur adipiscing elit," +
-          "\nsed do eiusmod tempor incididunt" +
-          "\nut labore et dolore magna aliqua. " +
-          "\nUt enim ad minim veniam, quis nostrud" +
-          "\nexercitation ullamco laboris nisi ut aliquip";
-
-        const informationText = new Text(
-          textContent,
-          font,
-          0.3,
-          textCol,
-          new THREE.Vector3(8, 10, -6)
-        );
-        scene.add(informationText.mesh);
-      }
+    const informationText = new Text(
+      textContent,
+      this.resources.items.ElMessiri,
+      0.3,
+      textCol,
+      new THREE.Vector3(8, 10, -6)
     );
+    scene.add(informationText.mesh);
   }
 
   createLighting() {

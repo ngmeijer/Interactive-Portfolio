@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import * as THREE from "three";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 
 import Cube from "./Cube.js";
@@ -20,10 +20,10 @@ export default class Home {
 
   elevator;
 
-  constructor(pScene, pPhysicsWorld, pFontLoader, pEventManager) {
+  constructor(pScene, pPhysicsWorld, pResources, pEventManager) {
     this.scene = pScene;
     this.physicsWorld = pPhysicsWorld;
-    this.fontLoader = pFontLoader;
+    this.resources = pResources;
     this.eventManager = pEventManager;
   }
 
@@ -62,41 +62,32 @@ export default class Home {
     this.elevator = new Elevator(
       new THREE.Vector3(4.5, 0, -2),
       this.environmentColor,
-      this.eventManager,
+      this.eventManager
     );
-    this.elevator.createText(this.fontLoader, this.scene);
+    //this.elevator.createText(this.fontLoader, this.scene);
     this.elevator.addToScene(this.scene, this.physicsWorld);
     this.elevator.playerInstance = this.playerInstance;
   }
 
   createStartText() {
-    let scene = this.scene;
-    let textCol = this.instructionTextColor;
-
-    this.fontLoader.load(
-      "/El_Messiri_SemiBold_Regular.json",
-
-      function (font) {
-        const titleText = new Text(
-          "Home",
-          font,
-          0.7,
-          textCol,
-          new THREE.Vector3(-7, 5, -6)
-        );
-
-        const hintText = new Text(
-          "Press A/D to move!\nPress space to jump",
-          font,
-          0.4,
-          textCol,
-          new THREE.Vector3(-7, 0.5, -6)
-        );
-
-        scene.add(titleText.mesh);
-        scene.add(hintText.mesh);
-      }
+    const titleText = new Text(
+      "Home",
+      this.resources.items.ElMessiri,
+      0.7,
+      this.instructionTextColor,
+      new THREE.Vector3(-7, 5, -6)
     );
+
+    const hintText = new Text(
+      "Press A/D to move!\nPress space to jump",
+      this.resources.items.ElMessiri,
+      0.4,
+      this.instructionTextColor,
+      new THREE.Vector3(-7, 0.5, -6)
+    );
+
+    this.scene.add(titleText.mesh);
+    this.scene.add(hintText.mesh);
   }
 
   createLighting() {

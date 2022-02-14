@@ -9,11 +9,10 @@ export default class ContactMe {
   fontLoader;
   light;
 
-  constructor(pScene, pPhysicsWorld, pTextureLoader, pFontloader) {
+  constructor(pScene, pPhysicsWorld, pResources) {
     this.scene = pScene;
     this.physicsWorld = pPhysicsWorld;
-    this.textureLoader = pTextureLoader;
-    this.fontLoader = pFontloader;
+    this.resources = pResources;
   }
 
   overrideColours() {}
@@ -24,9 +23,7 @@ export default class ContactMe {
     this.createText();
   }
 
-  update(){
-    
-  }
+  update() {}
 
   createContactMeGeometry() {
     let ground = new Cube(
@@ -56,26 +53,21 @@ export default class ContactMe {
     let scene = this.scene;
     let textCol = this.instructionTextColor;
 
-    this.fontLoader.load(
-      "/El_Messiri_SemiBold_Regular.json",
+    const titleGeo = new TextGeometry("Contact me", {
+      font: this.resources.items.ElMessiri,
+      size: 0.7,
+      height: 0.01,
+    });
+    const titleMesh = new THREE.Mesh(titleGeo, [
+      new THREE.MeshPhongMaterial({ color: textCol }),
+      new THREE.MeshPhongMaterial({ color: textCol }),
+    ]);
 
-      function (font) {
-        const titleGeo = new TextGeometry(
-          "Contact me",
-          { font: font, size: 0.7, height: 0.01 }
-        );
-        const titleMesh = new THREE.Mesh(titleGeo, [
-          new THREE.MeshPhongMaterial({ color: textCol }),
-          new THREE.MeshPhongMaterial({ color: textCol }),
-        ]);
-
-        titleMesh.position.x = 7;
-        titleMesh.position.y = 16;
-        titleMesh.position.z = -6;
-        titleMesh.castShadow = true;
-        scene.add(titleMesh);
-      }
-    );
+    titleMesh.position.x = 7;
+    titleMesh.position.y = 16;
+    titleMesh.position.z = -6;
+    titleMesh.castShadow = true;
+    scene.add(titleMesh);
   }
 
   createLighting() {

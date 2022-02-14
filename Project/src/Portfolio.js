@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import CANNON from 'cannon';
+import CANNON from "cannon";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 
 import Cube from "./Cube.js";
@@ -25,11 +25,10 @@ export default class Portfolio {
   canEnterItem;
   nearestItemName;
 
-  constructor(pScene, pPhysicsWorld, pTextureLoader, pFontloader) {
+  constructor(pScene, pPhysicsWorld, pResources) {
     this.mainScene = pScene;
     this.physicsWorld = pPhysicsWorld;
-    this.textureLoader = pTextureLoader;
-    this.fontLoader = pFontloader;
+    this.resources = pResources;
   }
 
   overrideColours() {}
@@ -44,7 +43,7 @@ export default class Portfolio {
   update() {
     this.canEnterItem = false;
     for (let i = 0; i < this.portfolioItems.length; i++) {
-      if (this.portfolioItems[i].checkPlayerOnPlatform()){
+      if (this.portfolioItems[i].checkPlayerOnPlatform()) {
         this.canEnterItem = true;
       }
     }
@@ -79,27 +78,21 @@ export default class Portfolio {
     let textCol = this.instructionTextColor;
     let textMesh;
 
-    this.fontLoader.load(
-      "/El_Messiri_SemiBold_Regular.json",
+    const titleGeo = new TextGeometry("Portfolio", {
+      font: this.resources.items.ElMessiri,
+      size: 0.7,
+      height: 0.01,
+    });
+    const titleMesh = new THREE.Mesh(titleGeo, [
+      new THREE.MeshPhongMaterial({ color: textCol }),
+      new THREE.MeshPhongMaterial({ color: textCol }),
+    ]);
 
-      function (font) {
-        const titleGeo = new TextGeometry("Portfolio", {
-          font: font,
-          size: 0.7,
-          height: 0.01,
-        });
-        const titleMesh = new THREE.Mesh(titleGeo, [
-          new THREE.MeshPhongMaterial({ color: textCol }),
-          new THREE.MeshPhongMaterial({ color: textCol }),
-        ]);
-
-        titleMesh.position.x = 7;
-        titleMesh.position.y = 3;
-        titleMesh.position.z = -1;
-        titleMesh.castShadow = true;
-        scene.add(titleMesh);
-      }
-    );
+    titleMesh.position.x = 7;
+    titleMesh.position.y = 3;
+    titleMesh.position.z = -1;
+    titleMesh.castShadow = true;
+    scene.add(titleMesh);
   }
 
   createPortfolioItems() {
@@ -109,7 +102,8 @@ export default class Portfolio {
 
     const TWDE_Item = new PortfolioItem(
       "TDWE_Portfolio",
-      "TDWE",
+      this.resources.items.TDWE_Image,
+      this.resources.items.ElMessiri,
       new THREE.Vector2(4, 2.36),
       new THREE.Vector3(3.9, 2.2),
       new THREE.Vector3(12, 0.8, 0),
@@ -118,8 +112,9 @@ export default class Portfolio {
     );
 
     const NetherFights_Item = new PortfolioItem(
-      "NetherFights_Portfolio",
       "NetherFights",
+      this.resources.items.NetherFights_Image,
+      this.resources.items.ElMessiri,
       new THREE.Vector2(4, 2.36),
       new THREE.Vector3(3.9, 2.2),
       new THREE.Vector3(18, 0.8, 0),
@@ -128,8 +123,9 @@ export default class Portfolio {
     );
 
     const TWDE_Item3 = new PortfolioItem(
-      "TDWE_Portfolio3",
       "TDWE",
+      this.resources.items.NetherFights_Image,
+      this.resources.items.ElMessiri,
       new THREE.Vector2(4, 2.36),
       new THREE.Vector3(3.9, 2.2),
       new THREE.Vector3(24, 0.8, 0),

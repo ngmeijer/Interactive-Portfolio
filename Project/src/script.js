@@ -3,21 +3,20 @@ import * as THREE from "three";
 import CANNON from "cannon";
 import TWEEN from "@tweenjs/tween.js";
 
-import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
+import Resources from "./Resources.js";
+import sources from "./sources.js";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 import MainScene from "./MainScene.js";
 import TDWE_Scene from "./TDWE_Scene.js";
 
-let loadedTextures = false;
-let loadedFonts = false;
-
 THREE.Cache.enabled = true;
 const eventManager = new THREE.EventDispatcher();
-const fontLoader = new FontLoader();
-const textureLoader = new THREE.TextureLoader();
-
-const mainScene = new MainScene(fontLoader, textureLoader);
-const tdweScene = new TDWE_Scene(fontLoader, textureLoader);
+let resources = new Resources(sources);
+resources.on('ready', ()=> {
+  initialize();
+})
+const mainScene = new MainScene(resources);
+const tdweScene = new TDWE_Scene(resources);
 mainScene.eventManager = eventManager;
 tdweScene.eventManager = eventManager;
 
@@ -108,30 +107,9 @@ function cameraFollowPlayer() {
     activeScene.playerInstance.playerBody.position.y + cameraOffset.y;
 }
 
-async function loadResources() {
-  fontLoader.load(
-    "/El_Messiri_SemiBold_Regular.json",
-
-    function (font) {
-      THREE.Cache.add("customFont", font);
-      loadedFonts = true;
-    }
-  );
-  textureLoader.load(
-    "/NetherFights.png",
-
-    function onLoad(image) {
-      THREE.Cache.add("NetherFights_Image", image);
-      loadedTextures = true;
-    }
-  );
-}
-
 const frameClock = new THREE.Clock();
 let delta;
-loadResources();
 async function initialize() {
-
   window.addEventListener("resize", onWindowResize, false);
   createRenderingComponents();
   mainScene.environmentColor = environmentColor;
@@ -149,7 +127,6 @@ async function initialize() {
 
   animate();
 }
-initialize();
 
 function animate() {
   requestAnimationFrame(animate);

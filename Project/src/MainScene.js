@@ -20,6 +20,7 @@ export default class MainScene extends THREE.Scene {
   eventManager;
   fontLoader;
   textureLoader;
+  resources;
 
   playerInstance;
   playerPosition = new THREE.Vector3(0, 2, 1);
@@ -33,11 +34,9 @@ export default class MainScene extends THREE.Scene {
   boundLockPlayer;
   boundUnlockPlayer;
 
-  constructor(pFontLoader, pTextureLoader) {
+  constructor(pResources) {
     super();
-    this.fontLoader = pFontLoader;
-    this.textureLoader = pTextureLoader;
-
+    this.resources = pResources;
     this.boundLockPlayer = this.lockPlayerPosition.bind(this);
     this.boundUnlockPlayer = this.unlockPlayerPosition.bind(this);
   }
@@ -50,27 +49,24 @@ export default class MainScene extends THREE.Scene {
     this.homeArea = new Home(
       this,
       this.physicsWorld,
-      this.fontLoader,
+      this.resources,
       this.eventManager
     );
     this.homeArea.eventManager = this.eventManager;
     this.portfolioArea = new Portfolio(
       this,
       this.physicsWorld,
-      this.textureLoader,
-      this.fontLoader
+      this.resources
     );
     this.aboutMeArea = new AboutMe(
       this,
       this.physicsWorld,
-      this.textureLoader,
-      this.fontLoader
+      this.resources
     );
     this.contactMeArea = new ContactMe(
       this,
       this.physicsWorld,
-      this.textureLoader,
-      this.fontLoader
+      this.resources
     );
 
     this.websiteComponents.push(this.homeArea);
