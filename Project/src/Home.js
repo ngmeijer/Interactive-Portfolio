@@ -18,9 +18,10 @@ export default class Home {
 
   playerInstance;
   frontLight;
-  backLight;
+  bottomLight;
   background;
   elevator;
+  homeIntro;
 
   constructor(pScene, pPhysicsWorld, pResources, pEventManager) {
     this.scene = pScene;
@@ -33,7 +34,6 @@ export default class Home {
 
   initializeArea() {
     this.createStartGeometry();
-    //this.createStartText();
     this.createLighting();
   }
 
@@ -51,9 +51,9 @@ export default class Home {
     );
     ground.addToScene(this.scene, this.physicsWorld);
 
-    let homeMesh = this.resources.items.HomeIntro;
-    this.scene.add(homeMesh.scene);
-    homeMesh.scene.position.set(-8, -0.1, -3);
+    this.homeIntro = this.resources.items.HomeIntro;
+    this.scene.add(this.homeIntro.scene);
+    this.homeIntro.scene.position.set(-8, -0.1, -3);
 
     this.background = this.resources.items.CubeBackground;
     this.scene.add(this.background.scene);
@@ -68,62 +68,32 @@ export default class Home {
     this.elevator.playerInstance = this.playerInstance;
   }
 
-  createStartText() {
-    const titleText = new Text(
-      "Home",
-      this.resources.items.ElMessiri,
-      0.7,
-      this.instructionTextColor,
-      new THREE.Vector3(-7, 5, -6)
-    );
-
-    const hintText = new Text(
-      "Press A/D to move!\nPress space to jump",
-      this.resources.items.ElMessiri,
-      0.4,
-      this.instructionTextColor,
-      new THREE.Vector3(-7, 0.5, -6)
-    );
-
-    const roleText = new Text(
-      "Game Developer\nGame Designer\nWeb Developer",
-      this.resources.items.ElMessiri,
-      0.4,
-      this.instructionTextColor,
-      new THREE.Vector3(-7, 3.5, -6)
-    );
-
-    this.scene.add(titleText.mesh);
-    this.scene.add(hintText.mesh);
-    this.scene.add(roleText.mesh);
-  }
-
   createLighting() {
     const lightTarget = new THREE.Object3D();
     lightTarget.position.set(-10, 10, -5);
 
-    this.backLight = new THREE.SpotLight(0xff0000, 15, 0, Math.PI * 0.3, 1, 10);
-    this.backLight.position.set(0, -10, 1);
-    this.backLight.castShadow = true;
-    this.backLight.shadow.far = 30;
+    this.bottomLight = new THREE.SpotLight(0xDC2F02, 20, 0, Math.PI * 0.3, 1, 0);
+    this.bottomLight.position.set(0, -10, 1);
+    this.bottomLight.castShadow = true;
+    this.bottomLight.shadow.far = 30;
 
-    this.backLight.target = lightTarget;
+    this.bottomLight.target = lightTarget;
     this.scene.add(lightTarget);
-    this.scene.add(this.backLight.target);
-    this.scene.add(this.backLight);
+    this.scene.add(this.bottomLight.target);
+    this.scene.add(this.bottomLight);
 
-    this.backLight.shadow.mapSize.width = 1024;
-    this.backLight.shadow.mapSize.height = 1024;
+    this.bottomLight.shadow.mapSize.width = 1024;
+    this.bottomLight.shadow.mapSize.height = 1024;
 
     const backLightTarget = new THREE.Object3D();
     backLightTarget.position.set(0, 1, -5);
 
-    this.frontLight = new THREE.SpotLight(0xffffff, 3, 0, Math.PI * 0.7, 1, 1);
-    this.frontLight.position.set(0, 5, 5);
+    this.frontLight = new THREE.SpotLight(0xFFBA08, 2, 0, Math.PI, 1, 1);
+    this.frontLight.position.set(-8, 5, 5);
     this.frontLight.castShadow = true;
     this.frontLight.shadow.far = 30;
 
-    this.frontLight.target = lightTarget;
+    this.frontLight.target = this.playerInstance;
     this.scene.add(lightTarget);
     this.scene.add(this.frontLight.target);
     this.scene.add(this.frontLight);

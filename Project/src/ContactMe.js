@@ -37,17 +37,6 @@ export default class ContactMe {
     );
 
     ground.addToScene(this.scene, this.physicsWorld);
-
-    let backgroundLeft = new Cube(
-      "ContactMe_BackgroundLeft",
-      new THREE.Vector3(1, 20, 30),
-      new THREE.Vector3(6.5, -0.5, -16),
-      this.environmentColor,
-      true,
-      0
-    );
-
-    backgroundLeft.addToScene(this.scene, this.physicsWorld);
   }
 
   createText() {

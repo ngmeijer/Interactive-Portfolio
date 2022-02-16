@@ -83,16 +83,15 @@ export default class MainScene extends THREE.Scene {
       this.websiteComponents[i].environmentColor = this.environmentColor;
 
       this.websiteComponents[i].playerInstance = this.playerInstance;
-
       this.websiteComponents[i].initializeArea();
     }
   }
-
+  
   update(delta) {
     for (let i = 0; i < this.websiteComponents.length; i++) {
       this.websiteComponents[i].update();
     }
-
+    
     if (this.elevatorActive) {
       let elevatorPos = this.homeArea.elevator.platformBody.position;
       let targetPos = new THREE.Vector3(

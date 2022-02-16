@@ -20,8 +20,8 @@ export default class Portfolio {
   portfolioItems = [];
   itemScenes = [];
   itemPhysicsWorlds = [];
-  light;
-  secondLight;
+  frontLight;
+  bottomLight;
 
   canEnterItem;
   nearestItemName;
@@ -125,33 +125,47 @@ export default class Portfolio {
   }
 
   createLighting() {
-    this.light = new THREE.SpotLight(0xffffff, 5, 20, Math.PI * 0.3, 0.25, 1);
-    this.light.position.set(20, 5, 6);
-    this.light.castShadow = true;
-    this.light.shadow.far = 30;
+    this.frontLight = new THREE.SpotLight(
+      0xDC2F02,
+      15,
+      20,
+      Math.PI * 0.3,
+      0.25,
+      1
+    );
+    this.frontLight.position.set(20, 5, 6);
+    this.frontLight.castShadow = true;
+    this.frontLight.shadow.far = 30;
 
     const lightTarget = new THREE.Object3D();
-    lightTarget.position.set(12, 1, -5);
+    lightTarget.position.set(17.5, 1, -5);
 
-    this.scene.add(this.light);
+    this.scene.add(this.frontLight);
     this.scene.add(lightTarget);
-    this.scene.add(this.light.target);
-    this.light.target = lightTarget;
+    this.scene.add(this.frontLight.target);
+    this.frontLight.target = lightTarget;
 
-    this.light.shadow.mapSize.width = 1024;
-    this.light.shadow.mapSize.height = 1024;
+    this.frontLight.shadow.mapSize.width = 1024;
+    this.frontLight.shadow.mapSize.height = 1024;
 
-    this.secondLight = new THREE.SpotLight(0xffffff, 5, 20, Math.PI * 0.3, 0.25, 1);
-    this.secondLight.position.set(28, 5, 6);
-    this.secondLight.castShadow = true;
-    this.secondLight.shadow.far = 30;
+    this.bottomLight = new THREE.SpotLight(
+      0xDC2F02,
+      30,
+      20,
+      Math.PI * 0.3,
+      0.25,
+      1
+    );
+    this.bottomLight.position.set(28, -10, 1);
+    this.bottomLight.castShadow = true;
+    this.bottomLight.shadow.far = 30;
 
-    this.scene.add(this.secondLight);
+    this.scene.add(this.bottomLight);
     this.scene.add(lightTarget);
-    this.scene.add(this.secondLight.target);
-    this.secondLight.target = lightTarget;
+    this.scene.add(this.bottomLight.target);
+    this.bottomLight.target = lightTarget;
 
-    this.secondLight.shadow.mapSize.width = 1024;
-    this.secondLight.shadow.mapSize.height = 1024;
+    this.bottomLight.shadow.mapSize.width = 1024;
+    this.bottomLight.shadow.mapSize.height = 1024;
   }
 }

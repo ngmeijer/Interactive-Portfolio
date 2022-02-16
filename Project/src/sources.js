@@ -47,6 +47,11 @@ export default [
     type: "font",
     path: "/Fonts/El_Messiri_SemiBold_Regular.json",
   },
+  {
+    name: "NightShade",
+    type: "font",
+    path: "/Fonts/Jim Nightshade_Regular.json",
+  },
 
   //MODELS
   {

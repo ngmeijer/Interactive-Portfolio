@@ -172,7 +172,7 @@ export default class Player extends THREE.Object3D {
         this.currentMoveSpeed = 0;
         return;
       }
-      console.log(this.playerBody.position.x);
+
       if(this.playerBody.position.x < this.leftBorder) this.movingLeft = false;
       if(this.playerBody.position.x > this.rightBorder) this.movingRight = false;
 
