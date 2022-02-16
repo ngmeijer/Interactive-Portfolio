@@ -73,6 +73,7 @@ export default class Cube extends THREE.Object3D {
       this.body.quaternion.z,
       this.body.quaternion.w
     );
+    this.position = this.mesh.position;
   }
 
   createGraphics() {

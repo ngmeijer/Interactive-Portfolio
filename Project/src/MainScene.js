@@ -23,7 +23,7 @@ export default class MainScene extends THREE.Scene {
   resources;
 
   playerInstance;
-  playerPosition = new THREE.Vector3(11, 13, 1);
+  playerPosition = new THREE.Vector3(-4, 3, 1);
 
   instructionTextColor;
   platformColor;
@@ -128,6 +128,8 @@ export default class MainScene extends THREE.Scene {
     this.eventManager.addEventListener("Event_enableMove", this.boundUnlockPlayer);
 
     this.createMovementInput(this.playerInstance);
+    this.playerInstance.leftBorder = -5.5;
+    this.playerInstance.rightBorder = 30;
   }
 
   createMovementInput(pPlayer) {

@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { Vector3 } from "three";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 
 import Cube from "./Cube.js";
@@ -16,8 +17,9 @@ export default class Home {
   environmentColor = 0x6a040f;
 
   playerInstance;
-  light;
-
+  frontLight;
+  backLight;
+  background;
   elevator;
 
   constructor(pScene, pPhysicsWorld, pResources, pEventManager) {
@@ -31,7 +33,7 @@ export default class Home {
 
   initializeArea() {
     this.createStartGeometry();
-    this.createStartText();
+    //this.createStartText();
     this.createLighting();
   }
 
@@ -40,25 +42,22 @@ export default class Home {
   }
 
   createStartGeometry() {
-    let wall = new Cube(
-      "LeftWall",
-      new THREE.Vector3(2, 20, 50),
-      new THREE.Vector3(-8, -1, 0),
-      this.environmentColor,
-      true,
-      0
-    );
-    wall.addToScene(this.scene, this.physicsWorld);
-
     let ground = new Cube(
       "Home_Ground",
-      new THREE.Vector3(10, 0.5, 15),
-      new THREE.Vector3(-2, -1, 0),
-      this.environmentColor,
+      new THREE.Vector3(9, 5, 1),
+      new THREE.Vector3(-1.5, -5.5, 1),
+      0x000000,
       true
     );
     ground.addToScene(this.scene, this.physicsWorld);
 
+    let homeMesh = this.resources.items.HomeIntro;
+    this.scene.add(homeMesh.scene);
+    homeMesh.scene.position.set(-8, -0.1, -3);
+
+    this.background = this.resources.items.CubeBackground;
+    this.scene.add(this.background.scene);
+    this.background.scene.position.set(-20, -10, -9);
     this.elevator = new Elevator(
       new THREE.Vector3(4.5, 0, -2),
       this.environmentColor,
@@ -100,9 +99,36 @@ export default class Home {
   }
 
   createLighting() {
-    this.light = new THREE.PointLight(0xffba08, 10, 20);
-    this.light.position.set(0, 9, 4);
-    this.light.castShadow = true;
-    this.scene.add(this.light);
+    const lightTarget = new THREE.Object3D();
+    lightTarget.position.set(-10, 10, -5);
+
+    this.backLight = new THREE.SpotLight(0xff0000, 15, 0, Math.PI * 0.3, 1, 10);
+    this.backLight.position.set(0, -10, 1);
+    this.backLight.castShadow = true;
+    this.backLight.shadow.far = 30;
+
+    this.backLight.target = lightTarget;
+    this.scene.add(lightTarget);
+    this.scene.add(this.backLight.target);
+    this.scene.add(this.backLight);
+
+    this.backLight.shadow.mapSize.width = 1024;
+    this.backLight.shadow.mapSize.height = 1024;
+
+    const backLightTarget = new THREE.Object3D();
+    backLightTarget.position.set(0, 1, -5);
+
+    this.frontLight = new THREE.SpotLight(0xffffff, 3, 0, Math.PI * 0.7, 1, 1);
+    this.frontLight.position.set(0, 5, 5);
+    this.frontLight.castShadow = true;
+    this.frontLight.shadow.far = 30;
+
+    this.frontLight.target = lightTarget;
+    this.scene.add(lightTarget);
+    this.scene.add(this.frontLight.target);
+    this.scene.add(this.frontLight);
+
+    this.frontLight.shadow.mapSize.width = 2048;
+    this.frontLight.shadow.mapSize.height = 2048;
   }
 }

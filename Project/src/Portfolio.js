@@ -6,7 +6,7 @@ import Cube from "./Cube.js";
 import PortfolioItem from "./PortfolioItem.js";
 
 export default class Portfolio {
-  mainScene;
+  scene;
   physicsWorld;
   textureLoader;
   fontLoader;
@@ -21,12 +21,13 @@ export default class Portfolio {
   itemScenes = [];
   itemPhysicsWorlds = [];
   light;
+  secondLight;
 
   canEnterItem;
   nearestItemName;
 
   constructor(pScene, pPhysicsWorld, pResources) {
-    this.mainScene = pScene;
+    this.scene = pScene;
     this.physicsWorld = pPhysicsWorld;
     this.resources = pResources;
   }
@@ -35,7 +36,6 @@ export default class Portfolio {
 
   initializeArea() {
     this.createPortfolioGeometry();
-    this.createPortfolioText();
     this.createPortfolioItems();
     this.createLighting();
   }
@@ -52,14 +52,14 @@ export default class Portfolio {
   createPortfolioGeometry() {
     let ground = new Cube(
       "Portfolio_Ground",
-      new THREE.Vector3(50, 1, 50),
-      new THREE.Vector3(31, -1.5, -10),
+      new THREE.Vector3(50, 1, 1),
+      new THREE.Vector3(31, -1.5, 1),
       this.environmentColor,
       true,
       0
     );
 
-    ground.addToScene(this.mainScene, this.physicsWorld);
+    ground.addToScene(this.scene, this.physicsWorld);
 
     let backgroundLeft = new Cube(
       "Portfolio_BackgroundLeft",
@@ -70,45 +70,23 @@ export default class Portfolio {
       0
     );
 
-    backgroundLeft.addToScene(this.mainScene, this.physicsWorld);
-  }
+    backgroundLeft.addToScene(this.scene, this.physicsWorld);
 
-  createPortfolioText() {
-    let scene = this.mainScene;
-    let textCol = this.instructionTextColor;
-    let textMesh;
-
-    const titleGeo = new TextGeometry("Portfolio", {
-      font: this.resources.items.ElMessiri,
-      size: 0.7,
-      height: 0.01,
-    });
-    const titleMesh = new THREE.Mesh(titleGeo, [
-      new THREE.MeshPhongMaterial({ color: textCol }),
-      new THREE.MeshPhongMaterial({ color: textCol }),
-    ]);
-
-    titleMesh.position.x = 7;
-    titleMesh.position.y = 3;
-    titleMesh.position.z = -1;
-    titleMesh.castShadow = true;
-    scene.add(titleMesh);
+    let portfolioIntro = this.resources.items.PortfolioIntro;
+    this.scene.add(portfolioIntro.scene);
+    portfolioIntro.scene.position.set(10, -0.1, -3);
   }
 
   createPortfolioItems() {
-    let textCol = this.instructionTextColor;
-    let platformCol = this.platformColor;
-    let textureLoader = this.textureLoader;
-
     const TWDE_Item = new PortfolioItem(
       "TDWE_Portfolio",
       this.resources.items.TDWE_Image,
       this.resources.items.ElMessiri,
       new THREE.Vector2(4, 2.36),
       new THREE.Vector3(3.9, 2.2),
-      new THREE.Vector3(10, 0.8, 0),
-      textCol,
-      platformCol
+      new THREE.Vector3(16, 0.8, -1),
+      this.instructionTextColor,
+      this.platformColor
     );
 
     const NetherFights_Item = new PortfolioItem(
@@ -117,9 +95,9 @@ export default class Portfolio {
       this.resources.items.ElMessiri,
       new THREE.Vector2(4, 2.36),
       new THREE.Vector3(3.9, 2.2),
-      new THREE.Vector3(14.1, 0.8, 0),
-      textCol,
-      platformCol
+      new THREE.Vector3(20.1, 0.8, -1),
+      this.instructionTextColor,
+      this.platformColor
     );
 
     const TWDE_Item3 = new PortfolioItem(
@@ -128,31 +106,52 @@ export default class Portfolio {
       this.resources.items.ElMessiri,
       new THREE.Vector2(4, 2.36),
       new THREE.Vector3(3.9, 2.2),
-      new THREE.Vector3(18.2, 0.8, 0),
-      textCol,
-      platformCol
+      new THREE.Vector3(24.2, 0.8, -1),
+      this.instructionTextColor,
+      this.platformColor
     );
 
-    TWDE_Item.createImage(textureLoader);
-    TWDE_Item.addToScene(this.mainScene, this.physicsWorld);
+    TWDE_Item.addToScene(this.scene, this.physicsWorld);
     TWDE_Item.playerInstance = this.playerInstance;
     this.portfolioItems.push(TWDE_Item);
 
-    NetherFights_Item.createImage(textureLoader);
-    NetherFights_Item.addToScene(this.mainScene, this.physicsWorld);
+    NetherFights_Item.addToScene(this.scene, this.physicsWorld);
     NetherFights_Item.playerInstance = this.playerInstance;
     this.portfolioItems.push(NetherFights_Item);
 
-    TWDE_Item3.createImage(textureLoader);
-    TWDE_Item3.addToScene(this.mainScene, this.physicsWorld);
+    TWDE_Item3.addToScene(this.scene, this.physicsWorld);
     TWDE_Item3.playerInstance = this.playerInstance;
     this.portfolioItems.push(TWDE_Item3);
   }
 
   createLighting() {
-    this.light = new THREE.PointLight(0xffba08, 4, 60);
-    this.light.position.set(15, 2, 0);
+    this.light = new THREE.SpotLight(0xffffff, 5, 20, Math.PI * 0.3, 0.25, 1);
+    this.light.position.set(20, 5, 6);
     this.light.castShadow = true;
-    this.mainScene.add(this.light);
+    this.light.shadow.far = 30;
+
+    const lightTarget = new THREE.Object3D();
+    lightTarget.position.set(12, 1, -5);
+
+    this.scene.add(this.light);
+    this.scene.add(lightTarget);
+    this.scene.add(this.light.target);
+    this.light.target = lightTarget;
+
+    this.light.shadow.mapSize.width = 1024;
+    this.light.shadow.mapSize.height = 1024;
+
+    this.secondLight = new THREE.SpotLight(0xffffff, 5, 20, Math.PI * 0.3, 0.25, 1);
+    this.secondLight.position.set(28, 5, 6);
+    this.secondLight.castShadow = true;
+    this.secondLight.shadow.far = 30;
+
+    this.scene.add(this.secondLight);
+    this.scene.add(lightTarget);
+    this.scene.add(this.secondLight.target);
+    this.secondLight.target = lightTarget;
+
+    this.secondLight.shadow.mapSize.width = 1024;
+    this.secondLight.shadow.mapSize.height = 1024;
   }
 }

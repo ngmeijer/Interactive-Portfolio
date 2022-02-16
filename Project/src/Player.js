@@ -44,6 +44,8 @@ export default class Player extends THREE.Object3D {
     facingRight = true;
     group;
     elevator;
+    leftBorder;
+    rightBorder;
   
     constructor(pMoveSpeed, pJumpForce, pPosition) {
       super();
@@ -84,11 +86,7 @@ export default class Player extends THREE.Object3D {
       this.playerBody.position.x = this.startPos.x;
       this.playerBody.position.y = this.startPos.y;
       this.playerBody.position.z = this.startPos.z;
-  
-      this.tweenFaceCamera.chain(this.tweenMoveOutZ);
-      this.tweenMoveOutZ.chain(this.tweenRotateCounter90);
-      this.tweenFaceCamera.start();
-  
+    
       this.canMove = true;
     }
   
@@ -174,7 +172,10 @@ export default class Player extends THREE.Object3D {
         this.currentMoveSpeed = 0;
         return;
       }
-  
+      console.log(this.playerBody.position.x);
+      if(this.playerBody.position.x < this.leftBorder) this.movingLeft = false;
+      if(this.playerBody.position.x > this.rightBorder) this.movingRight = false;
+
       if (this.movingLeft || this.movingRight)
         this.currentMoveSpeed = this.defaultMoveSpeed;
   

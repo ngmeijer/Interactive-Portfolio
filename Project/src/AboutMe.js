@@ -1,10 +1,10 @@
 import * as THREE from "three";
-import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 
 import Cube from "./Cube.js";
 import Text from "./Text.js";
-import AreaComponent from "./AreaComponent.js";
 import Door from "./Door.js";
+import { Vector2, Vector3 } from "three";
+import Image from "./Image.js";
 
 export default class AboutMe {
   door;
@@ -29,6 +29,7 @@ export default class AboutMe {
     this.creatAboutMeText();
     this.createAboutMeGeometry();
     this.createPhoto();
+    this.createLanguageDetails();
 
     if (this.door == null) this.canUpdate = false;
   }
@@ -91,44 +92,57 @@ export default class AboutMe {
   }
 
   createPhoto() {
-    const geo = new THREE.PlaneBufferGeometry(4, 6);
+    const photo = new Image(
+      new Vector2(4, 6),
+      new Vector3(20, 10, -6),
+      this.resources.items.Photo
+    );
+    this.scene.add(photo.mesh);
+  }
 
-    const material = new THREE.MeshBasicMaterial({
-      map: this.resources.items.Photo,
-    });
+  createLanguageDetails() {
+    const cpp = new Image(
+      new Vector2(1, 1),
+      new Vector3(23, 10, -6),
+      this.resources.items.cpp
+    );
+    this.scene.add(cpp.mesh);
 
-    const photo = new THREE.Mesh(geo, material);
+    const csharp = new Image(
+      new Vector2(1, 1),
+      new Vector3(24, 10, -6),
+      this.resources.items.csharp
+    );
+    this.scene.add(csharp.mesh);
 
-    photo.position.x = 20;
-    photo.position.y = 10;
-    photo.position.z = -6;
+    const css = new Image(
+      new Vector2(1, 1),
+      new Vector3(25, 10, -6),
+      this.resources.items.css
+    );
+    this.scene.add(css.mesh);
 
-    this.scene.add(photo);
+    const html = new Image(
+      new Vector2(1, 1),
+      new Vector3(26, 10, -6),
+      this.resources.items.html
+    );
+    this.scene.add(html.mesh);
+
+    const javascript = new Image(
+      new Vector2(1, 1),
+      new Vector3(27, 10, -6),
+      this.resources.items.javascript
+    );
+    this.scene.add(javascript.mesh);
   }
 
   creatAboutMeText() {
     let scene = this.scene;
     let textCol = this.instructionTextColor;
 
-    const titleGeo = new TextGeometry("About me", {
-      font: this.resources.items.ElMessiri,
-      size: 0.7,
-      height: 0.01,
-    });
-    const titleMesh = new THREE.Mesh(titleGeo, [
-      new THREE.MeshPhongMaterial({ color: textCol }),
-      new THREE.MeshPhongMaterial({ color: textCol }),
-    ]);
-
-    titleMesh.position.x = 7.5;
-    titleMesh.position.y = 13;
-    titleMesh.position.z = -6.5;
-    titleMesh.castShadow = true;
-    scene.add(titleMesh);
-
     let textContent =
       "Hi! My name is Nils Meijer, currently a student \nat Saxion Universities in Enschede, The Netherlands. \nI'm doing the engineering direction. I hope my website \nleaves a good impression of the work I do!";
-
     const informationText = new Text(
       textContent,
       this.resources.items.ElMessiri,
@@ -140,9 +154,20 @@ export default class AboutMe {
   }
 
   createLighting() {
-    this.light = new THREE.PointLight(0xffba08, 5, 30);
-    this.light.position.set(15, 9, 0);
+    this.light = new THREE.SpotLight(0xffffff, 5, 20, Math.PI * 0.3, 0.25, 1);
+    this.light.position.set(15, 13, 6);
     this.light.castShadow = true;
+    this.light.shadow.far = 30;
+
+    const lightTarget = new THREE.Object3D();
+    lightTarget.position.set(12, 12, -5);
+
     this.scene.add(this.light);
+    this.scene.add(lightTarget);
+    this.scene.add(this.light.target);
+    this.light.target = lightTarget;
+
+    this.light.shadow.mapSize.width = 1024;
+    this.light.shadow.mapSize.height = 1024;
   }
 }

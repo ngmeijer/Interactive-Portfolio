@@ -20,7 +20,8 @@ export default class Elevator extends THREE.Object3D {
   maxFloors = 2;
   eventManager;
   animationPlaying = false;
-
+  light;
+  lightOffset;
   hintText;
   textOffset;
 
@@ -33,6 +34,7 @@ export default class Elevator extends THREE.Object3D {
     this.createSpine();
     this.createPlatform();
     this.createFence();
+    this.createLight();
     this.initializeInputEvents(this);
 
     this.boundUnlockAnimation = this.unlockAnimation.bind(this);
@@ -67,14 +69,14 @@ export default class Elevator extends THREE.Object3D {
   }
 
   createFence() {
-    this.fenceOffset = new Vector3(-1.55, 0, 0);
+    this.fenceOffset = new Vector3(-1.5, 0, 0);
     const fenceShape = new CANNON.Box(new CANNON.Vec3(0.1, 0.5, 2));
     this.fenceBody = new CANNON.Body({ mass: this.mass });
 
     this.fenceBody.addShape(fenceShape);
 
-    const geo = new THREE.BoxGeometry(0.18, 1, 4);
-    const material = new THREE.MeshPhongMaterial({ color: 0x00ff00 });
+    const geo = new THREE.BoxGeometry(0.1, 1, 4);
+    const material = new THREE.MeshPhongMaterial({ color: 0x000000 });
     this.fenceMesh = new THREE.Mesh(geo, material);
     this.fenceMesh.receiveShadow = true;
     this.fenceMesh.castShadow = true;
@@ -117,12 +119,20 @@ export default class Elevator extends THREE.Object3D {
     this.hintText.mesh.position.set(
       this.platformBody.position.x + this.textOffset.x,
       this.platformBody.position.y + this.textOffset.y,
-      this.platformBody.position.z + this.textOffset.z,
+      this.platformBody.position.z + this.textOffset.z
+    );
+
+    this.light.position.set(
+      this.platformBody.position.x + this.lightOffset.x,
+      this.platformBody.position.y + this.lightOffset.y,
+      this.platformBody.position.z + this.lightOffset.z
     );
   }
 
   initializeInputEvents(pThis) {
     document.addEventListener("keydown", function (event) {
+      if (this.animationPlaying) return;
+
       if (event.key == "w" || event.key == "W") {
         pThis.checkDirection(1);
       }
@@ -160,12 +170,13 @@ export default class Elevator extends THREE.Object3D {
     );
 
     if (distance <= 1.5) {
-      this.eventManager.dispatchEvent({ type: "Event_disableMove" });
       if (this.moveFloorUp && this.currentFloor < this.maxFloors) {
+        this.eventManager.dispatchEvent({ type: "Event_disableMove" });
         this.startAscendingAnimation();
       }
 
       if (this.moveFloorDown && this.currentFloor > 0) {
+        this.eventManager.dispatchEvent({ type: "Event_disableMove" });
         this.startDescendingAnimation(this.eventManager);
       }
     }
@@ -239,12 +250,33 @@ export default class Elevator extends THREE.Object3D {
         pEventManager.dispatchEvent({ type: "Event_enableMove" });
       });
 
-    tweenToFloorDown.chain(tweenFenceDown);
+    if (this.currentFloor == 1) {
+      tweenToFloorDown.chain(tweenFenceDown);
+    }
     tweenToFloorDown.start();
 
     this.animationPlaying = false;
     this.currentFloor--;
     this.moveFloorDown = false;
+  }
+
+  createLight() {
+    this.light = new THREE.SpotLight(
+      0xff0000,
+      15,
+      20,
+      Math.PI * 0.125,
+      0.5,
+      10
+    );
+    this.lightOffset = new Vector3(0, 4, 0);
+    this.light.castShadow = true;
+    this.light.shadow.far = 30;
+
+    this.light.target = this.platformMesh;
+
+    this.light.shadow.mapSize.width = 1024;
+    this.light.shadow.mapSize.height = 1024;
   }
 
   addToScene(pScene, pPhysicsWorld) {
@@ -254,5 +286,8 @@ export default class Elevator extends THREE.Object3D {
 
     pPhysicsWorld.addBody(this.platformBody);
     pPhysicsWorld.addBody(this.fenceBody);
+
+    pScene.add(this.light);
+    pScene.add(this.light.target);
   }
 }

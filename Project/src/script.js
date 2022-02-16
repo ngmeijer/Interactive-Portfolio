@@ -61,7 +61,7 @@ function createRenderingComponents() {
   });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFShadowMap;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap ;
   document.body.appendChild(renderer.domElement);
 }
 
@@ -78,7 +78,7 @@ function switchScene() {
       if (activeScene == mainScene) activeScene = tdweScene;
       else activeScene = mainScene;
       activePhysicsWorld = activeScene.physicsWorld;
-      //activeScene.playerInstance.resetPlayer();
+      activeScene.playerInstance.resetPlayer();
     });
 
   var fadeIn = new TWEEN.Tween(currentOpacity)
@@ -128,6 +128,7 @@ async function initialize() {
   animate();
 }
 
+let countedFrames = 0;
 function animate() {
   requestAnimationFrame(animate);
 
@@ -135,6 +136,11 @@ function animate() {
   canEnterItem = mainScene.portfolioArea.canEnterItem;
   activePhysicsWorld.step(delta);
   activeScene.update(delta);
+
+  countedFrames++;
+  
+  let fps = countedFrames / frameClock.getElapsedTime();
+  //console.log(fps);
 
   cameraFollowPlayer();
 

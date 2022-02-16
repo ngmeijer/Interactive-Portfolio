@@ -55,6 +55,8 @@ export default class TDWE_Scene extends THREE.Scene {
     this.add(this.playerInstance.group);
 
     this.createMovementInput(this.playerInstance);
+    this.playerInstance.leftBorder = -5;
+    this.playerInstance.rightBorder = 10;
   }
 
   createMovementInput(pPlayer) {
@@ -83,7 +85,7 @@ export default class TDWE_Scene extends THREE.Scene {
 
   createGeneralGeometry() {
     let ground = new Plane(
-      new THREE.Vector2(40, 50),
+      new THREE.Vector2(80, 50),
       new THREE.Vector3(0, 0, 0),
       new THREE.Vector3(-90, 0, 0),
       this.environmentColor,
@@ -125,19 +127,28 @@ export default class TDWE_Scene extends THREE.Scene {
     );
     scene.add(titleText.mesh);
 
-    const teamStructureText = new Text(
-      "Team structure: \n 3 Artists \n 2 Designers \n 2 Engineers",
+    const teamStructureHeader = new Text(
+      "Team structure:",
       this.resources.items.ElMessiri,
-      0.25,
+      0.35,
       textCol,
       new Vector3(6.5, 6.3, -6)
     );
-    scene.add(teamStructureText.mesh);
+    scene.add(teamStructureHeader.mesh);
 
+    const teamStructureText = new Text(
+      " 3 Artists \n 2 Designers \n 2 Engineers",
+      this.resources.items.ElMessiri,
+      0.25,
+      textCol,
+      new Vector3(6.5, 5.8, -6)
+    );
+    scene.add(teamStructureText.mesh);
+    
     const descriptionText = new Text(
       "The 3rd project in my 2nd year, \nand the first one where we were free to \nmake what we wanted, in every possible creative way.",
       this.resources.items.ElMessiri,
-      0.25,
+      0.2,
       textCol,
       new Vector3(6.5, 4, -6)
     );
@@ -151,6 +162,15 @@ export default class TDWE_Scene extends THREE.Scene {
       new Vector3(6.5, 2.3, -6)
     );
     scene.add(quoteText.mesh);
+
+    const technicalDetailsText = new Text(
+      "Technical Details:",
+      this.resources.items.ElMessiri,
+      0.35,
+      textCol,
+      new Vector3(15, 6, -6)
+    );
+    scene.add(technicalDetailsText.mesh);
   }
 
   createImage() {
@@ -168,9 +188,11 @@ export default class TDWE_Scene extends THREE.Scene {
   }
 
   createLighting() {
-    this.light = new THREE.PointLight(0xffba08, 10, 20);
+    this.light = new THREE.PointLight(0xffba08, 10, 30);
     this.light.position.set(0, 7, 2);
     this.light.castShadow = true;
     this.add(this.light);
+    this.light.shadow.mapSize.width = 1024;
+    this.light.shadow.mapSize.height = 1024;
   }
 }
