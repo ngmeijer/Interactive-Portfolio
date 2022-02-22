@@ -3,6 +3,7 @@ import { Vector3 } from "three";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 
 import Cube from "./Cube.js";
+import CubeBody from "./CubeBody.js";
 import Elevator from "./Elevator.js";
 import Text from "./Text.js";
 
@@ -42,18 +43,20 @@ export default class Home {
   }
 
   createStartGeometry() {
-    let ground = new Cube(
-      "Home_Ground",
-      new THREE.Vector3(9, 5, 1),
-      new THREE.Vector3(-1.5, -5.5, 1),
-      0x000000,
-      true
-    );
-    ground.addToScene(this.scene, this.physicsWorld);
+    let groundBody = new CubeBody(new THREE.Vector3(-1.5, -3,1), new THREE.Vector3(9,5,1));
+    this.physicsWorld.addBody(groundBody);
+
+    let groundMesh = this.resources.items.Ground;
+    this.scene.add(groundMesh.scene);
+    groundMesh.scene.position.set(-1.5, -1.5, 0.5);
 
     this.homeIntro = this.resources.items.HomeIntro;
     this.scene.add(this.homeIntro.scene);
     this.homeIntro.scene.position.set(-8, -0.1, -3);
+
+    const arrowsHorizontal = this.resources.items.ArrowsHorizontal;
+    this.scene.add(arrowsHorizontal.scene);
+    arrowsHorizontal.scene.position.set(-3.9,-0.8,2);
 
     this.background = this.resources.items.CubeBackground;
     this.scene.add(this.background.scene);
@@ -63,7 +66,7 @@ export default class Home {
       this.environmentColor,
       this.eventManager
     );
-    this.elevator.createText(this.resources.items.ElMessiri, this.scene);
+    this.elevator.createHints(this.resources.items, this.scene);
     this.elevator.addToScene(this.scene, this.physicsWorld);
     this.elevator.playerInstance = this.playerInstance;
   }
@@ -73,7 +76,7 @@ export default class Home {
     lightTarget.position.set(-10, 10, -5);
 
     this.bottomLight = new THREE.SpotLight(0xDC2F02, 20, 0, Math.PI * 0.3, 1, 0);
-    this.bottomLight.position.set(0, -10, 1);
+    this.bottomLight.position.set(2, 0, -2);
     this.bottomLight.castShadow = true;
     this.bottomLight.shadow.far = 30;
 
@@ -88,8 +91,8 @@ export default class Home {
     const backLightTarget = new THREE.Object3D();
     backLightTarget.position.set(0, 1, -5);
 
-    this.frontLight = new THREE.SpotLight(0xFFBA08, 2, 0, Math.PI, 1, 1);
-    this.frontLight.position.set(-8, 5, 5);
+    this.frontLight = new THREE.SpotLight(0xFFBA08, 4, 0, Math.PI, 1, 1);
+    this.frontLight.position.set(-8, 5, 10);
     this.frontLight.castShadow = true;
     this.frontLight.shadow.far = 30;
 

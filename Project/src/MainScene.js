@@ -23,7 +23,7 @@ export default class MainScene extends THREE.Scene {
   resources;
 
   playerInstance;
-  playerPosition = new THREE.Vector3(-4, 3, 1);
+  playerPosition = new THREE.Vector3(16, 2, 1);
 
   instructionTextColor;
   platformColor;
@@ -33,6 +33,8 @@ export default class MainScene extends THREE.Scene {
 
   boundLockPlayer;
   boundUnlockPlayer;
+
+  currentScene;
 
   constructor(pResources) {
     super();
@@ -74,6 +76,10 @@ export default class MainScene extends THREE.Scene {
     this.websiteComponents.push(this.aboutMeArea);
     this.websiteComponents.push(this.contactMeArea);
 
+    const areaIntros = this.resources.items.AreaIntros;
+    this.add(areaIntros.scene);
+    areaIntros.scene.position.set(10, -0.1, -3);
+
     this.createPlayer();
 
     for (let i = 0; i < this.websiteComponents.length; i++) {
@@ -88,6 +94,8 @@ export default class MainScene extends THREE.Scene {
   }
   
   update(delta) {
+    if(!this.currentScene) return;
+
     for (let i = 0; i < this.websiteComponents.length; i++) {
       this.websiteComponents[i].update();
     }
@@ -115,9 +123,8 @@ export default class MainScene extends THREE.Scene {
   }
 
   createPlayer() {
-    this.playerInstance = new Player(6, 7, this.playerPosition);
+    this.playerInstance = new Player(6, 7, this.playerPosition, this.resources.items.characterMesh);
     this.physicsWorld.addBody(this.playerInstance.playerBody);
-
     this.add(this.playerInstance.group);
 
     this.eventManager.addEventListener(

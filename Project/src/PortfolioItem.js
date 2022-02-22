@@ -189,11 +189,11 @@ export default class PortfolioItem extends THREE.Object3D {
 
     this.bridge = new Cube(
       this.ID + "_Bridge",
-      new THREE.Vector3(1,5,3),
+      new THREE.Vector3(1,5,6),
       new THREE.Vector3(
         this.itemPosition.x,
-        this.itemPosition.y - 6.4,
-        this.itemPosition.z
+        this.itemPosition.y - 6.37,
+        this.itemPosition.z - 1.9
       ),
       0x363636,
       true,
@@ -248,7 +248,7 @@ export default class PortfolioItem extends THREE.Object3D {
     pScene.add(this.meshRight);
     pScene.add(this.meshTop);
     pScene.add(this.bridge.mesh);
-    //pPhysicsWorld.add(this.bridge.body);
+    pPhysicsWorld.add(this.bridge.body);
 
     pScene.add(this.image.mesh);
 

@@ -1,20 +1,18 @@
 import "./style.css";
 import * as THREE from "three";
-import CANNON from "cannon";
 import TWEEN from "@tweenjs/tween.js";
 
 import Resources from "./Resources.js";
 import sources from "./sources.js";
-import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 import MainScene from "./MainScene.js";
 import TDWE_Scene from "./TDWE_Scene.js";
 
 THREE.Cache.enabled = true;
 const eventManager = new THREE.EventDispatcher();
 let resources = new Resources(sources);
-resources.on('ready', ()=> {
+resources.on("ready", () => {
   initialize();
-})
+});
 const mainScene = new MainScene(resources);
 const tdweScene = new TDWE_Scene(resources);
 mainScene.eventManager = eventManager;
@@ -52,7 +50,7 @@ function createRenderingComponents() {
     1000
   );
 
-  camera.position.set(0, 3, 8);
+  camera.position.set(0, 3, 9.5);
 
   renderer = new THREE.WebGLRenderer({
     powerPreference: "high-performance",
@@ -61,7 +59,7 @@ function createRenderingComponents() {
   });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap ;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   document.body.appendChild(renderer.domElement);
 }
 
@@ -70,7 +68,8 @@ function switchScene() {
   var fullOpacity = { opacity: 1 };
   var noOpacity = { opacity: 0 };
   var fadeOut = new TWEEN.Tween(currentOpacity)
-    .to(fullOpacity, 2000)
+    .to(fullOpacity, 3000)
+    .easing(TWEEN.Easing.Quadratic.Out)
     .onUpdate(function () {
       fadeImage.style.setProperty("opacity", currentOpacity.opacity);
     })
@@ -122,8 +121,9 @@ async function initialize() {
   tdweScene.platformColor = platformColor;
   tdweScene.initalizeScene();
 
-  activeScene = mainScene;
-  activePhysicsWorld = mainScene.physicsWorld;
+  activeScene = tdweScene;
+  activePhysicsWorld = activeScene.physicsWorld;
+  activeScene.currentScene = true;
 
   animate();
 }
@@ -138,7 +138,7 @@ function animate() {
   activeScene.update(delta);
 
   countedFrames++;
-  
+
   let fps = countedFrames / frameClock.getElapsedTime();
   //console.log(fps);
 

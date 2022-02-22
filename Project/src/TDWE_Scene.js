@@ -3,7 +3,7 @@ import CANNON from "cannon";
 import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 
 import Plane from "./Plane.js";
-import Cube from "./Cube.js";
+import CubeBody from "./CubeBody.js";
 import Player from "./Player.js";
 import Text from "./Text.js";
 import { Vector3 } from "three";
@@ -29,6 +29,8 @@ export default class TDWE_Scene extends THREE.Scene {
   platformColor;
   environmentColor;
 
+  currentScene;
+
   constructor(pResources) {
     super();
     this.resources = pResources;
@@ -36,8 +38,8 @@ export default class TDWE_Scene extends THREE.Scene {
 
   initalizeScene() {
     this.physicsWorld = new CANNON.World();
-    this.createGeneralGeometry();
     this.physicsWorld.gravity.set(0, -12, 0);
+    this.createGeneralGeometry();
 
     this.createPlayer();
     this.createLighting();
@@ -46,17 +48,24 @@ export default class TDWE_Scene extends THREE.Scene {
   }
 
   update(delta) {
+    if (!this.currentScene) return;
+
     this.playerInstance.update(delta);
   }
 
   createPlayer() {
-    this.playerInstance = new Player(8, 7, this.playerPosition);
+    this.playerInstance = new Player(
+      8,
+      7,
+      this.playerPosition,
+      this.resources.items.characterMesh
+    );
     this.physicsWorld.addBody(this.playerInstance.playerBody);
     this.add(this.playerInstance.group);
 
     this.createMovementInput(this.playerInstance);
-    this.playerInstance.leftBorder = -5;
-    this.playerInstance.rightBorder = 10;
+    this.playerInstance.leftBorder = -6;
+    this.playerInstance.rightBorder = 25;
   }
 
   createMovementInput(pPlayer) {
@@ -84,34 +93,15 @@ export default class TDWE_Scene extends THREE.Scene {
   }
 
   createGeneralGeometry() {
-    let ground = new Plane(
-      new THREE.Vector2(80, 50),
-      new THREE.Vector3(0, 0, 0),
-      new THREE.Vector3(-90, 0, 0),
-      this.environmentColor,
-      true
+    let groundBody = new CubeBody(
+      new THREE.Vector3(-1.5, -3, 1),
+      new THREE.Vector3(9, 5, 1)
     );
-    this.add(ground.planeMesh);
-    this.physicsWorld.addBody(ground.planeBody);
+    this.physicsWorld.addBody(groundBody);
 
-    let background = new Plane(
-      new THREE.Vector2(120, 25),
-      new THREE.Vector3(0, 0, -25),
-      new THREE.Vector3(0, 0, 0),
-      0x100b13,
-      false
-    );
-    this.add(background.planeMesh);
-
-    let wall = new Cube(
-      "LeftWall",
-      new THREE.Vector3(2, 20, 50),
-      new THREE.Vector3(-8, 0, 0),
-      this.environmentColor,
-      true,
-      0
-    );
-    wall.addToScene(this, this.physicsWorld);
+    let groundMesh = this.resources.items.Ground;
+    this.add(groundMesh.scene);
+    groundMesh.scene.position.set(-1.5, -1.5, 0.5);
   }
 
   createStartText() {
@@ -144,7 +134,7 @@ export default class TDWE_Scene extends THREE.Scene {
       new Vector3(6.5, 5.8, -6)
     );
     scene.add(teamStructureText.mesh);
-    
+
     const descriptionText = new Text(
       "The 3rd project in my 2nd year, \nand the first one where we were free to \nmake what we wanted, in every possible creative way.",
       this.resources.items.ElMessiri,

@@ -21,7 +21,7 @@ export default class ContactMe {
   initializeArea() {
     this.createContactMeGeometry();
     this.createLighting();
-    this.createText();
+    this.createSocialMedia();
   }
 
   update() {}
@@ -29,8 +29,8 @@ export default class ContactMe {
   createContactMeGeometry() {
     let ground = new Cube(
       "ContactMe_Ground",
-      new THREE.Vector3(50, 1, 50),
-      new THREE.Vector3(31, 14.5, -10),
+      new THREE.Vector3(50, 1, 2),
+      new THREE.Vector3(31, 18.5, 0.75),
       this.environmentColor,
       true,
       0
@@ -39,21 +39,31 @@ export default class ContactMe {
     ground.addToScene(this.scene, this.physicsWorld);
   }
 
-  createText() {
-    const titleText = new Text(
-      "Contact me",
-      this.resources.items.ElMessiri,
-      0.7,
-      this.instructionTextColor,
-      new THREE.Vector3(8, 16, -6)
-    );
+  createSocialMedia() {
+    let twitter = this.resources.items.twitter;
+    this.scene.add(twitter.scene);
+    twitter.scene.position.set(17, 22, -6);
 
-    this.scene.add(titleText.mesh);
+    let linkedin = this.resources.items.linkedin;
+    this.scene.add(linkedin.scene);
+    linkedin.scene.position.set(20, 22, -6);
+
+    let git = this.resources.items.git;
+    this.scene.add(git.scene);
+    git.scene.position.set(23, 22, -6);
+
+    let discord = this.resources.items.discord;
+    this.scene.add(discord.scene);
+    discord.scene.position.set(26, 22, -6);
+
+    let playstore = this.resources.items.playstore;
+    this.scene.add(playstore.scene);
+    playstore.scene.position.set(29, 22, -6);
   }
 
   createLighting() {
-    this.light = new THREE.SpotLight(0xffffff, 5, 20, Math.PI * 0.3, 0.25, 1);
-    this.light.position.set(13, 17, 6);
+    this.light = new THREE.SpotLight(0xdc2f02, 5, 20, Math.PI * 0.3, 0.25, 1);
+    this.light.position.set(13, 25, 6);
     this.light.castShadow = true;
     this.light.shadow.far = 30;
 
@@ -67,5 +77,9 @@ export default class ContactMe {
 
     this.light.shadow.mapSize.width = 1024;
     this.light.shadow.mapSize.height = 1024;
+
+    const rectLight = new THREE.RectAreaLight(0xffffff, 50, 22, 8);
+    rectLight.position.set(20, 23, -2);
+    this.scene.add(rectLight);
   }
 }

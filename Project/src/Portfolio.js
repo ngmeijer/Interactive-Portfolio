@@ -45,6 +45,7 @@ export default class Portfolio {
     for (let i = 0; i < this.portfolioItems.length; i++) {
       if (this.portfolioItems[i].checkPlayerOnPlatform()) {
         this.canEnterItem = true;
+        this.playerInstance.currentItemTarget = this.portfolioItems[i];
       }
     }
   }
@@ -71,10 +72,6 @@ export default class Portfolio {
     );
 
     backgroundLeft.addToScene(this.scene, this.physicsWorld);
-
-    let portfolioIntro = this.resources.items.PortfolioIntro;
-    this.scene.add(portfolioIntro.scene);
-    portfolioIntro.scene.position.set(10, -0.1, -3);
   }
 
   createPortfolioItems() {
@@ -82,8 +79,8 @@ export default class Portfolio {
       "TDWE_Portfolio",
       this.resources.items.TDWE_Image,
       this.resources.items.ElMessiri,
-      new THREE.Vector2(4, 2.36),
-      new THREE.Vector3(3.9, 2.2),
+      new THREE.Vector2(5, 2.95),
+      new THREE.Vector3(4.875, 2.75),
       new THREE.Vector3(16, 0.8, -1),
       this.instructionTextColor,
       this.platformColor
@@ -93,9 +90,9 @@ export default class Portfolio {
       "NetherFights",
       this.resources.items.NetherFights_Image,
       this.resources.items.ElMessiri,
-      new THREE.Vector2(4, 2.36),
-      new THREE.Vector3(3.9, 2.2),
-      new THREE.Vector3(20.1, 0.8, -1),
+      new THREE.Vector2(5, 2.95),
+      new THREE.Vector3(4.875, 2.75),
+      new THREE.Vector3(21.5, 0.8, -1),
       this.instructionTextColor,
       this.platformColor
     );
@@ -104,9 +101,9 @@ export default class Portfolio {
       "TDWE",
       this.resources.items.NetherFights_Image,
       this.resources.items.ElMessiri,
-      new THREE.Vector2(4, 2.36),
-      new THREE.Vector3(3.9, 2.2),
-      new THREE.Vector3(24.2, 0.8, -1),
+      new THREE.Vector2(5, 2.95),
+      new THREE.Vector3(4.875, 2.75),
+      new THREE.Vector3(27, 0.8, -1),
       this.instructionTextColor,
       this.platformColor
     );
@@ -129,11 +126,11 @@ export default class Portfolio {
       0xDC2F02,
       15,
       20,
-      Math.PI * 0.3,
+      Math.PI * 0.8,
       0.25,
       1
     );
-    this.frontLight.position.set(20, 5, 6);
+    this.frontLight.position.set(25, 5, 6);
     this.frontLight.castShadow = true;
     this.frontLight.shadow.far = 30;
 

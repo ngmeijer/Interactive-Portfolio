@@ -1,5 +1,6 @@
-import * as THREE from 'three';
-import CANNON from 'cannon';
+import * as THREE from "three";
+import CANNON from "cannon";
+import CubeBody from "./CubeBody";
 
 export default class Cube extends THREE.Object3D {
   ID;
@@ -25,8 +26,7 @@ export default class Cube extends THREE.Object3D {
     pPhysicsMat = null,
     pFriction = 0.0,
     pRestitution = 0.0
-  ) 
-    {
+  ) {
     super();
     this.ID = pID;
     this.pos = pPosition;
@@ -97,15 +97,7 @@ export default class Cube extends THREE.Object3D {
   }
 
   createBody() {
-    const cubeShape = new CANNON.Box(
-      new CANNON.Vec3(this.size.x / 2, this.size.y / 2, this.size.z / 2)
-    );
-    this.body = new CANNON.Body({ mass: this.mass });
-
-    this.body.addShape(cubeShape);
-    this.body.position.x = this.pos.x;
-    this.body.position.y = this.pos.y;
-    this.body.position.z = this.pos.z;
+    this.body = new CubeBody(this.pos, this.size, this.mass);
   }
 
   createPhysicsMaterial() {

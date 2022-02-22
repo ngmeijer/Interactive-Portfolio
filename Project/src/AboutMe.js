@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { RectAreaLightHelper } from "three/examples/jsm/helpers/RectAreaLightHelper.js";
 
 import Cube from "./Cube.js";
 import Text from "./Text.js";
@@ -15,6 +16,7 @@ export default class AboutMe {
   resources;
   scene;
   physicsWorld;
+  aboutMeIntro;
 
   constructor(pScene, pPhysicsWorld, pResources) {
     this.scene = pScene;
@@ -30,6 +32,7 @@ export default class AboutMe {
     this.createAboutMeGeometry();
     this.createPhoto();
     this.createLanguageDetails();
+    this.createSoftwareDetails();
 
     if (this.door == null) this.canUpdate = false;
   }
@@ -37,53 +40,16 @@ export default class AboutMe {
   update() {
     if (this.canUpdate == false) return;
 
-    //this.checkPlayerDistance();
-
     for (let i = 0; i < this.moveableObjects.length; i++) {
       this.moveableObjects[i].update();
     }
   }
 
-  checkPlayerDistance() {
-    let distanceToDoor = this.playerInstance.currentPos.distanceTo(
-      this.door.pos
-    );
-
-    //Check if distance is too high.
-    if (distanceToDoor > this.doorMaxDistance) {
-      //Check if doors are closed. If so, skip this element in the loop.
-      if (!this.door.isOpen) return;
-
-      //Check if doors are open. If so, close door and move on to the next element.
-      if (this.door.isOpen) {
-        this.door.closeDoor();
-        return;
-      }
-    }
-
-    //No need to check for distance. The loop only gets this far if the distance is less than the maxDistance.
-    if (!this.door.isOpen) this.door.openDoor();
-  }
-
-  createDoor() {
-    this.door = new Door(
-      "AboutMeDoor",
-      new THREE.Vector3(1, 25, 20),
-      new THREE.Vector3(33.5, 4, 0),
-      0x9d0208,
-      true
-    );
-
-    this.scene.add(this.door.doorComponent.mesh);
-    this.physicsWorld.addBody(this.door.doorComponent.body);
-    this.moveableObjects.push(this.door);
-  }
-
   createAboutMeGeometry() {
     let ground = new Cube(
       "AboutMe_Ground",
-      new THREE.Vector3(50, 1, 50),
-      new THREE.Vector3(31, 6.5, -10),
+      new THREE.Vector3(50, 1, 2),
+      new THREE.Vector3(31, 8.5, 0.75),
       this.environmentColor,
       true,
       0
@@ -94,80 +60,114 @@ export default class AboutMe {
   createPhoto() {
     const photo = new Image(
       new Vector2(4, 6),
-      new Vector3(20, 10, -6),
+      new Vector3(16.5, 14, -6),
       this.resources.items.Photo
     );
     this.scene.add(photo.mesh);
   }
 
   createLanguageDetails() {
-    const cpp = new Image(
-      new Vector2(1, 1),
-      new Vector3(23, 10, -6),
-      this.resources.items.cpp
+    let languages = new Text(
+      "Languages:",
+      this.resources.items.ElMessiri,
+      0.6,
+      0xffffff,
+      new Vector3(19.8, 16.5, -6)
     );
-    this.scene.add(cpp.mesh);
+    this.scene.add(languages.mesh);
 
-    const csharp = new Image(
-      new Vector2(1, 1),
-      new Vector3(24, 10, -6),
-      this.resources.items.csharp
-    );
-    this.scene.add(csharp.mesh);
+    //1st column
+    let cpp = this.resources.items.cpp;
+    this.scene.add(cpp.scene);
+    cpp.scene.position.set(21, 12.2, -6);
+    cpp.scene.receiveShadow = true;
 
-    const css = new Image(
-      new Vector2(1, 1),
-      new Vector3(25, 10, -6),
-      this.resources.items.css
-    );
-    this.scene.add(css.mesh);
+    let csharp = this.resources.items.csharp;
+    this.scene.add(csharp.scene);
+    csharp.scene.position.set(21, 14.8, -6);
 
-    const html = new Image(
-      new Vector2(1, 1),
-      new Vector3(26, 10, -6),
-      this.resources.items.html
-    );
-    this.scene.add(html.mesh);
+    //2nd column
+    let css = this.resources.items.css;
+    this.scene.add(css.scene);
+    css.scene.position.set(23.6, 14.8, -6);
 
-    const javascript = new Image(
-      new Vector2(1, 1),
-      new Vector3(27, 10, -6),
-      this.resources.items.javascript
+    let html = this.resources.items.html;
+    this.scene.add(html.scene);
+    html.scene.position.set(23.6, 12.2, -6);
+
+    let javascript = this.resources.items.javascript;
+    this.scene.add(javascript.scene);
+    javascript.scene.position.set(21.1, 9.6, -6);
+  }
+
+  createSoftwareDetails() {
+    let software = new Text(
+      "Software:",
+      this.resources.items.ElMessiri,
+      0.6,
+      0xffffff,
+      new Vector3(26.8, 16.5, -6)
     );
-    this.scene.add(javascript.mesh);
+    this.scene.add(software.mesh);
+
+    //1st column
+    let unity = this.resources.items.unity;
+    this.scene.add(unity.scene);
+    unity.scene.position.set(28.3, 14.8, -6);
+    unity.scene.receiveShadow = true;
+
+    let unrealEngine = this.resources.items.unrealEngine;
+    this.scene.add(unrealEngine.scene);
+    unrealEngine.scene.position.set(28.3, 12.15, -6);
+    unrealEngine.scene.receiveShadow = true;
+
+    let gitkraken = this.resources.items.gitkraken;
+    this.scene.add(gitkraken.scene);
+    gitkraken.scene.position.set(28.3, 9.5, -6);
+
+    //2nd column
+    let blender = this.resources.items.blender;
+    this.scene.add(blender.scene);
+    blender.scene.position.set(31, 12, -6);
+
+    let visualStudio = this.resources.items.visualStudio;
+    this.scene.add(visualStudio.scene);
+    visualStudio.scene.position.set(31, 14.8, -6);
   }
 
   creatAboutMeText() {
-    let scene = this.scene;
-    let textCol = this.instructionTextColor;
-
     let textContent =
-      "Hi! My name is Nils Meijer, currently a student \nat Saxion Universities in Enschede, The Netherlands. \nI'm doing the engineering direction. I hope my website \nleaves a good impression of the work I do!";
+      "Hi! My name is Nils Meijer, currently a \nstudent at Saxion Universities in \nEnschede, The Netherlands. \nI'm doing the engineering direction. \nI hope my website leaves a good \nimpression of the work I do!";
     const informationText = new Text(
       textContent,
       this.resources.items.ElMessiri,
-      0.3,
-      textCol,
-      new THREE.Vector3(7.5, 12, -6.5)
+      0.25,
+      this.instructionTextColor,
+      new THREE.Vector3(8.5, 12.5, -2.5)
     );
-    scene.add(informationText.mesh);
+    informationText.mesh.rotation.y = Math.PI * 0.15;
+    this.scene.add(informationText.mesh);
   }
 
   createLighting() {
-    this.light = new THREE.SpotLight(0xffffff, 5, 20, Math.PI * 0.3, 0.25, 1);
-    this.light.position.set(15, 13, 6);
+    this.light = new THREE.SpotLight(0xdc2f02, 10, 20, Math.PI * 0.95, 0.25, 1);
+    this.light.position.set(20, 15, 6);
     this.light.castShadow = true;
     this.light.shadow.far = 30;
 
     const lightTarget = new THREE.Object3D();
-    lightTarget.position.set(12, 12, -5);
+    lightTarget.position.set(24, 15, -5);
 
-    this.scene.add(this.light);
+    //this.scene.add(this.light);
     this.scene.add(lightTarget);
     this.scene.add(this.light.target);
     this.light.target = lightTarget;
 
     this.light.shadow.mapSize.width = 1024;
     this.light.shadow.mapSize.height = 1024;
+
+    const rectLight = new THREE.RectAreaLight(0xffffff, 50, 10, 8);
+    rectLight.position.set(27, 14, -2);
+    this.scene.add(rectLight);
   }
 }

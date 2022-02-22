@@ -25,6 +25,8 @@ export default class Elevator extends THREE.Object3D {
   hintText;
   textOffset;
 
+  arrowsVertical;
+
   constructor(pPosition, pColour, pEventManager) {
     super();
     this.pos = pPosition;
@@ -82,17 +84,9 @@ export default class Elevator extends THREE.Object3D {
     this.fenceMesh.castShadow = true;
   }
 
-  createText(pFont, pScene) {
-    this.hintText = new Text(
-      "W to ascend\nS to descend",
-      pFont,
-      0.3,
-      0xff0000,
-      new THREE.Vector3(3.3, 1, -1)
-    );
-
-    this.textOffset = new Vector3(-1.3, 2, -2);
-    pScene.add(this.hintText.mesh);
+  createHints(pItems, pScene) {
+    this.arrowsVertical = pItems.ArrowsVertical;
+    pScene.add(this.arrowsVertical.scene);
   }
 
   update() {
@@ -116,10 +110,10 @@ export default class Elevator extends THREE.Object3D {
       this.platformBody.position.z
     );
 
-    this.hintText.mesh.position.set(
-      this.platformBody.position.x + this.textOffset.x,
-      this.platformBody.position.y + this.textOffset.y,
-      this.platformBody.position.z + this.textOffset.z
+    this.arrowsVertical.scene.position.set(
+      this.platformBody.position.x,
+      this.platformBody.position.y + 2.7,
+      this.platformBody.position.z - 1.5
     );
 
     this.light.position.set(
@@ -175,7 +169,7 @@ export default class Elevator extends THREE.Object3D {
         this.startAscendingAnimation();
       }
 
-      if (this.moveFloorDown && this.currentFloor > 0) {
+      if (this.moveFloorDown && this.currentFloor > -2) {
         this.eventManager.dispatchEvent({ type: "Event_disableMove" });
         this.startDescendingAnimation(this.eventManager);
       }
@@ -198,7 +192,7 @@ export default class Elevator extends THREE.Object3D {
 
     let elevatorTargetPos = new THREE.Vector3(
       this.platformBody.position.x,
-      this.platformBody.position.y + 8,
+      this.platformBody.position.y + 10,
       this.platformBody.position.z
     );
 
@@ -239,7 +233,7 @@ export default class Elevator extends THREE.Object3D {
 
     let targetPos = new THREE.Vector3(
       this.platformBody.position.x,
-      this.platformBody.position.y - 8,
+      this.platformBody.position.y - 10,
       this.platformBody.position.z
     );
 
