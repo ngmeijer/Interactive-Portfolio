@@ -74,8 +74,10 @@ function switchScene() {
       fadeImage.style.setProperty("opacity", currentOpacity.opacity);
     })
     .onComplete(function () {
+      activeScene.currentScene = false;
       if (activeScene == mainScene) activeScene = tdweScene;
       else activeScene = mainScene;
+      activeScene.currentScene = true;
       activePhysicsWorld = activeScene.physicsWorld;
       activeScene.playerInstance.resetPlayer();
     });
@@ -121,7 +123,7 @@ async function initialize() {
   tdweScene.platformColor = platformColor;
   tdweScene.initalizeScene();
 
-  activeScene = tdweScene;
+  activeScene = mainScene;
   activePhysicsWorld = activeScene.physicsWorld;
   activeScene.currentScene = true;
 

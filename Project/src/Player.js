@@ -76,7 +76,7 @@ export default class Player extends THREE.Object3D {
   update(delta) {
     this.delta = delta;
     this.velocity = this.playerBody.velocity;
-    //this.currentScale = this.playerMesh.scale;
+
     this.handleMovement();
 
     this.playerBody.quaternion.set(0, 0, 0, 1);

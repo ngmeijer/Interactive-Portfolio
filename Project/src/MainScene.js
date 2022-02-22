@@ -34,7 +34,7 @@ export default class MainScene extends THREE.Scene {
   boundLockPlayer;
   boundUnlockPlayer;
 
-  currentScene;
+  currentScene = true;
 
   constructor(pResources) {
     super();

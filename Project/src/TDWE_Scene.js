@@ -29,7 +29,7 @@ export default class TDWE_Scene extends THREE.Scene {
   platformColor;
   environmentColor;
 
-  currentScene;
+  currentScene = false;
 
   constructor(pResources) {
     super();

@@ -16,7 +16,6 @@ export default class AboutMe {
   resources;
   scene;
   physicsWorld;
-  aboutMeIntro;
 
   constructor(pScene, pPhysicsWorld, pResources) {
     this.scene = pScene;

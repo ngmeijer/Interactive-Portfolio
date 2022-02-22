@@ -59,85 +59,85 @@ export default [
     type: "model",
     path: "/Models/ArrowsVertical.glb",
   },
+
+  //LANGUAGES
   {
     name: "cpp",
     type: "model",
-    path: "/Models/cpp.glb",
+    path: "/Models/Languages/cpp.glb",
   },
   {
     name: "csharp",
     type: "model",
-    path: "/Models/csharp.glb",
+    path: "/Models/Languages/csharp.glb",
   },
   {
     name: "css",
     type: "model",
-    path: "/Models/css.glb",
+    path: "/Models/Languages/css.glb",
   },
   {
     name: "html",
     type: "model",
-    path: "/Models/html.glb",
+    path: "/Models/Languages/html.glb",
   },
   {
     name: "javascript",
     type: "model",
-    path: "/Models/javascript.glb",
+    path: "/Models/Languages/javascript.glb",
   },
+
+  //SOFTWARE
   {
     name: "unity",
     type: "model",
-    path: "/Models/unity.glb",
+    path: "/Models/Software/unity.glb",
   },
   {
     name: "unrealEngine",
     type: "model",
-    path: "/Models/unrealEngine.glb",
+    path: "/Models/Software/unrealEngine.glb",
   },
   {
     name: "gitkraken",
     type: "model",
-    path: "/Models/gitkraken.glb",
+    path: "/Models/Software/gitkraken.glb",
   },
   {
     name: "visualStudio",
     type: "model",
-    path: "/Models/visualStudio.glb",
+    path: "/Models/Software/visualStudio.glb",
   },
   {
     name: "blender",
     type: "model",
-    path: "/Models/blender.glb",
+    path: "/Models/Software/blender.glb",
   },
+
+  //SOCIAL MEDIA
   {
     name: "twitter",
     type: "model",
-    path: "/Models/twitter.glb",
+    path: "/Models/Social Media/twitter.glb",
   },
   {
     name: "linkedin",
     type: "model",
-    path: "/Models/linkedin.glb",
+    path: "/Models/Social Media/linkedin.glb",
   },
   {
     name: "git",
     type: "model",
-    path: "/Models/git.glb",
+    path: "/Models/Social Media/git.glb",
   },
   {
     name: "discord",
     type: "model",
-    path: "/Models/discord.glb",
+    path: "/Models/Social Media/discord.glb",
   },
   {
     name: "playstore",
     type: "model",
-    path: "/Models/playstore.glb",
+    path: "/Models/Social Media/playstore.glb",
   },
-  // {
-  //   name: "characterMesh",
-  //   type: "model",
-  //   path: "/Models/Character.glb",
-  // },
-
 ];

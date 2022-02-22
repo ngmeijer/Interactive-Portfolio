@@ -76,7 +76,7 @@ export default class Portfolio {
 
   createPortfolioItems() {
     const TWDE_Item = new PortfolioItem(
-      "TDWE_Portfolio",
+      "TDWE",
       this.resources.items.TDWE_Image,
       this.resources.items.ElMessiri,
       new THREE.Vector2(5, 2.95),
