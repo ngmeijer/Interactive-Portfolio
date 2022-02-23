@@ -140,4 +140,21 @@ export default [
     type: "model",
     path: "/Models/Social Media/playstore.glb",
   },
+
+  //VIDEO CONTROLS
+  {
+    name: "play",
+    type: "model",
+    path: "/Models/Video Controls/play.glb",
+  },
+  {
+    name: "pause",
+    type: "model",
+    path: "/Models/Video Controls/pause.glb",
+  },
+  {
+    name: "replay",
+    type: "model",
+    path: "/Models/Video Controls/replay.glb",
+  },
 ];

@@ -222,7 +222,6 @@ export default class Player extends THREE.Object3D {
   }
 
   handleJump() {
-    console.log("jumping")
     if (this.velocity.y > -0.2 && this.velocity.y < 0.2) {
       this.velocity.y = this.jumpForce;
       this.isJumping = true;
