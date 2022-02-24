@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import TWEEN from "@tweenjs/tween.js";
 import CANNON from "cannon";
 
 import CubeBody from "./CubeBody.js";
@@ -22,22 +23,33 @@ export default class TDWE_Scene extends THREE.Scene {
   textureLoader;
 
   playerInstance;
-  playerPosition = new THREE.Vector3(0, 0.5, 1);
+  playerPosition = new THREE.Vector3(10, 0.5, 1);
 
   instructionTextColor;
   platformColor;
   environmentColor;
 
   videoTexture;
-  trailer;
+  videoContainer;
+  videoSource;
+  videoIsPlaying;
   playButton;
   pauseButton;
   replayButton;
+  nextButton;
+  previousButton;
+  currentVideoIndex = 0;
+  maxVideoIndex = 2;
+  movieMaterial;
+  videoSources = ["TestVideo.mp4", "Test2Video.mp4", "Test3Video.mp4"];
   rayCaster;
   rayDirection;
   mousePosition = new Vector2();
   currentIntersect;
   currentScene = false;
+
+  tweensOnPause = [];
+  tweensOnPlay = [];
 
   constructor(pResources) {
     super();
@@ -212,25 +224,35 @@ export default class TDWE_Scene extends THREE.Scene {
   }
 
   createVideo() {
-    this.trailer = document.getElementById("video");
-    this.videoTexture = new THREE.VideoTexture(this.trailer);
+    this.videoContainer = document.getElementById("videoContainer");
+    this.videoSource = document.getElementById("video");
+    this.videoSource.setAttribute("src", "Videos/" + this.videoSources[1]);
 
+    this.videoContainer.load();
+    this.videoTexture = new THREE.VideoTexture(this.videoContainer);
     this.videoTexture.minFilter = THREE.LinearFilter;
     this.videoTexture.magFilter = THREE.LinearFilter;
 
-    var movieMaterial = new THREE.MeshBasicMaterial({
+    this.movieMaterial = new THREE.MeshBasicMaterial({
       map: this.videoTexture,
       side: THREE.FrontSide,
       toneMapped: false,
     });
 
     let movieGeometry = new THREE.PlaneGeometry(8, 4.5);
-    let movieCubeScreen = new THREE.Mesh(movieGeometry, movieMaterial);
+    let movieCubeScreen = new THREE.Mesh(movieGeometry, this.movieMaterial);
     this.add(movieCubeScreen);
     movieCubeScreen.position.set(16.5, 2.2, -3);
-    this.trailer.crossOrigin = "anonymous";
-    this.trailer.play();
-    this.trailer.pause();
+    this.videoContainer.crossOrigin = "anonymous";
+    var playPromise = this.videoContainer.play();
+
+    if (playPromise !== undefined) {
+      playPromise.then((_) => {
+        this.videoContainer.pause();
+      });
+    }
+
+    this.videoIsPlaying = false;
   }
 
   createVideoControls() {
@@ -239,27 +261,52 @@ export default class TDWE_Scene extends THREE.Scene {
       this.mousePosition.y = -(event.clientY / window.innerHeight) * 2 + 1;
     });
 
+    this.rayCaster = new THREE.Raycaster();
+
+    this.createVideoButtons();
+    this.createVideoTweens();
+
     window.addEventListener("click", () => {
       if (this.currentIntersect) {
         console.log(this.currentIntersect.object.name);
         switch (this.currentIntersect.object.name) {
           case "PlayButton":
-            this.trailer.play();
+            if (this.videoIsPlaying) break;
+            this.videoContainer.play();
+            this.tweensOnPlay[0].start();
+            this.tweensOnPlay[1].start();
+            this.videoIsPlaying = true;
             break;
 
           case "PauseButton":
-            this.trailer.pause();
+            if (!this.videoIsPlaying) break;
+            this.videoContainer.pause();
+            this.tweensOnPause[0].start();
+            this.tweensOnPause[1].start();
+            this.videoIsPlaying = false;
             break;
 
           case "ReplayButton":
-            console.log("click on replayButton");
+            // this.trailer.reset();
+            this.videoContainer.play();
+            this.videoContainer.pause();
+            break;
+
+          case "NextButton":
+            this.currentVideoIndex++;
+            this.switchVideo();
+            break;
+
+          case "PreviousButton":
+            this.currentVideoIndex--;
+            this.switchVideo();
             break;
         }
       }
     });
+  }
 
-    this.rayCaster = new THREE.Raycaster();
-
+  createVideoButtons() {
     this.playButton = this.resources.items.play;
     this.add(this.playButton.scene);
     this.playButton.scene.position.set(11.5, 3.4, -3);
@@ -271,6 +318,107 @@ export default class TDWE_Scene extends THREE.Scene {
     this.replayButton = this.resources.items.replay;
     this.add(this.replayButton.scene);
     this.replayButton.scene.position.set(11.5, 1, -3);
+
+    this.nextButton = this.resources.items.next;
+    this.add(this.nextButton.scene);
+    this.nextButton.scene.position.set(17, -0.6, -3);
+
+    this.previousButton = this.resources.items.previous;
+    this.add(this.previousButton.scene);
+    this.previousButton.scene.position.set(16, -0.6, -3);
+  }
+
+  createVideoTweens() {
+    let pausedText = new Text(
+      "Paused",
+      this.resources.items.ElMessiri,
+      0.2,
+      0xffffff,
+      new Vector3(12.6, -0.5, -3.1)
+    );
+    this.add(pausedText.mesh);
+
+    let playingText = new Text(
+      "Playing",
+      this.resources.items.ElMessiri,
+      0.2,
+      0xffffff,
+      new Vector3(12.6, 0.5, -3.1)
+    );
+    this.add(playingText.mesh);
+
+    this.tweensOnPause.push(
+      new TWEEN.Tween(pausedText.mesh.position).to(
+        {
+          x: pausedText.mesh.position.x,
+          y: pausedText.mesh.position.y - 0.05,
+          z: pausedText.mesh.position.z,
+        },
+        500
+      )
+    );
+
+    this.tweensOnPause.push(
+      new TWEEN.Tween(playingText.mesh.position).to(
+        {
+          x: playingText.mesh.position.x,
+          y: playingText.mesh.position.y + 1,
+          z: playingText.mesh.position.z,
+        },
+        500
+      )
+    );
+
+    this.tweensOnPlay.push(
+      new TWEEN.Tween(playingText.mesh.position).to(
+        {
+          x: playingText.mesh.position.x,
+          y: playingText.mesh.position.y - 1,
+          z: playingText.mesh.position.z,
+        },
+        500,
+        500
+      )
+    );
+
+    this.tweensOnPlay.push(
+      new TWEEN.Tween(pausedText.mesh.position).to(
+        {
+          x: pausedText.mesh.position.x,
+          y: pausedText.mesh.position.y + 1,
+          z: pausedText.mesh.position.z,
+        },
+        500,
+        500
+      )
+    );
+  }
+
+  switchVideo() {
+    if (this.currentVideoIndex < 0) {
+      this.currentVideoIndex = this.maxVideoIndex;
+    }
+
+    if (this.currentVideoIndex > this.maxVideoIndex) {
+      this.currentVideoIndex = 0;
+    }
+
+    this.videoSource.setAttribute("src", "Videos/" + this.videoSources[this.currentVideoIndex]);
+    this.videoContainer.load();
+
+    this.videoTexture.video = this.videoContainer;
+    this.movieMaterial.map = this.videoTexture;
+
+    var playPromise = this.videoContainer.play();
+
+    if (playPromise !== undefined) {
+      playPromise.then((_) => {
+        this.videoContainer.pause();
+      });
+    }
+
+    this.videoIsPlaying = false;
+
   }
 
   checkVideoControlsMouseOver() {
@@ -280,20 +428,14 @@ export default class TDWE_Scene extends THREE.Scene {
       this.playButton.scene,
       this.pauseButton.scene,
       this.replayButton.scene,
+      this.nextButton.scene,
+      this.previousButton.scene,
     ];
     const intersects = this.rayCaster.intersectObjects(objectsToTest);
 
     if (intersects.length) {
-      if (!this.currentIntersect) {
-        console.log("mouse enter");
-      }
-
       this.currentIntersect = intersects[0];
     } else {
-      if (this.currentIntersect) {
-        console.log("mouse leave");
-      }
-
       this.currentIntersect = null;
     }
 

@@ -157,4 +157,14 @@ export default [
     type: "model",
     path: "/Models/Video Controls/replay.glb",
   },
+  {
+    name: "next",
+    type: "model",
+    path: "/Models/Video Controls/next.glb",
+  },
+  {
+    name: "previous",
+    type: "model",
+    path: "/Models/Video Controls/previous.glb",
+  },
 ];
