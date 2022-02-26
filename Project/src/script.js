@@ -116,6 +116,7 @@ async function initialize() {
   mainScene.environmentColor = environmentColor;
   mainScene.instructionTextColor = instructionTextColor;
   mainScene.platformColor = platformColor;
+  mainScene.camera = camera;
   mainScene.initalizeScene();
 
   tdweScene.environmentColor = environmentColor;
@@ -124,7 +125,7 @@ async function initialize() {
   tdweScene.camera = camera;
   tdweScene.initalizeScene();
 
-  activeScene = tdweScene;
+  activeScene = mainScene;
   activePhysicsWorld = activeScene.physicsWorld;
   activeScene.currentScene = true;
 

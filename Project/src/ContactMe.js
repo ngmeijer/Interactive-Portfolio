@@ -8,7 +8,15 @@ export default class ContactMe {
   physicsWorld;
   textureLoader;
   fontLoader;
+  camera;
   light;
+  rayCaster;
+  mousePosition = new THREE.Vector2();
+  twitter;
+  linkedin;
+  git;
+  discord;
+  playstore;
 
   constructor(pScene, pPhysicsWorld, pResources) {
     this.scene = pScene;
@@ -22,9 +30,12 @@ export default class ContactMe {
     this.createContactMeGeometry();
     this.createLighting();
     this.createSocialMedia();
+    this.createSocialMediaControls();
   }
 
-  update() {}
+  update() {
+    this.checkSocialMediaMouseOver();
+  }
 
   createContactMeGeometry() {
     let ground = new Cube(
@@ -40,25 +51,87 @@ export default class ContactMe {
   }
 
   createSocialMedia() {
-    let twitter = this.resources.items.twitter;
-    this.scene.add(twitter.scene);
-    twitter.scene.position.set(17, 22, -6);
+    this.twitter = this.resources.items.twitter;
+    this.scene.add(this.twitter.scene);
+    this.twitter.scene.position.set(17, 22, -6);
 
-    let linkedin = this.resources.items.linkedin;
-    this.scene.add(linkedin.scene);
-    linkedin.scene.position.set(20, 22, -6);
+    this.linkedin = this.resources.items.linkedin;
+    this.scene.add(this.linkedin.scene);
+    this.linkedin.scene.position.set(20, 22, -6);
 
-    let git = this.resources.items.git;
-    this.scene.add(git.scene);
-    git.scene.position.set(23, 22, -6);
+    this.git = this.resources.items.git;
+    this.scene.add(this.git.scene);
+    this.git.scene.position.set(23, 22, -6);
 
-    let discord = this.resources.items.discord;
-    this.scene.add(discord.scene);
-    discord.scene.position.set(26, 22, -6);
+    this.discord = this.resources.items.discord;
+    this.scene.add(this.discord.scene);
+    this.discord.scene.position.set(26, 22, -6);
 
-    let playstore = this.resources.items.playstore;
-    this.scene.add(playstore.scene);
-    playstore.scene.position.set(29, 22, -6);
+    this.playstore = this.resources.items.playstore;
+    this.scene.add(this.playstore.scene);
+    this.playstore.scene.position.set(29, 22, -6);
+  }
+
+  checkSocialMediaMouseOver() {
+    if(this.mousePosition == null) return;
+
+    this.rayCaster.setFromCamera(this.mousePosition, this.camera);
+
+    const objectsToTest = [
+      this.twitter.scene,
+      this.linkedin.scene,
+      this.git.scene,
+      this.discord.scene,
+      this.playstore.scene,
+    ];
+    const intersects = this.rayCaster.intersectObjects(objectsToTest);
+
+    if (intersects.length) {
+      this.currentIntersect = intersects[0];
+    } else {
+      this.currentIntersect = null;
+    }
+
+    for (const currentObject of objectsToTest) {
+      if (!intersects.find((intersect) => intersect.object === currentObject)) {
+        currentObject.children[0].material.color.set("#ffff00");
+      }
+    }
+    for (const intersect of intersects) {
+      intersect.object.material.color.set("#ff0000");
+    }
+  }
+
+  createSocialMediaControls() {
+    window.addEventListener("mousemove", (event) => {
+      this.mousePosition.x = (event.clientX / window.innerWidth) * 2 - 1;
+      this.mousePosition.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    });
+
+    console.log(this.mousePosition);
+    this.rayCaster = new THREE.Raycaster();
+
+    window.addEventListener("click", () => {
+      if (this.currentIntersect) {
+        console.log(this.currentIntersect.object.name);
+        switch (this.currentIntersect.object.name) {
+          case "TwitterButton":
+            break;
+
+          case "LinkedinButton":
+            break;
+
+          case "GitButton":
+            break;
+
+          case "DiscordButton":
+            break;
+
+          case "PlaystoreButton":
+            break;
+        }
+      }
+    });
   }
 
   createLighting() {

@@ -21,9 +21,10 @@ export default class MainScene extends THREE.Scene {
   fontLoader;
   textureLoader;
   resources;
+  camera;
 
   playerInstance;
-  playerPosition = new THREE.Vector3(16, 2, 1);
+  playerPosition = new THREE.Vector3(10, 25, 1);
 
   instructionTextColor;
   platformColor;
@@ -70,6 +71,7 @@ export default class MainScene extends THREE.Scene {
       this.physicsWorld,
       this.resources
     );
+    this.contactMeArea.camera = this.camera;
 
     this.websiteComponents.push(this.homeArea);
     this.websiteComponents.push(this.portfolioArea);

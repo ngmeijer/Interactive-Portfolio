@@ -23,6 +23,7 @@ export default class Home {
   background;
   elevator;
   homeIntro;
+  ground;
 
   constructor(pScene, pPhysicsWorld, pResources, pEventManager) {
     this.scene = pScene;
@@ -43,12 +44,12 @@ export default class Home {
   }
 
   createStartGeometry() {
-    let groundBody = new CubeBody(new THREE.Vector3(-1.5, -3,1), new THREE.Vector3(9,5,1));
+    const groundBody = new CubeBody(new THREE.Vector3(-1.5, -3,1), new THREE.Vector3(9,5,1));
     this.physicsWorld.addBody(groundBody);
 
-    let groundMesh = this.resources.items.Ground;
-    this.scene.add(groundMesh.scene);
-    groundMesh.scene.position.set(-1.5, -1.5, 0.5);
+    this.ground = this.resources.items.Ground;
+    this.scene.add(this.ground.scene);
+    this.ground.scene.position.set();
 
     this.homeIntro = this.resources.items.HomeIntro;
     this.scene.add(this.homeIntro.scene);

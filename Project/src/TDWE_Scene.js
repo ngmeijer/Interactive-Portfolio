@@ -23,7 +23,7 @@ export default class TDWE_Scene extends THREE.Scene {
   textureLoader;
 
   playerInstance;
-  playerPosition = new THREE.Vector3(10, 0.5, 1);
+  playerPosition = new THREE.Vector3(0, 0.5, 1);
 
   instructionTextColor;
   platformColor;
@@ -124,9 +124,10 @@ export default class TDWE_Scene extends THREE.Scene {
     );
     this.physicsWorld.addBody(groundBody);
 
-    let groundMesh = this.resources.items.Ground;
+    const groundMesh = this.resources.items.Ground;
     this.add(groundMesh.scene);
     groundMesh.scene.position.set(-1.5, -1.5, 0.5);
+    groundMesh.scene.receiveShadow = true;
   }
 
   createStartText() {
@@ -226,9 +227,8 @@ export default class TDWE_Scene extends THREE.Scene {
   createVideo() {
     this.videoContainer = document.getElementById("videoContainer");
     this.videoSource = document.getElementById("video");
-    this.videoSource.setAttribute("src", "Videos/" + this.videoSources[1]);
+    this.videoSource.setAttribute("src", "Videos/" + this.videoSources[0]);
 
-    this.videoContainer.load();
     this.videoTexture = new THREE.VideoTexture(this.videoContainer);
     this.videoTexture.minFilter = THREE.LinearFilter;
     this.videoTexture.magFilter = THREE.LinearFilter;
@@ -244,10 +244,12 @@ export default class TDWE_Scene extends THREE.Scene {
     this.add(movieCubeScreen);
     movieCubeScreen.position.set(16.5, 2.2, -3);
     this.videoContainer.crossOrigin = "anonymous";
+    this.videoContainer.load();
     var playPromise = this.videoContainer.play();
 
     if (playPromise !== undefined) {
       playPromise.then((_) => {
+        console.log(playPromise);
         this.videoContainer.pause();
       });
     }
@@ -271,6 +273,7 @@ export default class TDWE_Scene extends THREE.Scene {
         console.log(this.currentIntersect.object.name);
         switch (this.currentIntersect.object.name) {
           case "PlayButton":
+            console.log(this.videoIsPlaying)
             if (this.videoIsPlaying) break;
             this.videoContainer.play();
             this.tweensOnPlay[0].start();
@@ -402,9 +405,14 @@ export default class TDWE_Scene extends THREE.Scene {
     if (this.currentVideoIndex > this.maxVideoIndex) {
       this.currentVideoIndex = 0;
     }
-
-    this.videoSource.setAttribute("src", "Videos/" + this.videoSources[this.currentVideoIndex]);
+    
+    this.videoSource.setAttribute(
+      "src",
+      "Videos/" + this.videoSources[this.currentVideoIndex]
+    );
     this.videoContainer.load();
+
+    console.log(this.videoContainer);
 
     this.videoTexture.video = this.videoContainer;
     this.movieMaterial.map = this.videoTexture;
@@ -416,9 +424,7 @@ export default class TDWE_Scene extends THREE.Scene {
         this.videoContainer.pause();
       });
     }
-
     this.videoIsPlaying = false;
-
   }
 
   checkVideoControlsMouseOver() {
