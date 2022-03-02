@@ -27,6 +27,8 @@ export default class PortfolioItem extends THREE.Object3D {
   playerInstance;
   playerInRange;
 
+  background;
+
   verticalWallWidth;
   verticalWallHeight;
 
@@ -68,7 +70,7 @@ export default class PortfolioItem extends THREE.Object3D {
 
     const targetShowTextPosition = new THREE.Vector3(
       this.hintText.mesh.position.x,
-      this.hintText.mesh.position.y + 1.5,
+      this.hintText.mesh.position.y + 1.7,
       this.hintText.mesh.position.z + 1
     );
     const targetHideTextPosition = new THREE.Vector3(
@@ -101,62 +103,18 @@ export default class PortfolioItem extends THREE.Object3D {
   }
 
   createFrame() {
-    //Vertical walls = left & right;
-    //Horizontal walls = top & bottom;
-    this.verticalWallWidth = this.outerSize.x - this.innerSize.x;
-    this.verticalWallHeight = this.outerSize.y;
-
-    this.horizontalWallHeight = this.outerSize.y - this.innerSize.y;
-
-    const cubeGeoLeft = new THREE.BoxGeometry(
-      this.verticalWallWidth,
-      this.verticalWallHeight,
-      0.2
+    this.background = new Cube(
+      this.ID + "_Platform",
+      new THREE.Vector3(5.2, 3, 0.1),
+      new THREE.Vector3(
+        this.itemPosition.x,
+        this.itemPosition.y - 1.5,
+        this.itemPosition.z - 0.55
+      ),
+      0x000000,
+      true,
+      0
     );
-    const cubeGeoRight = cubeGeoLeft;
-
-    const cubeGeoTop = new THREE.BoxGeometry(
-      this.outerSize.x,
-      this.horizontalWallHeight,
-      0.2
-    );
-
-    const material = new THREE.MeshPhongMaterial({
-      polygonOffset: true,
-      polygonOffsetFactor: -1.0,
-      polygonOffsetUnits: -4.0,
-    });
-    material.color.setHex(this.platformColour);
-
-    this.meshLeft = new THREE.Mesh(cubeGeoLeft, material);
-    this.meshRight = new THREE.Mesh(cubeGeoRight, material);
-    this.meshTop = new THREE.Mesh(cubeGeoTop, material);
-
-    this.meshLeft.position.x =
-      this.itemPosition.x - this.outerSize.x / 2 + this.verticalWallWidth / 2;
-    this.meshLeft.position.y = this.itemPosition.y;
-    this.meshLeft.position.z = this.itemPosition.z + this.imageOffset.z;
-
-    this.meshRight.position.x =
-      this.itemPosition.x + this.outerSize.x / 2 + this.verticalWallWidth / 2;
-    this.meshRight.position.y = this.itemPosition.y;
-    this.meshRight.position.z = this.itemPosition.z + this.imageOffset.z;
-
-    this.meshTop.position.x = this.itemPosition.x;
-    this.meshTop.position.y =
-      this.itemPosition.y +
-      this.outerSize.y / 2 -
-      this.horizontalWallHeight / 2;
-    this.meshTop.position.z = this.itemPosition.z + this.imageOffset.z;
-
-    this.meshLeft.castShadow = false;
-    this.meshLeft.receiveShadow = true;
-
-    this.meshRight.castShadow = false;
-    this.meshRight.receiveShadow = true;
-
-    this.meshTop.castShadow = false;
-    this.meshTop.receiveShadow = true;
   }
 
   createImage() {
@@ -189,7 +147,7 @@ export default class PortfolioItem extends THREE.Object3D {
 
     this.bridge = new Cube(
       this.ID + "_Bridge",
-      new THREE.Vector3(1,5,6),
+      new THREE.Vector3(1, 5, 6),
       new THREE.Vector3(
         this.itemPosition.x,
         this.itemPosition.y - 6.37,
@@ -244,9 +202,7 @@ export default class PortfolioItem extends THREE.Object3D {
   }
 
   addToScene(pScene, pPhysicsWorld) {
-    pScene.add(this.meshLeft);
-    pScene.add(this.meshRight);
-    pScene.add(this.meshTop);
+    pScene.add(this.background.mesh);
     pScene.add(this.bridge.mesh);
     pPhysicsWorld.add(this.bridge.body);
 

@@ -46,7 +46,12 @@ export default class Resources extends EventEmitter {
       }
       if (source.type === "model") {
         this.loaders.modelLoader.load(source.path, (file) => {
-          
+          file.scene.traverse(function (child) {
+            if(child.isMesh){
+              child.receiveShadow = true;
+              child.material.metalness = 0;
+            }
+          });
           this.sourceLoaded(source, file.scene);
         });
       }

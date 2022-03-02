@@ -50,19 +50,19 @@ export default class Home {
     );
     this.physicsWorld.addBody(groundBody);
 
-    this.ground = this.resources.items.HomeGround;
+    this.ground = this.resources.items.HomeGround.clone();;
     this.scene.add(this.ground);
     this.ground.position.set(-2, -1.25, 1);
 
-    this.homeIntro = this.resources.items.HomeIntro;
+    this.homeIntro = this.resources.items.HomeIntro.clone();;
     this.scene.add(this.homeIntro);
     this.homeIntro.position.set(-8, -0.1, -3);
 
-    const arrowsHorizontal = this.resources.items.ArrowsHorizontal;
+    const arrowsHorizontal = this.resources.items.ArrowsHorizontal.clone();;
     this.scene.add(arrowsHorizontal);
     arrowsHorizontal.position.set(-6.5, 1, -2.5);
 
-    this.background = this.resources.items.CubeBackground;
+    this.background = this.resources.items.CubeBackground.clone();;
     this.scene.add(this.background);
     this.background.position.set(-20, -10, -9);
     this.elevator = new Elevator(

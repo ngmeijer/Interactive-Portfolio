@@ -1,8 +1,9 @@
 import * as THREE from "three";
-import CANNON from "cannon";
-import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
+import { Vector3 } from "three";
+import { RectAreaLightHelper } from "three/examples/jsm/helpers/RectAreaLightHelper.js";
 
 import Cube from "./Cube.js";
+import CubeBody from "./CubeBody.js";
 import PortfolioItem from "./PortfolioItem.js";
 
 export default class Portfolio {
@@ -53,31 +54,15 @@ export default class Portfolio {
   }
 
   createPortfolioGeometry() {
-    let ground = new Cube(
-      "Portfolio_Ground",
-      new THREE.Vector3(50, 1, 1),
-      new THREE.Vector3(31, -1.5, 1),
-      this.environmentColor,
-      true,
-      0
+    let groundBody = new CubeBody(
+      new Vector3(31, -1, 1),
+      new Vector3(50, 1, 1)
     );
+    this.physicsWorld.addBody(groundBody);
 
-    ground.addToScene(this.scene, this.physicsWorld);
-
-    let testGround = this.resources.items.ItemGround;
-    this.scene.add(testGround);
-    testGround.position.set(31, -1.5, 1);
-
-    let backgroundLeft = new Cube(
-      "Portfolio_BackgroundLeft",
-      new THREE.Vector3(1, 20, 30),
-      new THREE.Vector3(6.5, -0.5, -16),
-      this.environmentColor,
-      true,
-      0
-    );
-
-    backgroundLeft.addToScene(this.scene, this.physicsWorld);
+    let ground = this.resources.items.ItemGround.clone();
+    this.scene.add(ground);
+    ground.position.set(11.5, -1.25, 1);
   }
 
   createPortfolioItems() {
@@ -87,7 +72,7 @@ export default class Portfolio {
       this.resources.items.ElMessiri,
       new THREE.Vector2(5, 2.95),
       new THREE.Vector3(4.875, 2.75),
-      new THREE.Vector3(16, 0.8, -1),
+      new THREE.Vector3(16, 0.75, -1),
       this.instructionTextColor,
       this.platformColor
     );
@@ -98,7 +83,7 @@ export default class Portfolio {
       this.resources.items.ElMessiri,
       new THREE.Vector2(5, 2.95),
       new THREE.Vector3(4.875, 2.75),
-      new THREE.Vector3(21.5, 0.8, -1),
+      new THREE.Vector3(21.5, 0.75, -1),
       this.instructionTextColor,
       this.platformColor
     );
@@ -109,7 +94,7 @@ export default class Portfolio {
       this.resources.items.ElMessiri,
       new THREE.Vector2(5, 2.95),
       new THREE.Vector3(4.875, 2.75),
-      new THREE.Vector3(27, 0.8, -1),
+      new THREE.Vector3(27, 0.75, -1),
       this.instructionTextColor,
       this.platformColor
     );
@@ -170,5 +155,12 @@ export default class Portfolio {
 
     this.bottomLight.shadow.mapSize.width = 1024;
     this.bottomLight.shadow.mapSize.height = 1024;
+
+    const rectLight = new THREE.RectAreaLight(0xffffff, 2, 22, 8);
+    rectLight.position.set(15, 3, 2);
+    //this.scene.add(rectLight);
+
+    const helper = new RectAreaLightHelper(rectLight);
+    rectLight.add(helper);
   }
 }

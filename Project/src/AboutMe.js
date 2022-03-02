@@ -80,25 +80,25 @@ export default class AboutMe {
     this.scene.add(languages.mesh);
 
     //1st column
-    let cpp = this.resources.items.cpp;
+    let cpp = this.resources.items.cpp.clone();;
     this.scene.add(cpp);
     cpp.position.set(21, 15.2, -6);
     cpp.receiveShadow = true;
 
-    let csharp = this.resources.items.csharp;
+    let csharp = this.resources.items.csharp.clone();;
     this.scene.add(csharp);
     csharp.position.set(21, 17.8, -6);
 
     //2nd column
-    let css = this.resources.items.css;
+    let css = this.resources.items.css.clone();;
     this.scene.add(css);
     css.position.set(23.6, 17.8, -6);
 
-    let html = this.resources.items.html;
+    let html = this.resources.items.html.clone();;
     this.scene.add(html);
     html.position.set(23.6, 15.2, -6);
 
-    let javascript = this.resources.items.javascript;
+    let javascript = this.resources.items.javascript.clone();;
     this.scene.add(javascript);
     javascript.position.set(21.1, 12.6, -6);
   }
@@ -114,26 +114,26 @@ export default class AboutMe {
     this.scene.add(software.mesh);
 
     //1st column
-    let unity = this.resources.items.unity;
+    let unity = this.resources.items.unity.clone();;
     this.scene.add(unity);
     unity.position.set(28.3, 17.8, -6);
     unity.receiveShadow = true;
 
-    let unrealEngine = this.resources.items.unrealEngine;
+    let unrealEngine = this.resources.items.unrealEngine.clone();;
     this.scene.add(unrealEngine);
     unrealEngine.position.set(28.3, 15.15, -6);
     unrealEngine.receiveShadow = true;
 
-    let gitkraken = this.resources.items.gitkraken;
+    let gitkraken = this.resources.items.gitkraken.clone();;
     this.scene.add(gitkraken);
     gitkraken.position.set(28.3, 12.5, -6);
 
     //2nd column
-    let blender = this.resources.items.blender;
+    let blender = this.resources.items.blender.clone();;
     this.scene.add(blender);
     blender.position.set(31, 15, -6);
 
-    let visualStudio = this.resources.items.visualStudio;
+    let visualStudio = this.resources.items.visualStudio.clone();;
     this.scene.add(visualStudio);
     visualStudio.position.set(31, 17.8, -6);
   }

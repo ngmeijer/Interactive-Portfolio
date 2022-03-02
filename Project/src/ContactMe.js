@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
-import Cube from "./Cube.js";
+import TWEEN from "@tweenjs/tween.js";
+import CubeBody from "./CubeBody.js";
 import Text from "./Text.js";
 
 export default class ContactMe {
@@ -17,6 +17,12 @@ export default class ContactMe {
   git;
   discord;
   playstore;
+  usernameText;
+
+  currentlyHoveringDiscord;
+
+  tweenUsernameDown;
+  tweenUsernameUp;
 
   constructor(pScene, pPhysicsWorld, pResources, pCamera) {
     this.scene = pScene;
@@ -32,6 +38,7 @@ export default class ContactMe {
     this.createLighting();
     this.createSocialMedia();
     this.createSocialMediaControls();
+    this.createDiscordTween();
   }
 
   update() {
@@ -39,24 +46,23 @@ export default class ContactMe {
   }
 
   createContactMeGeometry() {
-    let ground = new Cube(
-      "ContactMe_Ground",
-      new THREE.Vector3(50, 3, 2),
-      new THREE.Vector3(31, 20.5, 0.75),
-      this.environmentColor,
-      true,
-      0
+    let groundBody = new CubeBody(
+      new THREE.Vector3(31, 23, 1),
+      new THREE.Vector3(50, 1, 1)
     );
+    this.physicsWorld.addBody(groundBody);
 
-    ground.addToScene(this.scene, this.physicsWorld);
+    let ground = this.resources.items.ItemGround.clone();
+    this.scene.add(ground);
+    ground.position.set(11.5, 22.75, 1);
   }
 
   createSocialMedia() {
-    this.twitter = this.resources.items.twitter;
+    this.twitter = this.resources.items.twitter.clone();
     this.scene.add(this.twitter);
     this.twitter.position.set(17, 26, -6);
 
-    this.linkedin = this.resources.items.linkedin;
+    this.linkedin = this.resources.items.linkedin.clone();
     this.scene.add(this.linkedin);
     this.linkedin.position.set(20, 26, -6);
 
@@ -64,11 +70,11 @@ export default class ContactMe {
     this.scene.add(this.git);
     this.git.position.set(23, 26, -6);
 
-    this.discord = this.resources.items.discord;
+    this.discord = this.resources.items.discord.clone();
     this.scene.add(this.discord);
     this.discord.position.set(26, 26, -6);
 
-    this.playstore = this.resources.items.playstore;
+    this.playstore = this.resources.items.playstore.clone();
     this.scene.add(this.playstore);
     this.playstore.position.set(29, 26, -6);
   }
@@ -101,6 +107,56 @@ export default class ContactMe {
     }
   }
 
+  createDiscordTween() {
+    this.usernameText = new Text(
+      "ActOfRagex#4817",
+      this.resources.items.ElMessiri,
+      0.23,
+      0xffffff,
+      new THREE.Vector3(24.65, 27, -6)
+    );
+
+    this.usernameText.mesh.castShadow = false;
+    this.scene.add(this.usernameText.mesh);
+
+    const targetShowTextPosition = new THREE.Vector3(
+      this.usernameText.mesh.position.x,
+      this.usernameText.mesh.position.y + 0.5,
+      this.usernameText.mesh.position.z
+    );
+    const targetHideTextPosition = new THREE.Vector3(
+      this.usernameText.mesh.position.x,
+      this.usernameText.mesh.position.y,
+      this.usernameText.mesh.position.z
+    );
+
+    this.tweenUsernameUp = new TWEEN.Tween(this.usernameText.mesh.position)
+      .to(
+        {
+          x: targetShowTextPosition.x,
+          y: targetShowTextPosition.y,
+          z: targetShowTextPosition.z,
+        },
+        150
+      )
+      .easing(TWEEN.Easing.Linear.None)
+      .onComplete();
+
+    this.cameratweenUsernameDown = new TWEEN.Tween(
+      this.usernameText.mesh.position
+    )
+      .to(
+        {
+          x: targetHideTextPosition.x,
+          y: targetHideTextPosition.y,
+          z: targetHideTextPosition.z,
+        },
+        2000
+      )
+      .easing(TWEEN.Easing.Linear.None)
+      .onComplete();
+  }
+
   createSocialMediaControls() {
     window.addEventListener("mousemove", (event) => {
       this.mousePosition.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -124,6 +180,9 @@ export default class ContactMe {
             break;
 
           case "discord":
+            if(!this.currentlyHoveringDiscord){
+              this.tweenUsernameUp.start();
+            }
             break;
 
           case "playstore":
@@ -153,7 +212,7 @@ export default class ContactMe {
     this.light.shadow.mapSize.width = 1024;
     this.light.shadow.mapSize.height = 1024;
 
-    const rectLight = new THREE.RectAreaLight(0xffffff, 50, 22, 8);
+    const rectLight = new THREE.RectAreaLight(0xffffff, 10, 22, 8);
     rectLight.position.set(20, 25, -2);
     this.scene.add(rectLight);
   }

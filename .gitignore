@@ -2,3 +2,5 @@ node_modules/
 Blender files/
 *.blend
 *.blend[1-9]
+
+Project/dist

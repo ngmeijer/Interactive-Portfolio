@@ -122,7 +122,7 @@ export default class NetherFights_Scene extends THREE.Scene {
     );
     this.physicsWorld.addBody(groundBody);
 
-    const groundMesh = this.resources.items.ItemGround;
+    const groundMesh = this.resources.items.ItemGround.clone();;
     this.add(groundMesh);
     groundMesh.position.set(-1.5, -1.5, 0.5);
     groundMesh.receiveShadow = true;
@@ -294,11 +294,11 @@ export default class NetherFights_Scene extends THREE.Scene {
   }
 
   createVideoButtons() {
-    this.playButton = this.resources.items.play;
+    this.playButton = this.resources.items.play.clone();
     this.add(this.playButton);
     this.playButton.position.set(10, 2.2, -3);
 
-    this.pauseButton = this.resources.items.pause;
+    this.pauseButton = this.resources.items.pause.clone();
     this.add(this.pauseButton);
     this.pauseButton.position.set(10, 1, -3);
   }
@@ -420,7 +420,7 @@ export default class NetherFights_Scene extends THREE.Scene {
   }
 
   createRepositoryReference() {
-    this.gitButton = this.resources.items.git;
+    this.gitButton = this.resources.items.git.clone();;
     this.add(this.gitButton);
     this.gitButton.position.set(25, 5.8, -3);
   }

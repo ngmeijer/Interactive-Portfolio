@@ -123,10 +123,9 @@ export default class TDWE_Scene extends THREE.Scene {
     );
     this.physicsWorld.addBody(groundBody);
 
-    // const groundMesh = this.resources.items.ItemGround;
-    // this.add(groundMesh);
-    // groundMesh.position.set(-1.5, -1.5, 0.5);
-    // groundMesh.receiveShadow = true;
+    const groundMesh = this.resources.items.ItemGround.clone();
+    this.add(groundMesh);
+    groundMesh.position.set(-1.5, -1.25, 1);
   }
 
   createStartText() {
@@ -307,23 +306,23 @@ export default class TDWE_Scene extends THREE.Scene {
   }
 
   createVideoButtons() {
-    this.playButton = this.resources.items.play;
+    this.playButton = this.resources.items.play.clone();
     this.add(this.playButton);
     this.playButton.position.set(11.5, 3.4, -3);
 
-    this.pauseButton = this.resources.items.pause;
+    this.pauseButton = this.resources.items.pause.clone();
     this.add(this.pauseButton);
     this.pauseButton.position.set(11.5, 2.2, -3);
 
-    this.replayButton = this.resources.items.replay;
+    this.replayButton = this.resources.items.replay.clone();
     this.add(this.replayButton);
     this.replayButton.position.set(11.5, 1, -3);
 
-    this.nextButton = this.resources.items.next;
+    this.nextButton = this.resources.items.next.clone();
     this.add(this.nextButton);
     this.nextButton.position.set(17, -0.6, -3);
 
-    this.previousButton = this.resources.items.previous;
+    this.previousButton = this.resources.items.previous.clone();
     this.add(this.previousButton);
     this.previousButton.position.set(16, -0.6, -3);
   }

@@ -87,6 +87,8 @@ function switchScene() {
         case "NetherFights":
           activeScene = netherFightsScene;
           break;
+        case "HiveLife":
+          break;
         default:
           activeScene = mainScene;
           break;
