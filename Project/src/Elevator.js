@@ -43,8 +43,8 @@ export default class Elevator extends THREE.Object3D {
   }
 
   createSpine() {
-    const geo = new THREE.BoxGeometry(0.5, 45, 2);
-    const material = new THREE.MeshPhongMaterial({ color: this.colour });
+    const geo = new THREE.BoxGeometry(0.5, 55, 2);
+    const material = new THREE.MeshPhongMaterial({ color: 0x370617 });
     this.spineMesh = new THREE.Mesh(geo, material);
     this.spineMesh.position.x = this.pos.x;
     this.spineMesh.position.y = this.pos.y;
@@ -86,7 +86,7 @@ export default class Elevator extends THREE.Object3D {
 
   createHints(pItems, pScene) {
     this.arrowsVertical = pItems.ArrowsVertical;
-    pScene.add(this.arrowsVertical.scene);
+    pScene.add(this.arrowsVertical);
   }
 
   update() {
@@ -110,7 +110,7 @@ export default class Elevator extends THREE.Object3D {
       this.platformBody.position.z
     );
 
-    this.arrowsVertical.scene.position.set(
+    this.arrowsVertical.position.set(
       this.platformBody.position.x,
       this.platformBody.position.y + 2.7,
       this.platformBody.position.z - 1.5
@@ -192,7 +192,7 @@ export default class Elevator extends THREE.Object3D {
 
     let elevatorTargetPos = new THREE.Vector3(
       this.platformBody.position.x,
-      this.platformBody.position.y + 10,
+      this.platformBody.position.y + 12,
       this.platformBody.position.z
     );
 
@@ -233,7 +233,7 @@ export default class Elevator extends THREE.Object3D {
 
     let targetPos = new THREE.Vector3(
       this.platformBody.position.x,
-      this.platformBody.position.y - 10,
+      this.platformBody.position.y - 12,
       this.platformBody.position.z
     );
 
@@ -256,7 +256,7 @@ export default class Elevator extends THREE.Object3D {
 
   createLight() {
     this.light = new THREE.SpotLight(
-      0xff0000,
+      0xffffff,
       15,
       20,
       Math.PI * 0.125,

@@ -46,12 +46,8 @@ export default class Resources extends EventEmitter {
       }
       if (source.type === "model") {
         this.loaders.modelLoader.load(source.path, (file) => {
-          file.scene.traverse(function (node) {
-            if (node instanceof THREE.Mesh) {
-              node.castShadow = true;
-            }
-          });
-          this.sourceLoaded(source, file);
+          
+          this.sourceLoaded(source, file.scene);
         });
       }
       if (source.type === "svg") {

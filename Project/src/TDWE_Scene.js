@@ -5,7 +5,7 @@ import CANNON from "cannon";
 import CubeBody from "./CubeBody.js";
 import Player from "./Player.js";
 import Text from "./Text.js";
-import { MeshBasicMaterial, Vector2, Vector3 } from "three";
+import { Vector2, Vector3 } from "three";
 
 export default class TDWE_Scene extends THREE.Scene {
   light;
@@ -19,15 +19,13 @@ export default class TDWE_Scene extends THREE.Scene {
   camera;
 
   eventManager;
-  fontLoader;
-  textureLoader;
 
   playerInstance;
   playerPosition = new THREE.Vector3(0, 0.5, 1);
 
-  instructionTextColor;
-  platformColor;
-  environmentColor;
+  instructionTextColor = 0x9d0208;
+  platformColor = 0xe85d04;
+  environmentColor = 0x100b13;
 
   videoTexture;
   videoContainer;
@@ -56,7 +54,8 @@ export default class TDWE_Scene extends THREE.Scene {
     this.resources = pResources;
   }
 
-  initalizeScene() {
+  initalizeScene(pCamera) {
+    this.camera = pCamera;
     this.physicsWorld = new CANNON.World();
     this.physicsWorld.gravity.set(0, -12, 0);
     this.createGeneralGeometry();
@@ -124,10 +123,10 @@ export default class TDWE_Scene extends THREE.Scene {
     );
     this.physicsWorld.addBody(groundBody);
 
-    const groundMesh = this.resources.items.Ground;
-    this.add(groundMesh.scene);
-    groundMesh.scene.position.set(-1.5, -1.5, 0.5);
-    groundMesh.scene.receiveShadow = true;
+    // const groundMesh = this.resources.items.ItemGround;
+    // this.add(groundMesh);
+    // groundMesh.position.set(-1.5, -1.5, 0.5);
+    // groundMesh.receiveShadow = true;
   }
 
   createStartText() {
@@ -249,7 +248,6 @@ export default class TDWE_Scene extends THREE.Scene {
 
     if (playPromise !== undefined) {
       playPromise.then((_) => {
-        console.log(playPromise);
         this.videoContainer.pause();
       });
     }
@@ -270,10 +268,9 @@ export default class TDWE_Scene extends THREE.Scene {
 
     window.addEventListener("click", () => {
       if (this.currentIntersect) {
-        console.log(this.currentIntersect.object.name);
         switch (this.currentIntersect.object.name) {
           case "PlayButton":
-            console.log(this.videoIsPlaying)
+            console.log(this.videoIsPlaying);
             if (this.videoIsPlaying) break;
             this.videoContainer.play();
             this.tweensOnPlay[0].start();
@@ -311,24 +308,24 @@ export default class TDWE_Scene extends THREE.Scene {
 
   createVideoButtons() {
     this.playButton = this.resources.items.play;
-    this.add(this.playButton.scene);
-    this.playButton.scene.position.set(11.5, 3.4, -3);
+    this.add(this.playButton);
+    this.playButton.position.set(11.5, 3.4, -3);
 
     this.pauseButton = this.resources.items.pause;
-    this.add(this.pauseButton.scene);
-    this.pauseButton.scene.position.set(11.5, 2.2, -3);
+    this.add(this.pauseButton);
+    this.pauseButton.position.set(11.5, 2.2, -3);
 
     this.replayButton = this.resources.items.replay;
-    this.add(this.replayButton.scene);
-    this.replayButton.scene.position.set(11.5, 1, -3);
+    this.add(this.replayButton);
+    this.replayButton.position.set(11.5, 1, -3);
 
     this.nextButton = this.resources.items.next;
-    this.add(this.nextButton.scene);
-    this.nextButton.scene.position.set(17, -0.6, -3);
+    this.add(this.nextButton);
+    this.nextButton.position.set(17, -0.6, -3);
 
     this.previousButton = this.resources.items.previous;
-    this.add(this.previousButton.scene);
-    this.previousButton.scene.position.set(16, -0.6, -3);
+    this.add(this.previousButton);
+    this.previousButton.position.set(16, -0.6, -3);
   }
 
   createVideoTweens() {
@@ -405,14 +402,12 @@ export default class TDWE_Scene extends THREE.Scene {
     if (this.currentVideoIndex > this.maxVideoIndex) {
       this.currentVideoIndex = 0;
     }
-    
+
     this.videoSource.setAttribute(
       "src",
       "Videos/" + this.videoSources[this.currentVideoIndex]
     );
     this.videoContainer.load();
-
-    console.log(this.videoContainer);
 
     this.videoTexture.video = this.videoContainer;
     this.movieMaterial.map = this.videoTexture;
@@ -431,11 +426,11 @@ export default class TDWE_Scene extends THREE.Scene {
     this.rayCaster.setFromCamera(this.mousePosition, this.camera);
 
     const objectsToTest = [
-      this.playButton.scene,
-      this.pauseButton.scene,
-      this.replayButton.scene,
-      this.nextButton.scene,
-      this.previousButton.scene,
+      this.playButton,
+      this.pauseButton,
+      this.replayButton,
+      this.nextButton,
+      this.previousButton,
     ];
     const intersects = this.rayCaster.intersectObjects(objectsToTest);
 

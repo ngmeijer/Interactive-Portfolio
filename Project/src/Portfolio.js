@@ -25,6 +25,7 @@ export default class Portfolio {
 
   canEnterItem;
   nearestItemName;
+  newScene;
 
   constructor(pScene, pPhysicsWorld, pResources) {
     this.scene = pScene;
@@ -46,6 +47,7 @@ export default class Portfolio {
       if (this.portfolioItems[i].checkPlayerOnPlatform()) {
         this.canEnterItem = true;
         this.playerInstance.currentItemTarget = this.portfolioItems[i];
+        this.newScene = this.portfolioItems[i].ID;
       }
     }
   }
@@ -61,6 +63,10 @@ export default class Portfolio {
     );
 
     ground.addToScene(this.scene, this.physicsWorld);
+
+    let testGround = this.resources.items.ItemGround;
+    this.scene.add(testGround);
+    testGround.position.set(31, -1.5, 1);
 
     let backgroundLeft = new Cube(
       "Portfolio_BackgroundLeft",
@@ -123,7 +129,7 @@ export default class Portfolio {
 
   createLighting() {
     this.frontLight = new THREE.SpotLight(
-      0xDC2F02,
+      0xdc2f02,
       15,
       20,
       Math.PI * 0.8,
@@ -146,7 +152,7 @@ export default class Portfolio {
     this.frontLight.shadow.mapSize.height = 1024;
 
     this.bottomLight = new THREE.SpotLight(
-      0xDC2F02,
+      0xdc2f02,
       30,
       20,
       Math.PI * 0.3,

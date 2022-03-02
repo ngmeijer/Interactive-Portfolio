@@ -18,10 +18,11 @@ export default class ContactMe {
   discord;
   playstore;
 
-  constructor(pScene, pPhysicsWorld, pResources) {
+  constructor(pScene, pPhysicsWorld, pResources, pCamera) {
     this.scene = pScene;
     this.physicsWorld = pPhysicsWorld;
     this.resources = pResources;
+    this.camera = pCamera;
   }
 
   overrideColours() {}
@@ -40,8 +41,8 @@ export default class ContactMe {
   createContactMeGeometry() {
     let ground = new Cube(
       "ContactMe_Ground",
-      new THREE.Vector3(50, 1, 2),
-      new THREE.Vector3(31, 18.5, 0.75),
+      new THREE.Vector3(50, 3, 2),
+      new THREE.Vector3(31, 20.5, 0.75),
       this.environmentColor,
       true,
       0
@@ -52,37 +53,35 @@ export default class ContactMe {
 
   createSocialMedia() {
     this.twitter = this.resources.items.twitter;
-    this.scene.add(this.twitter.scene);
-    this.twitter.scene.position.set(17, 22, -6);
+    this.scene.add(this.twitter);
+    this.twitter.position.set(17, 26, -6);
 
     this.linkedin = this.resources.items.linkedin;
-    this.scene.add(this.linkedin.scene);
-    this.linkedin.scene.position.set(20, 22, -6);
+    this.scene.add(this.linkedin);
+    this.linkedin.position.set(20, 26, -6);
 
-    this.git = this.resources.items.git;
-    this.scene.add(this.git.scene);
-    this.git.scene.position.set(23, 22, -6);
+    this.git = this.resources.items.git.clone();
+    this.scene.add(this.git);
+    this.git.position.set(23, 26, -6);
 
     this.discord = this.resources.items.discord;
-    this.scene.add(this.discord.scene);
-    this.discord.scene.position.set(26, 22, -6);
+    this.scene.add(this.discord);
+    this.discord.position.set(26, 26, -6);
 
     this.playstore = this.resources.items.playstore;
-    this.scene.add(this.playstore.scene);
-    this.playstore.scene.position.set(29, 22, -6);
+    this.scene.add(this.playstore);
+    this.playstore.position.set(29, 26, -6);
   }
 
   checkSocialMediaMouseOver() {
-    if(this.mousePosition == null) return;
-
+    if (this.mousePosition == null) return;
     this.rayCaster.setFromCamera(this.mousePosition, this.camera);
-
     const objectsToTest = [
-      this.twitter.scene,
-      this.linkedin.scene,
-      this.git.scene,
-      this.discord.scene,
-      this.playstore.scene,
+      this.twitter,
+      this.linkedin,
+      this.git,
+      this.discord,
+      this.playstore,
     ];
     const intersects = this.rayCaster.intersectObjects(objectsToTest);
 
@@ -94,7 +93,7 @@ export default class ContactMe {
 
     for (const currentObject of objectsToTest) {
       if (!intersects.find((intersect) => intersect.object === currentObject)) {
-        currentObject.children[0].material.color.set("#ffff00");
+        currentObject.children[0].material.color.set("#DC2F02");
       }
     }
     for (const intersect of intersects) {
@@ -108,26 +107,29 @@ export default class ContactMe {
       this.mousePosition.y = -(event.clientY / window.innerHeight) * 2 + 1;
     });
 
-    console.log(this.mousePosition);
     this.rayCaster = new THREE.Raycaster();
 
     window.addEventListener("click", () => {
       if (this.currentIntersect) {
-        console.log(this.currentIntersect.object.name);
         switch (this.currentIntersect.object.name) {
-          case "TwitterButton":
+          case "twitter":
+            window.open("https://twitter.com/NilsGMeijer");
+            break;
+          case "linkedin":
+            window.open("https://www.linkedin.com/in/nilsmeijer1/");
             break;
 
-          case "LinkedinButton":
+          case "git":
+            window.open("https://github.com/ngmeijer");
             break;
 
-          case "GitButton":
+          case "discord":
             break;
 
-          case "DiscordButton":
-            break;
-
-          case "PlaystoreButton":
+          case "playstore":
+            window.open(
+              "https://play.google.com/store/apps/developer?id=Alpha+Foundry"
+            );
             break;
         }
       }
@@ -136,12 +138,12 @@ export default class ContactMe {
 
   createLighting() {
     this.light = new THREE.SpotLight(0xdc2f02, 5, 20, Math.PI * 0.3, 0.25, 1);
-    this.light.position.set(13, 25, 6);
+    this.light.position.set(13, 27, 6);
     this.light.castShadow = true;
     this.light.shadow.far = 30;
 
     const lightTarget = new THREE.Object3D();
-    lightTarget.position.set(12, 16, -5);
+    lightTarget.position.set(12, 18, -5);
 
     this.scene.add(this.light);
     this.scene.add(lightTarget);
@@ -152,7 +154,7 @@ export default class ContactMe {
     this.light.shadow.mapSize.height = 1024;
 
     const rectLight = new THREE.RectAreaLight(0xffffff, 50, 22, 8);
-    rectLight.position.set(20, 23, -2);
+    rectLight.position.set(20, 25, -2);
     this.scene.add(rectLight);
   }
 }

@@ -44,27 +44,30 @@ export default class Home {
   }
 
   createStartGeometry() {
-    const groundBody = new CubeBody(new THREE.Vector3(-1.5, -3,1), new THREE.Vector3(9,5,1));
+    const groundBody = new CubeBody(
+      new THREE.Vector3(-1.5, -3, 1),
+      new THREE.Vector3(9, 5, 1)
+    );
     this.physicsWorld.addBody(groundBody);
 
-    this.ground = this.resources.items.Ground;
-    this.scene.add(this.ground.scene);
-    this.ground.scene.position.set();
+    this.ground = this.resources.items.HomeGround;
+    this.scene.add(this.ground);
+    this.ground.position.set(-2, -1.25, 1);
 
     this.homeIntro = this.resources.items.HomeIntro;
-    this.scene.add(this.homeIntro.scene);
-    this.homeIntro.scene.position.set(-8, -0.1, -3);
+    this.scene.add(this.homeIntro);
+    this.homeIntro.position.set(-8, -0.1, -3);
 
     const arrowsHorizontal = this.resources.items.ArrowsHorizontal;
-    this.scene.add(arrowsHorizontal.scene);
-    arrowsHorizontal.scene.position.set(-3.9,-0.8,2);
+    this.scene.add(arrowsHorizontal);
+    arrowsHorizontal.position.set(-6.5, 1, -2.5);
 
     this.background = this.resources.items.CubeBackground;
-    this.scene.add(this.background.scene);
-    this.background.scene.position.set(-20, -10, -9);
+    this.scene.add(this.background);
+    this.background.position.set(-20, -10, -9);
     this.elevator = new Elevator(
       new THREE.Vector3(4.5, 0, -2),
-      this.environmentColor,
+      0x6a040f,
       this.eventManager
     );
     this.elevator.createHints(this.resources.items, this.scene);
@@ -74,10 +77,17 @@ export default class Home {
 
   createLighting() {
     const lightTarget = new THREE.Object3D();
-    lightTarget.position.set(-10, 10, -5);
+    lightTarget.position.set(0, 0, 0);
 
-    this.bottomLight = new THREE.SpotLight(0xDC2F02, 20, 0, Math.PI * 0.3, 1, 0);
-    this.bottomLight.position.set(2, 0, -2);
+    this.bottomLight = new THREE.SpotLight(
+      0xdc2f02,
+      20,
+      0,
+      Math.PI * 0.3,
+      1,
+      0
+    );
+    this.bottomLight.position.set(2, -10, -2);
     this.bottomLight.castShadow = true;
     this.bottomLight.shadow.far = 30;
 
@@ -92,14 +102,14 @@ export default class Home {
     const backLightTarget = new THREE.Object3D();
     backLightTarget.position.set(0, 1, -5);
 
-    this.frontLight = new THREE.SpotLight(0xFFBA08, 4, 0, Math.PI, 1, 1);
-    this.frontLight.position.set(-8, 5, 10);
+    this.frontLight = new THREE.SpotLight(0xffba08, 3, 0, Math.PI, 1, 1);
+    this.frontLight.position.set(-10, 5, 10);
     this.frontLight.castShadow = true;
     this.frontLight.shadow.far = 30;
 
-    this.frontLight.target = this.playerInstance;
+    // this.frontLight.target = this.playerInstance;
     this.scene.add(lightTarget);
-    this.scene.add(this.frontLight.target);
+    // this.scene.add(this.frontLight.target);
     this.scene.add(this.frontLight);
 
     this.frontLight.shadow.mapSize.width = 2048;

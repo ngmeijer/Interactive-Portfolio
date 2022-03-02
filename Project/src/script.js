@@ -6,6 +6,7 @@ import Resources from "./Resources.js";
 import sources from "./sources.js";
 import MainScene from "./MainScene.js";
 import TDWE_Scene from "./TDWE_Scene.js";
+import NetherFights_Scene from "./NetherFights_Scene.js";
 
 THREE.Cache.enabled = true;
 const eventManager = new THREE.EventDispatcher();
@@ -15,6 +16,7 @@ resources.on("ready", () => {
 });
 const mainScene = new MainScene(resources);
 const tdweScene = new TDWE_Scene(resources);
+const netherFightsScene = new NetherFights_Scene(resources);
 mainScene.eventManager = eventManager;
 tdweScene.eventManager = eventManager;
 
@@ -75,11 +77,24 @@ function switchScene() {
     })
     .onComplete(function () {
       activeScene.currentScene = false;
-      if (activeScene == mainScene) activeScene = tdweScene;
-      else activeScene = mainScene;
+
+      let newScene = mainScene.portfolioArea.newScene;
+
+      switch (newScene) {
+        case "TDWE":
+          activeScene = tdweScene;
+          break;
+        case "NetherFights":
+          activeScene = netherFightsScene;
+          break;
+        default:
+          activeScene = mainScene;
+          break;
+      }
+
       activeScene.currentScene = true;
       activePhysicsWorld = activeScene.physicsWorld;
-      activeScene.playerInstance.resetPlayer();
+      // activeScene.playerInstance.resetPlayer();
     });
 
   var fadeIn = new TWEEN.Tween(currentOpacity)
@@ -108,22 +123,18 @@ function cameraFollowPlayer() {
     activeScene.playerInstance.playerBody.position.y + cameraOffset.y;
 }
 
+function initializeScenes() {
+  mainScene.initalizeScene(camera);
+  tdweScene.initalizeScene(camera);
+  netherFightsScene.initalizeScene(camera);
+}
+
 const frameClock = new THREE.Clock();
 let delta;
 async function initialize() {
   window.addEventListener("resize", onWindowResize, false);
   createRenderingComponents();
-  mainScene.environmentColor = environmentColor;
-  mainScene.instructionTextColor = instructionTextColor;
-  mainScene.platformColor = platformColor;
-  mainScene.camera = camera;
-  mainScene.initalizeScene();
-
-  tdweScene.environmentColor = environmentColor;
-  tdweScene.instructionTextColor = instructionTextColor;
-  tdweScene.platformColor = platformColor;
-  tdweScene.camera = camera;
-  tdweScene.initalizeScene();
+  initializeScenes();
 
   activeScene = mainScene;
   activePhysicsWorld = activeScene.physicsWorld;
