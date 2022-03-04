@@ -115,6 +115,7 @@ export default class PortfolioItem extends THREE.Object3D {
       true,
       0
     );
+    this.background.mesh.castShadow = false;
   }
 
   createImage() {

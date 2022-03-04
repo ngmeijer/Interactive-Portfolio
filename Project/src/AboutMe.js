@@ -58,6 +58,17 @@ export default class AboutMe {
       0
     );
     ground.addToScene(this.scene, this.physicsWorld);
+
+    let background = new Cube(
+      "AboutMe_Background",
+      new THREE.Vector3(25, 12, 0.1),
+      new THREE.Vector3(24, 10, -7),
+      0x03071e,
+      true,
+      0
+    );
+
+    background.addToScene(this.scene);
   }
 
   createPhoto() {
@@ -70,72 +81,35 @@ export default class AboutMe {
   }
 
   createLanguageDetails() {
-    let languages = new Text(
+    let languagesText = new Text(
       "Languages:",
       this.resources.items.ElMessiri,
       0.6,
       0xffffff,
       new Vector3(19.8, 19.5, -6)
     );
-    this.scene.add(languages.mesh);
+    this.scene.add(languagesText.mesh);
 
     //1st column
-    let cpp = this.resources.items.cpp.clone();;
-    this.scene.add(cpp);
-    cpp.position.set(21, 15.2, -6);
-    cpp.receiveShadow = true;
-
-    let csharp = this.resources.items.csharp.clone();;
-    this.scene.add(csharp);
-    csharp.position.set(21, 17.8, -6);
-
-    //2nd column
-    let css = this.resources.items.css.clone();;
-    this.scene.add(css);
-    css.position.set(23.6, 17.8, -6);
-
-    let html = this.resources.items.html.clone();;
-    this.scene.add(html);
-    html.position.set(23.6, 15.2, -6);
-
-    let javascript = this.resources.items.javascript.clone();;
-    this.scene.add(javascript);
-    javascript.position.set(21.1, 12.6, -6);
+    let languagesMesh = this.resources.items.languages.clone();
+    this.scene.add(languagesMesh);
+    languagesMesh.position.set(21, 15.2, -6);
   }
 
   createSoftwareDetails() {
-    let software = new Text(
+    let softwareText = new Text(
       "Software:",
       this.resources.items.ElMessiri,
       0.6,
       0xffffff,
-      new Vector3(26.8, 19.5, -6)
+      new Vector3(28.2, 19.5, -6)
     );
-    this.scene.add(software.mesh);
+    this.scene.add(softwareText.mesh);
 
     //1st column
-    let unity = this.resources.items.unity.clone();;
-    this.scene.add(unity);
-    unity.position.set(28.3, 17.8, -6);
-    unity.receiveShadow = true;
-
-    let unrealEngine = this.resources.items.unrealEngine.clone();;
-    this.scene.add(unrealEngine);
-    unrealEngine.position.set(28.3, 15.15, -6);
-    unrealEngine.receiveShadow = true;
-
-    let gitkraken = this.resources.items.gitkraken.clone();;
-    this.scene.add(gitkraken);
-    gitkraken.position.set(28.3, 12.5, -6);
-
-    //2nd column
-    let blender = this.resources.items.blender.clone();;
-    this.scene.add(blender);
-    blender.position.set(31, 15, -6);
-
-    let visualStudio = this.resources.items.visualStudio.clone();;
-    this.scene.add(visualStudio);
-    visualStudio.position.set(31, 17.8, -6);
+    let softwareMesh = this.resources.items.software.clone();
+    this.scene.add(softwareMesh);
+    softwareMesh.position.set(29.5, 15.15, -6);
   }
 
   creatAboutMeText() {
@@ -153,15 +127,15 @@ export default class AboutMe {
   }
 
   createLighting() {
-    this.light = new THREE.SpotLight(0xdc2f02, 10, 20, Math.PI * 0.95, 0.25, 1);
-    this.light.position.set(20, 17, 6);
+    this.light = new THREE.SpotLight(0xdc2f02, 5, 20, Math.PI * 0.95, 0.25, 1);
+    this.light.position.set(20, 18, 6);
     this.light.castShadow = true;
     this.light.shadow.far = 30;
 
     const lightTarget = new THREE.Object3D();
     lightTarget.position.set(24, 17, -5);
 
-    //this.scene.add(this.light);
+    this.scene.add(this.light);
     this.scene.add(lightTarget);
     this.scene.add(this.light.target);
     this.light.target = lightTarget;
@@ -169,7 +143,7 @@ export default class AboutMe {
     this.light.shadow.mapSize.width = 1024;
     this.light.shadow.mapSize.height = 1024;
 
-    const rectLight = new THREE.RectAreaLight(0xffffff, 50, 10, 8);
+    const rectLight = new THREE.RectAreaLight(0xffffff, 5, 10, 8);
     rectLight.position.set(27, 16, -2);
     this.scene.add(rectLight);
   }

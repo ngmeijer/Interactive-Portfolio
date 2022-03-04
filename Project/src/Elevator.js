@@ -26,6 +26,8 @@ export default class Elevator extends THREE.Object3D {
   textOffset;
 
   arrowsVertical;
+  tweenMoveLeft;
+  tweenMoveRight;
 
   constructor(pPosition, pColour, pEventManager) {
     super();
@@ -87,6 +89,12 @@ export default class Elevator extends THREE.Object3D {
   createHints(pItems, pScene) {
     this.arrowsVertical = pItems.ArrowsVertical;
     pScene.add(this.arrowsVertical);
+
+    this.arrowsVertical.position.set(
+      this.platformBody.position.x,
+      this.platformBody.position.y + 2.7,
+      this.platformBody.position.z - 1.5
+    );
   }
 
   update() {
@@ -240,34 +248,24 @@ export default class Elevator extends THREE.Object3D {
     const tweenToFloorDown = new TWEEN.Tween(this.platformBody.position)
       .to({ x: targetPos.x, y: targetPos.y, z: targetPos.z }, 2000)
       .easing(TWEEN.Easing.Linear.None)
-      .onComplete(function () {
-        pEventManager.dispatchEvent({ type: "Event_enableMove" });
-      });
+      .onComplete(this.boundUnlockAnimation);
 
     if (this.currentFloor == 1) {
       tweenToFloorDown.chain(tweenFenceDown);
     }
     tweenToFloorDown.start();
 
-    this.animationPlaying = false;
     this.currentFloor--;
     this.moveFloorDown = false;
   }
 
   createLight() {
-    this.light = new THREE.SpotLight(
-      0xffffff,
-      15,
-      20,
-      Math.PI * 0.125,
-      0.5,
-      10
-    );
-    this.lightOffset = new Vector3(0, 4, 0);
+    this.light = new THREE.SpotLight(0xffffff, 25, 20, Math.PI * 0.3, 0.5, 10);
+    this.lightOffset = new Vector3(3.5, 4, -0.5);
     this.light.castShadow = true;
     this.light.shadow.far = 30;
 
-    this.light.target = this.platformMesh;
+    //this.light.target = this.arrowsVertical;
 
     this.light.shadow.mapSize.width = 1024;
     this.light.shadow.mapSize.height = 1024;

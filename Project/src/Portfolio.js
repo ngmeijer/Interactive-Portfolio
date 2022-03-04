@@ -121,7 +121,7 @@ export default class Portfolio {
       0.25,
       1
     );
-    this.frontLight.position.set(25, 5, 6);
+    this.frontLight.position.set(23, 7, 6);
     this.frontLight.castShadow = true;
     this.frontLight.shadow.far = 30;
 

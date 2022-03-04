@@ -1,11 +1,8 @@
 import * as THREE from "three";
-import { Vector3 } from "three";
-import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
+import TWEEN from "@tweenjs/tween.js";
 
-import Cube from "./Cube.js";
 import CubeBody from "./CubeBody.js";
 import Elevator from "./Elevator.js";
-import Text from "./Text.js";
 
 export default class Home {
   scene;
@@ -23,6 +20,7 @@ export default class Home {
   background;
   elevator;
   homeIntro;
+  arrowsHorizontal;
   ground;
 
   constructor(pScene, pPhysicsWorld, pResources, pEventManager) {
@@ -37,6 +35,7 @@ export default class Home {
   initializeArea() {
     this.createStartGeometry();
     this.createLighting();
+    this.createTweens();
   }
 
   update() {
@@ -50,19 +49,19 @@ export default class Home {
     );
     this.physicsWorld.addBody(groundBody);
 
-    this.ground = this.resources.items.HomeGround.clone();;
+    this.ground = this.resources.items.HomeGround.clone();
     this.scene.add(this.ground);
     this.ground.position.set(-2, -1.25, 1);
 
-    this.homeIntro = this.resources.items.HomeIntro.clone();;
+    this.homeIntro = this.resources.items.HomeIntro.clone();
     this.scene.add(this.homeIntro);
     this.homeIntro.position.set(-8, -0.1, -3);
 
-    const arrowsHorizontal = this.resources.items.ArrowsHorizontal.clone();;
-    this.scene.add(arrowsHorizontal);
-    arrowsHorizontal.position.set(-6.5, 1, -2.5);
+    this.arrowsHorizontal = this.resources.items.ArrowsHorizontal.clone();
+    this.scene.add(this.arrowsHorizontal);
+    this.arrowsHorizontal.position.set(-6.3, 1, -2.5);
 
-    this.background = this.resources.items.CubeBackground.clone();;
+    this.background = this.resources.items.CubeBackground.clone();
     this.scene.add(this.background);
     this.background.position.set(-20, -10, -9);
     this.elevator = new Elevator(
@@ -73,6 +72,42 @@ export default class Home {
     this.elevator.createHints(this.resources.items, this.scene);
     this.elevator.addToScene(this.scene, this.physicsWorld);
     this.elevator.playerInstance = this.playerInstance;
+  }
+
+  createTweens() {
+    const startPosition = this.arrowsHorizontal.position;
+    const positionLeft = new THREE.Vector3(
+      startPosition.x - 1,
+      startPosition.y,
+      startPosition.z
+    );
+
+    const tweenMoveLeft = new TWEEN.Tween(this.arrowsHorizontal.position)
+      .to(
+        {
+          x: positionLeft.x,
+          y: positionLeft.y,
+          z: positionLeft.z,
+        },
+        1000
+      )
+      .easing(TWEEN.Easing.Quartic.InOut);
+
+    const tweenMoveRight = new TWEEN.Tween(this.arrowsHorizontal.position)
+      .to(
+        {
+          x: startPosition.x,
+          y: startPosition.y,
+          z: startPosition.z,
+        },
+        1000
+      )
+      .easing(TWEEN.Easing.Quartic.InOut);
+
+    tweenMoveLeft.chain(tweenMoveRight);
+    tweenMoveRight.chain(tweenMoveLeft);
+
+    tweenMoveLeft.start();
   }
 
   createLighting() {

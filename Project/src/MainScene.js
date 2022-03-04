@@ -24,7 +24,7 @@ export default class MainScene extends THREE.Scene {
   camera;
 
   playerInstance;
-  playerPosition = new THREE.Vector3(18, 30, 1);
+  playerPosition = new THREE.Vector3(-5, 2, 1);
 
   instructionTextColor;
   platformColor;

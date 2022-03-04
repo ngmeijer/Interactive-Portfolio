@@ -197,7 +197,7 @@ export default class ContactMe {
 
   createLighting() {
     this.light = new THREE.SpotLight(0xdc2f02, 5, 20, Math.PI * 0.3, 0.25, 1);
-    this.light.position.set(13, 27, 6);
+    this.light.position.set(13, 29, 6);
     this.light.castShadow = true;
     this.light.shadow.far = 30;
 
@@ -214,6 +214,6 @@ export default class ContactMe {
 
     const rectLight = new THREE.RectAreaLight(0xffffff, 10, 22, 8);
     rectLight.position.set(20, 25, -2);
-    this.scene.add(rectLight);
+    //this.scene.add(rectLight);
   }
 }

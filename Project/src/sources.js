@@ -67,58 +67,18 @@ export default [
 
   //LANGUAGES
   {
-    name: "cpp",
+    name: "languages",
     type: "model",
-    path: "Models/Languages/cpp.glb",
-  },
-  {
-    name: "csharp",
-    type: "model",
-    path: "Models/Languages/csharp.glb",
-  },
-  {
-    name: "css",
-    type: "model",
-    path: "Models/Languages/css.glb",
-  },
-  {
-    name: "html",
-    type: "model",
-    path: "Models/Languages/html.glb",
-  },
-  {
-    name: "javascript",
-    type: "model",
-    path: "Models/Languages/javascript.glb",
+    path: "Models/Languages.glb",
   },
 
   //SOFTWARE
   {
-    name: "unity",
+    name: "software",
     type: "model",
-    path: "Models/Software/unity.glb",
+    path: "Models/Software.glb",
   },
-  {
-    name: "unrealEngine",
-    type: "model",
-    path: "Models/Software/unrealEngine.glb",
-  },
-  {
-    name: "gitkraken",
-    type: "model",
-    path: "Models/Software/gitkraken.glb",
-  },
-  {
-    name: "visualStudio",
-    type: "model",
-    path: "Models/Software/visualStudio.glb",
-  },
-  {
-    name: "blender",
-    type: "model",
-    path: "Models/Software/blender.glb",
-  },
-
+  
   //SOCIAL MEDIA
   {
     name: "twitter",
