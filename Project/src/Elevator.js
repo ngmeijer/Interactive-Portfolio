@@ -177,7 +177,7 @@ export default class Elevator extends THREE.Object3D {
         this.startAscendingAnimation();
       }
 
-      if (this.moveFloorDown && this.currentFloor > -2) {
+      if (this.moveFloorDown && this.currentFloor > 0) {
         this.eventManager.dispatchEvent({ type: "Event_disableMove" });
         this.startDescendingAnimation(this.eventManager);
       }

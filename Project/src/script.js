@@ -65,12 +65,36 @@ function createRenderingComponents() {
   document.body.appendChild(renderer.domElement);
 }
 
+var fadeInTween;
+var fadeOutTween;
+var currentOpacity = { opacity: 0 };
+
 function switchScene() {
-  var currentOpacity = { opacity: 0 };
-  var fullOpacity = { opacity: 1 };
-  var noOpacity = { opacity: 0 };
-  var fadeOut = new TWEEN.Tween(currentOpacity)
-    .to(fullOpacity, 3000)
+  currentOpacity.opacity = 0;
+
+  fadeSceneOut(currentOpacity);
+  fadeSceneIn(currentOpacity);
+
+  fadeOutTween.chain(fadeInTween);
+  fadeOutTween.start();
+  currentlyEntering = false;
+}
+
+function fadeSceneIn(pCurrentOpacity) {
+  var noOpacity = {opacity: 0};
+  console.log(pCurrentOpacity)
+  fadeInTween = new TWEEN.Tween(pCurrentOpacity)
+    .to({opacity: 0}, 4000)
+    .onUpdate(function (pCurrentOpacity) {
+      fadeImage.style.setProperty("opacity", pCurrentOpacity.opacity);
+      console.log(pCurrentOpacity.opacity);
+    });
+    fadeInTween.start();
+}
+
+function fadeSceneOut(pCurrentOpacity) {
+  fadeOutTween = new TWEEN.Tween(pCurrentOpacity)
+    .to({ opacity: 1 }, 3000)
     .easing(TWEEN.Easing.Quadratic.Out)
     .onUpdate(function () {
       fadeImage.style.setProperty("opacity", currentOpacity.opacity);
@@ -98,16 +122,6 @@ function switchScene() {
       activePhysicsWorld = activeScene.physicsWorld;
       // activeScene.playerInstance.resetPlayer();
     });
-
-  var fadeIn = new TWEEN.Tween(currentOpacity)
-    .to(noOpacity, 2000)
-    .onUpdate(function () {
-      fadeImage.style.setProperty("opacity", currentOpacity.opacity);
-    });
-
-  fadeOut.chain(fadeIn);
-  fadeOut.start();
-  currentlyEntering = false;
 }
 
 function onWindowResize() {
@@ -136,6 +150,8 @@ let delta;
 async function initialize() {
   window.addEventListener("resize", onWindowResize, false);
   createRenderingComponents();
+  currentOpacity.opacity = 1;
+  fadeSceneIn(currentOpacity);
   initializeScenes();
 
   activeScene = mainScene;

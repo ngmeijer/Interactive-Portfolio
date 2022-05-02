@@ -34,31 +34,33 @@ export default class Resources extends EventEmitter {
 
   startLoading() {
     for (const source of this.sources) {
-      if (source.type === "font") {
-        this.loaders.fontLoader.load(source.path, (file) => {
-          this.sourceLoaded(source, file);
-        });
-      }
-      if (source.type === "texture") {
-        this.loaders.textureLoader.load(source.path, (file) => {
-          this.sourceLoaded(source, file);
-        });
-      }
-      if (source.type === "model") {
-        this.loaders.modelLoader.load(source.path, (file) => {
-          file.scene.traverse(function (child) {
-            if(child.isMesh){
-              child.receiveShadow = true;
-              child.material.metalness = 0;
-            }
+      switch (source.type) {
+        case "font":
+          this.loaders.fontLoader.load(source.path, (file) => {
+            this.sourceLoaded(source, file);
           });
-          this.sourceLoaded(source, file.scene);
-        });
-      }
-      if (source.type === "svg") {
-        this.loaders.svgLoader.load(source.path, (file) => {
-          this.sourceLoaded(source, file);
-        });
+          break;
+        case "texture":
+          this.loaders.textureLoader.load(source.path, (file) => {
+            this.sourceLoaded(source, file);
+          });
+          break;
+        case "model":
+          this.loaders.modelLoader.load(source.path, (file) => {
+            file.scene.traverse(function (child) {
+              if (child.isMesh) {
+                child.receiveShadow = true;
+                child.material.metalness = 0;
+              }
+            });
+            this.sourceLoaded(source, file.scene);
+          });
+          break;
+        case "svg":
+          this.loaders.svgLoader.load(source.path, (file) => {
+            this.sourceLoaded(source, file);
+          });
+          break;
       }
     }
   }
