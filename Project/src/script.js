@@ -89,7 +89,6 @@ function fadeSceneOut(pCurrentOpacity) {
     .to({ opacity: 1 }, 1500)
     .easing(TWEEN.Easing.Quadratic.Out)
     .onUpdate(function (pCurrentOpacity) {
-      console.log(fadeImage.style.opacity);
       fadeImage.style.setProperty("opacity", pCurrentOpacity.opacity);
     })
     .onComplete(function () {
@@ -105,6 +104,8 @@ function fadeSceneOut(pCurrentOpacity) {
           activeScene = netherFightsScene;
           break;
         case "HiveLife":
+          break;
+        case "ProceduralArt":
           break;
         default:
           activeScene = mainScene;
@@ -135,7 +136,6 @@ function cameraFollowPlayer() {
 function initializeScenes() {
   mainScene.initalizeScene(camera);
   tdweScene.initalizeScene(camera);
-  netherFightsScene.initalizeScene(camera);
 }
 
 const frameClock = new THREE.Clock();
@@ -148,7 +148,7 @@ async function initialize() {
   fadeInTween.start();
   initializeScenes();
 
-  activeScene = mainScene;
+  activeScene = tdweScene;
   activePhysicsWorld = activeScene.physicsWorld;
   activeScene.currentScene = true;
 

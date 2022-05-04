@@ -162,12 +162,12 @@ export default class PortfolioItem extends THREE.Object3D {
 
   createText() {
     this.hintText = new Text(
-      "Press F",
+      "Press F to enter",
       this.font,
       0.3,
       0xffffff,
       new Vector3(
-        this.itemPosition.x - 0.8,
+        this.itemPosition.x - 1.4,
         this.itemPosition.y,
         this.itemPosition.z - 2
       )

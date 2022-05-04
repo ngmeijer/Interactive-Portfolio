@@ -100,6 +100,11 @@ export default [
     type: "model",
     path: "Models/Social Media/playstore.glb",
   },
+  {
+    name: "youtube",
+    type: "model",
+    path: "Models/Social Media/youtube.glb",
+  },
 
   //VIDEO CONTROLS
   {

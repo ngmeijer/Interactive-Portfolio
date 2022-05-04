@@ -6,6 +6,7 @@ import CubeBody from "./CubeBody.js";
 import Player from "./Player.js";
 import Text from "./Text.js";
 import InformationContainer from "./InformationContainer.js";
+import e from "cors";
 
 export default class TDWE_Scene extends THREE.Scene {
   light;
@@ -45,6 +46,7 @@ export default class TDWE_Scene extends THREE.Scene {
   mousePosition = new THREE.Vector2();
   currentIntersect;
   currentScene = false;
+  externalLinksButtons = [];
 
   tweensOnPause = [];
   tweensOnPlay = [];
@@ -56,6 +58,7 @@ export default class TDWE_Scene extends THREE.Scene {
 
   initalizeScene(pCamera) {
     this.camera = pCamera;
+    this.rayCaster = new THREE.Raycaster();
     this.physicsWorld = new CANNON.World();
     this.physicsWorld.gravity.set(0, -12, 0);
     this.createGeneralGeometry();
@@ -64,17 +67,18 @@ export default class TDWE_Scene extends THREE.Scene {
     this.createLighting();
     this.createStartText();
     this.createImage();
-    // this.createVideo();
-    // this.createVideoControls();
+
+    window.addEventListener("mousemove", (event) => {
+      this.mousePosition.x = (event.clientX / window.innerWidth) * 2 - 1;
+      this.mousePosition.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    });
   }
 
   update(delta) {
     if (!this.currentScene) return;
 
     this.playerInstance.update(delta);
-    // this.videoTexture.needsUpdate = true;
-
-    // this.checkVideoControlsMouseOver();
+    this.checkExternalLinksMouseOver();
   }
 
   createPlayer() {
@@ -188,6 +192,8 @@ export default class TDWE_Scene extends THREE.Scene {
       let gitButton = this.resources.items.git.clone();
       this.add(gitButton);
       gitButton.position.set(8.5, 4, -3);
+      gitButton.children[0].name = "Git_Repo";
+      this.externalLinksButtons.push(gitButton);
     }
 
     {
@@ -200,23 +206,127 @@ export default class TDWE_Scene extends THREE.Scene {
       );
       this.add(youtubeHeader.mesh);
 
-      let youtubeButton = this.resources.items.git.clone();
+      let youtubeButton = this.resources.items.youtube.clone();
       this.add(youtubeButton);
       youtubeButton.position.set(8.5, 0.6, -3);
+      youtubeButton.children[0].name = "Trailer";
+      this.externalLinksButtons.push(youtubeButton);
     }
 
+    this.voxelToolBreakdown();
+    this.FSMBreakdown();
+    this.createButtonEventListeners();
+  }
+
+  voxelToolBreakdown() {
     {
-      const technicalBreakdown = new InformationContainer(
-        new THREE.Vector3(12.5, 7.3, -3),
+      const systemDescription = new InformationContainer(
+        new THREE.Vector3(13, 7.3, -3),
         this.resources.items.ElMessiri,
         this.instructionTextColor
       );
-      technicalBreakdown.headerContent = "Technical Breakdown";
-      technicalBreakdown.paragraphContent =
-        "- Voxel tool" + "\n- AI Finite State Machine";
+      systemDescription.headerContent = "Voxel Tool";
+      systemDescription.paragraphContent =
+        "I developed a Unity editor tool, which can be used to calculate a" +
+        "\nvoxel area. This 3D grid can be used by (airborne) AI agents to" +
+        "\ndetermine where they can fly. That data is saved to a Scriptable" +
+        "\nObject, so that it's reusable.";
 
-      technicalBreakdown.createContent();
-      this.add(technicalBreakdown.group);
+      systemDescription.createContent();
+      this.add(systemDescription.group);
+    }
+
+    {
+      const youtubeHeader = new Text(
+        "Demonstration",
+        this.resources.items.ElMessiri,
+        0.2,
+        this.instructionTextColor,
+        new THREE.Vector3(13, 1.9, -3)
+      );
+      this.add(youtubeHeader.mesh);
+
+      let youtubeButton = this.resources.items.youtube.clone();
+      this.add(youtubeButton);
+      youtubeButton.position.set(14, 0.6, -3);
+      youtubeButton.children[0].name = "VoxelTool_Video";
+
+      this.externalLinksButtons.push(youtubeButton);
+    }
+  }
+
+  FSMBreakdown() {
+    {
+      const systemDescription = new InformationContainer(
+        new THREE.Vector3(22, 7.3, -3),
+        this.resources.items.ElMessiri,
+        this.instructionTextColor
+      );
+      systemDescription.headerContent = "AI Finite State Machine";
+      systemDescription.paragraphContent =
+        "Working in tandem with the voxel tool, every AI agent has a" +
+        "\ninite State Machine (FSM) instance assigned to them." +
+        "\nDepending on external factors and settings for that AI type," +
+        "\nan action / new state is determined.";
+
+      systemDescription.createContent();
+      this.add(systemDescription.group);
+    }
+
+    {
+      const youtubeHeader = new Text(
+        "Demonstration",
+        this.resources.items.ElMessiri,
+        0.2,
+        this.instructionTextColor,
+        new THREE.Vector3(22, 1.9, -3)
+      );
+      this.add(youtubeHeader.mesh);
+
+      let youtubeButton = this.resources.items.youtube.clone();
+      this.add(youtubeButton);
+      youtubeButton.position.set(23, 0.6, -3);
+      youtubeButton.children[0].name = "FSM_Video";
+      this.externalLinksButtons.push(youtubeButton);
+    }
+  }
+
+  createButtonEventListeners() {
+    window.addEventListener("click", () => {
+      if (this.currentIntersect) {
+        switch (this.currentIntersect.object.name) {
+          case "Trailer":
+            window.open("https://www.youtube.com/watch?v=vR66tzICYdI");
+            break;
+
+          case "Git_Repo":
+            window.open(
+              "https://github.com/ngmeijer/Project-Show-Off-URP/blob/main-final/Assets/Prototyping/%5B%20ITERATION%205%20%5D%20%5B%20PROTOTYPE%20%5D%20VoxelTool%20%2B%20Pathfinding.prefab.meta"
+            );
+            break;
+
+          case "VoxelTool_Video":
+            window.open("https://www.youtube.com/watch?v=vR66tzICYdI");
+            break;
+
+          case "FSM_Video":
+            window.open("https://www.youtube.com/watch?v=IdJxNQYtQVk");
+            break;
+        }
+      }
+    });
+  }
+
+  checkExternalLinksMouseOver() {
+    this.rayCaster.setFromCamera(this.mousePosition, this.camera);
+
+    const objectsToTest = this.externalLinksButtons;
+    const intersectedObjects = this.rayCaster.intersectObjects(objectsToTest);
+
+    if (intersectedObjects.length) {
+      this.currentIntersect = intersectedObjects[0];
+    } else {
+      this.currentIntersect = null;
     }
   }
 
@@ -449,13 +559,14 @@ export default class TDWE_Scene extends THREE.Scene {
       this.currentIntersect = null;
     }
 
-    for (const currentObject of objectsToTest) {
-      if (!intersects.find((intersect) => intersect.object === currentObject)) {
-        currentObject.children[0].material.color.set("#ffff00");
-      }
-    }
     for (const intersect of intersects) {
-      intersect.object.material.color.set("#ff0000");
+      intersect.object.material.color.set("#00ff00");
+    }
+
+    for (const currentObject of objectsToTest) {
+      if (!intersects.find((intersect) => intersect.object === object))
+        console.log(intersect.id);
+      currentObject.children[0].material.color.set("#0000ff");
     }
   }
 
