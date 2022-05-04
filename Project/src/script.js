@@ -30,10 +30,6 @@ let activePhysicsWorld;
 let canEnterItem = false;
 let currentlyEntering = false;
 
-let environmentColor = 0x100b13,
-  instructionTextColor = 0x9d0208,
-  platformColor = 0xe85d04;
-
 document.addEventListener("keydown", function (event) {
   if (event.key == "f" || event.key == "F") {
     if (!canEnterItem || currentlyEntering) return;
@@ -81,23 +77,20 @@ function switchScene() {
 }
 
 function fadeSceneIn(pCurrentOpacity) {
-  var noOpacity = {opacity: 0};
-  console.log(pCurrentOpacity)
   fadeInTween = new TWEEN.Tween(pCurrentOpacity)
-    .to({opacity: 0}, 4000)
+    .to({ opacity: 0 }, 3000)
     .onUpdate(function (pCurrentOpacity) {
       fadeImage.style.setProperty("opacity", pCurrentOpacity.opacity);
-      console.log(pCurrentOpacity.opacity);
     });
-    fadeInTween.start();
 }
 
 function fadeSceneOut(pCurrentOpacity) {
   fadeOutTween = new TWEEN.Tween(pCurrentOpacity)
-    .to({ opacity: 1 }, 3000)
+    .to({ opacity: 1 }, 1500)
     .easing(TWEEN.Easing.Quadratic.Out)
-    .onUpdate(function () {
-      fadeImage.style.setProperty("opacity", currentOpacity.opacity);
+    .onUpdate(function (pCurrentOpacity) {
+      console.log(fadeImage.style.opacity);
+      fadeImage.style.setProperty("opacity", pCurrentOpacity.opacity);
     })
     .onComplete(function () {
       activeScene.currentScene = false;
@@ -152,6 +145,7 @@ async function initialize() {
   createRenderingComponents();
   currentOpacity.opacity = 1;
   fadeSceneIn(currentOpacity);
+  fadeInTween.start();
   initializeScenes();
 
   activeScene = mainScene;

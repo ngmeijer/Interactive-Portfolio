@@ -3,6 +3,8 @@ import { FontLoader } from "three/examples/jsm/loaders/fontloader";
 import EventEmitter from "./EventEmitter.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
+import { LoadingManager } from "three";
+import { DRACOLoader } from "three/examples/jsm/loaders/dracoloader";
 
 export default class Resources extends EventEmitter {
   items;
@@ -10,6 +12,7 @@ export default class Resources extends EventEmitter {
   loaded;
   sources;
   loaders;
+  loadingBar;
 
   constructor(sources) {
     super();
@@ -20,16 +23,35 @@ export default class Resources extends EventEmitter {
     this.toLoad = this.sources.length;
     this.loaded = 0;
 
+    this.loadingBar = document.querySelector(".loadingBar");
     this.setLoaders();
     this.startLoading();
   }
 
   setLoaders() {
     this.loaders = {};
-    this.loaders.fontLoader = new FontLoader();
-    this.loaders.textureLoader = new THREE.TextureLoader();
-    this.loaders.modelLoader = new GLTFLoader();
-    this.loaders.svgLoader = new SVGLoader();
+    this.loaders.loadingManager = new LoadingManager(
+      //Loaded
+      () => {
+        this.loadingBar.classList.add("ended");
+        this.loadingBar.style.transform = "";
+      },
+
+      //Progress
+      (itemUrl, itemsLoaded, itemsTotal) => {
+        const progressRatio = itemsLoaded / itemsTotal;
+        this.loadingBar.style.transform = `scaleX(${progressRatio})`;
+      }
+    );
+    this.loaders.fontLoader = new FontLoader(this.loaders.loadingManager);
+    this.loaders.textureLoader = new THREE.TextureLoader(
+      this.loaders.loadingManager
+    );
+    this.loaders.dracoLoader = new DRACOLoader();
+    this.loaders.dracoLoader.setDecoderPath("/draco/");
+    this.loaders.gltfLoader = new GLTFLoader(this.loaders.loadingManager);
+    this.loaders.gltfLoader.setDRACOLoader(this.loaders.dracoLoader);
+    this.loaders.svgLoader = new SVGLoader(this.loaders.loadingManager);
   }
 
   startLoading() {
@@ -46,7 +68,7 @@ export default class Resources extends EventEmitter {
           });
           break;
         case "model":
-          this.loaders.modelLoader.load(source.path, (file) => {
+          this.loaders.gltfLoader.load(source.path, (file) => {
             file.scene.traverse(function (child) {
               if (child.isMesh) {
                 child.receiveShadow = true;

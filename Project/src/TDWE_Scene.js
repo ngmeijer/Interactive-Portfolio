@@ -5,7 +5,7 @@ import CANNON from "cannon";
 import CubeBody from "./CubeBody.js";
 import Player from "./Player.js";
 import Text from "./Text.js";
-import { Vector2, Vector3 } from "three";
+import InformationContainer from "./InformationContainer.js";
 
 export default class TDWE_Scene extends THREE.Scene {
   light;
@@ -42,7 +42,7 @@ export default class TDWE_Scene extends THREE.Scene {
   videoSources = ["TestVideo.mp4", "Test2Video.mp4", "Test3Video.mp4"];
   rayCaster;
   rayDirection;
-  mousePosition = new Vector2();
+  mousePosition = new THREE.Vector2();
   currentIntersect;
   currentScene = false;
 
@@ -64,17 +64,17 @@ export default class TDWE_Scene extends THREE.Scene {
     this.createLighting();
     this.createStartText();
     this.createImage();
-    this.createVideo();
-    this.createVideoControls();
+    // this.createVideo();
+    // this.createVideoControls();
   }
 
   update(delta) {
     if (!this.currentScene) return;
 
     this.playerInstance.update(delta);
-    this.videoTexture.needsUpdate = true;
+    // this.videoTexture.needsUpdate = true;
 
-    this.checkVideoControlsMouseOver();
+    // this.checkVideoControlsMouseOver();
   }
 
   createPlayer() {
@@ -129,85 +129,95 @@ export default class TDWE_Scene extends THREE.Scene {
   }
 
   createStartText() {
-    let scene = this;
-    let textCol = this.instructionTextColor;
-
-    const projectDescriptionText = new Text(
-      "This was the 3rd project in my 2nd year, and the first" +
+    {
+      const projectDescription = new InformationContainer(
+        new THREE.Vector3(3.3, 7.3, -3),
+        this.resources.items.ElMessiri,
+        this.instructionTextColor
+      );
+      projectDescription.headerContent = "Project Description";
+      projectDescription.paragraphContent =
+        "This was the 3rd project in my 2nd year, and the first" +
         "\none where we were free to make what we wanted, in every possible" +
-        "\ncreative way. I mostly worked on AI.",
-      this.resources.items.ElMessiri,
-      0.2,
-      textCol,
-      new Vector3(3.3, 7.3, -3)
-    );
-    scene.add(projectDescriptionText.mesh);
+        "\ncreative way. I mostly worked on AI.";
 
-    const teamStructureHeader = new Text(
-      "Team structure:",
-      this.resources.items.ElMessiri,
-      0.3,
-      textCol,
-      new Vector3(3.3, 2.6, -3)
-    );
-    scene.add(teamStructureHeader.mesh);
+      projectDescription.createContent();
+      this.add(projectDescription.group);
+    }
 
-    const teamStructureText = new Text(
-      " 3 Artists \n 2 Designers \n 2 Engineers",
-      this.resources.items.ElMessiri,
-      0.2,
-      textCol,
-      new Vector3(3.3, 2, -3)
-    );
-    scene.add(teamStructureText.mesh);
+    {
+      const teamStructure = new InformationContainer(
+        new THREE.Vector3(3.3, 2, -3),
+        this.resources.items.ElMessiri,
+        this.instructionTextColor
+      );
+      teamStructure.headerContent = "Team Structure";
+      teamStructure.paragraphContent = "3 Artists \n2 Designers \n2 Engineers";
 
-    const quoteText = new Text(
-      "“A first person co-op puzzle game \nwhere the player needs to escape from a Soviet lab, \ntogether with another player. Do your best to \nsolve the puzzles, evade the enemies and get out together. \nYou will really need to rely on each other to find a way out, \nbut is everything as it seems?”",
-      this.resources.items.ElMessiri,
-      0.2,
-      textCol,
-      new Vector3(3.3, 5.5, -3)
-    );
-    scene.add(quoteText.mesh);
+      teamStructure.createContent();
+      this.add(teamStructure.group);
+    }
 
-    const projectDetailsHeader = new Text(
-      "Project details:",
-      this.resources.items.ElMessiri,
-      0.3,
-      textCol,
-      new Vector3(7, 2.58, -3)
-    );
-    scene.add(projectDetailsHeader.mesh);
-
-    const projectDetailsText = new Text(
-      "Project type: school\n" +
+    {
+      const projectDetails = new InformationContainer(
+        new THREE.Vector3(3.3, 4.8, -3),
+        this.resources.items.ElMessiri,
+        this.instructionTextColor
+      );
+      projectDetails.headerContent = "Project details";
+      projectDetails.paragraphContent =
+        "Project type: school\n" +
         "Language: C#\n" +
         "Software: Unity 3D\n" +
-        "Project duration: 3 weeks",
-      this.resources.items.ElMessiri,
-      0.2,
-      textCol,
-      new Vector3(7.1, 2, -3)
-    );
-    scene.add(projectDetailsText.mesh);
+        "Project duration: 3 weeks";
 
-    const technicalDetailsHeader = new Text(
-      "Voxel tool",
-      this.resources.items.ElMessiri,
-      0.35,
-      textCol,
-      new Vector3(12.5, 7.2, -3)
-    );
-    scene.add(technicalDetailsHeader.mesh);
+      projectDetails.createContent();
+      this.add(projectDetails.group);
+    }
 
-    const technicalDetailsText = new Text(
-      "For this project, I developed a prototype voxel tool. It converts \nany 3D (or 2D) space into a grid of voxels, by detecting colliders \nin the scene and saving that collision data, so that any AI agent \n(in the current stage, only flying agents) will be able to calculate \na new path to their target position.",
-      this.resources.items.ElMessiri,
-      0.2,
-      textCol,
-      new Vector3(12.6, 6.5, -3)
-    );
-    scene.add(technicalDetailsText.mesh);
+    {
+      const gitHeader = new Text(
+        "Git repository",
+        this.resources.items.ElMessiri,
+        0.2,
+        this.instructionTextColor,
+        new THREE.Vector3(7.6, 5.4, -3)
+      );
+      this.add(gitHeader.mesh);
+
+      let gitButton = this.resources.items.git.clone();
+      this.add(gitButton);
+      gitButton.position.set(8.5, 4, -3);
+    }
+
+    {
+      const youtubeHeader = new Text(
+        "Trailer",
+        this.resources.items.ElMessiri,
+        0.2,
+        this.instructionTextColor,
+        new THREE.Vector3(8, 1.9, -3)
+      );
+      this.add(youtubeHeader.mesh);
+
+      let youtubeButton = this.resources.items.git.clone();
+      this.add(youtubeButton);
+      youtubeButton.position.set(8.5, 0.6, -3);
+    }
+
+    {
+      const technicalBreakdown = new InformationContainer(
+        new THREE.Vector3(12.5, 7.3, -3),
+        this.resources.items.ElMessiri,
+        this.instructionTextColor
+      );
+      technicalBreakdown.headerContent = "Technical Breakdown";
+      technicalBreakdown.paragraphContent =
+        "- Voxel tool" + "\n- AI Finite State Machine";
+
+      technicalBreakdown.createContent();
+      this.add(technicalBreakdown.group);
+    }
   }
 
   createImage() {
