@@ -13,8 +13,8 @@ export default class Text extends THREE.Object3D {
       height: 0.01,
     });
     this.mesh = new THREE.Mesh(geo, [
-      new THREE.MeshPhongMaterial({ color: pColour }),
-      new THREE.MeshPhongMaterial({ color: pColour }),
+      new THREE.MeshStandardMaterial({ color: pColour }),
+      new THREE.MeshStandardMaterial({ color: pColour }),
     ]);
 
     this.mesh.position.x = pPosition.x;

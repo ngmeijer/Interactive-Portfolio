@@ -5,25 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="#" />
     <title>Nils Meijer - Portfolio</title>
+    <script type="text/javascript" src="modal.js"></script>
   </head>
   <body>
     <div id="fadeImage"></div>
     <div class="loadingBar"></div>
-    <!-- <video
-      id="videoContainer"
-      playsinline
-      autoplay="true"
-      muted
-      webkit-playsinline
-      width="1290"
-      height="1040"
-      style="display: none"
-    >
-      <source
-        id="video"
-        src="../static/Videos/TestVideo.mp4"
-        type="video/mp4"
-      />
-    </video> -->
+
+    <div class="modal">
+      <div class="modal-background">
+        <iframe
+          class="videoContainer"
+          title="YouTube video player"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+      </div>
+      <button class="modal-close" onclick="closeModal()">&times</button>
+    </div>
   </body>
 </html>

@@ -6,20 +6,12 @@ import CubeBody from "./CubeBody.js";
 import Player from "./Player.js";
 import Text from "./Text.js";
 import InformationContainer from "./InformationContainer.js";
-import e from "cors";
 
 export default class TDWE_Scene extends THREE.Scene {
   light;
 
-  homeArea;
-  portfolioArea;
-  aboutMeArea;
-  contactMeArea;
-  websiteComponents = [];
   physicsWorld;
   camera;
-
-  eventManager;
 
   playerInstance;
   playerPosition = new THREE.Vector3(0, 0.5, 1);
@@ -93,7 +85,7 @@ export default class TDWE_Scene extends THREE.Scene {
 
     this.createMovementInput(this.playerInstance);
     this.playerInstance.leftBorder = -6;
-    this.playerInstance.rightBorder = 35;
+    this.playerInstance.rightBorder = 65;
   }
 
   createMovementInput(pPlayer) {
@@ -122,8 +114,8 @@ export default class TDWE_Scene extends THREE.Scene {
 
   createGeneralGeometry() {
     let groundBody = new CubeBody(
-      new THREE.Vector3(10, -3, 1),
-      new THREE.Vector3(50, 5, 1)
+      new THREE.Vector3(30, -3, 1),
+      new THREE.Vector3(150, 5, 1)
     );
     this.physicsWorld.addBody(groundBody);
 
@@ -264,7 +256,7 @@ export default class TDWE_Scene extends THREE.Scene {
       );
       systemDescription.headerContent = "AI Finite State Machine";
       systemDescription.paragraphContent =
-        "Working in tandem with the voxel tool, every AI agent has a" +
+        "Working together with the voxel tool, every AI agent has a" +
         "\ninite State Machine (FSM) instance assigned to them." +
         "\nDepending on external factors and settings for that AI type," +
         "\nan action / new state is determined.";
@@ -285,7 +277,7 @@ export default class TDWE_Scene extends THREE.Scene {
 
       let youtubeButton = this.resources.items.youtube.clone();
       this.add(youtubeButton);
-      youtubeButton.position.set(23, 0.6, -3);
+      youtubeButton.position.set(23.5, 0.6, -3);
       youtubeButton.children[0].name = "FSM_Video";
       this.externalLinksButtons.push(youtubeButton);
     }
@@ -296,7 +288,7 @@ export default class TDWE_Scene extends THREE.Scene {
       if (this.currentIntersect) {
         switch (this.currentIntersect.object.name) {
           case "Trailer":
-            window.open("https://www.youtube.com/watch?v=vR66tzICYdI");
+            showModal("https://www.youtube.com/embed/vR66tzICYdI");
             break;
 
           case "Git_Repo":
@@ -306,11 +298,11 @@ export default class TDWE_Scene extends THREE.Scene {
             break;
 
           case "VoxelTool_Video":
-            window.open("https://www.youtube.com/watch?v=vR66tzICYdI");
+            showModal("https://www.youtube.com/embed/IdJxNQYtQVk");
             break;
 
           case "FSM_Video":
-            window.open("https://www.youtube.com/watch?v=IdJxNQYtQVk");
+            showModal("https://www.youtube.com/embed/IdJxNQYtQVk");
             break;
         }
       }
@@ -571,8 +563,8 @@ export default class TDWE_Scene extends THREE.Scene {
   }
 
   createLighting() {
-    this.light = new THREE.PointLight(0xffba08, 10, 50);
-    this.light.position.set(0, 7, 2);
+    this.light = new THREE.DirectionalLight(0xffba08, 10, 50);
+    this.light.position.set(0, 7, 4);
     this.light.castShadow = true;
     this.add(this.light);
     this.light.shadow.mapSize.width = 1024;
