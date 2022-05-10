@@ -181,7 +181,7 @@ export default class PortfolioItem extends THREE.Object3D {
       this.itemPosition
     );
 
-    if (playerDistance < 2.9) {
+    if (playerDistance < 3.5) {
       this.playerInRange = true;
       if (!this.textVisible) this.startTextShowAnimation();
     } else {

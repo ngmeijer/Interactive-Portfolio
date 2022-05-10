@@ -148,7 +148,7 @@ async function initialize() {
   fadeInTween.start();
   initializeScenes();
 
-  activeScene = tdweScene;
+  activeScene = mainScene;
   activePhysicsWorld = activeScene.physicsWorld;
   activeScene.currentScene = true;
 

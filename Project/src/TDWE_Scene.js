@@ -7,6 +7,8 @@ import Player from "./Player.js";
 import Text from "./Text.js";
 import InformationContainer from "./InformationContainer.js";
 
+import { showModal } from "./modal.js";
+
 export default class TDWE_Scene extends THREE.Scene {
   light;
 
