@@ -11,6 +11,27 @@ export default [
     path: "Portfolio Media/NetherFights.png",
   },
   {
+    name: "ProcArt_Image",
+    type: "texture",
+    path: "Portfolio Media/ProcArt.png",
+  },
+  {
+    name: "HiveLife_Image",
+    type: "texture",
+    path: "Portfolio Media/HiveLife.png",
+  },
+  {
+    name: "Minecraft_Prototype",
+    type: "texture",
+    path: "Portfolio Media/Minecraft_Prototype.png",
+  },
+  {
+    name: "VoxelTool_Prototype",
+    type: "texture",
+    path: "Portfolio Media/VoxelTool_Prototype.png",
+  },
+
+  {
     name: "Photo",
     type: "texture",
     path: "Photo.png",

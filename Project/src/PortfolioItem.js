@@ -1,8 +1,8 @@
 import TWEEN, { Tween } from "@tweenjs/tween.js";
 import * as THREE from "three";
-import { Vector2, Vector3 } from "three";
+import { Group, Vector2, Vector3 } from "three";
 import Cube from "./Cube.js";
-import Image from "./Image.js";
+import Image from "./ImageContainer.js";
 import Text from "./Text.js";
 
 export default class PortfolioItem extends THREE.Object3D {
@@ -20,14 +20,17 @@ export default class PortfolioItem extends THREE.Object3D {
   file;
   imageOffset;
   textureLoader;
-  hintText;
+
+  popupGroup;
+  popupText;
+  nameText;
   textVisible;
   tweenTextShow;
   tweenTextHide;
   playerInstance;
   playerInRange;
 
-  background;
+  imageCanvas;
 
   verticalWallWidth;
   verticalWallHeight;
@@ -62,6 +65,7 @@ export default class PortfolioItem extends THREE.Object3D {
     this.shouldCreatePlatform = pCreatePlatform;
 
     this.imageOffset = new THREE.Vector3(0, 0, -0.5);
+    this.popupGroup = new THREE.Group();
 
     this.createText();
     this.createPlatform();
@@ -69,17 +73,17 @@ export default class PortfolioItem extends THREE.Object3D {
     this.createImage();
 
     const targetShowTextPosition = new THREE.Vector3(
-      this.hintText.mesh.position.x,
-      this.hintText.mesh.position.y + 1.7,
-      this.hintText.mesh.position.z + 1
+      this.popupGroup.position.x,
+      this.popupGroup.position.y + 1.7,
+      this.popupGroup.position.z
     );
     const targetHideTextPosition = new THREE.Vector3(
-      this.hintText.mesh.position.x,
-      this.hintText.mesh.position.y,
-      this.hintText.mesh.position.z
+      this.popupGroup.position.x,
+      this.popupGroup.position.y,
+      this.popupGroup.position.z
     );
 
-    this.tweenTextShow = new Tween(this.hintText.mesh.position)
+    this.tweenTextShow = new Tween(this.popupGroup.position)
       .to(
         {
           x: targetShowTextPosition.x,
@@ -90,7 +94,7 @@ export default class PortfolioItem extends THREE.Object3D {
       )
       .easing(TWEEN.Easing.Quartic.InOut);
 
-    this.tweenTextHide = new Tween(this.hintText.mesh.position)
+    this.tweenTextHide = new Tween(this.popupGroup.position)
       .to(
         {
           x: targetHideTextPosition.x,
@@ -103,7 +107,7 @@ export default class PortfolioItem extends THREE.Object3D {
   }
 
   createFrame() {
-    this.background = new Cube(
+    this.imageCanvas = new Cube(
       this.ID + "_Platform",
       new THREE.Vector3(5.2, 3, 0.1),
       new THREE.Vector3(
@@ -115,7 +119,7 @@ export default class PortfolioItem extends THREE.Object3D {
       true,
       0
     );
-    this.background.mesh.castShadow = false;
+    this.imageCanvas.mesh.castShadow = false;
   }
 
   createImage() {
@@ -161,19 +165,37 @@ export default class PortfolioItem extends THREE.Object3D {
   }
 
   createText() {
-    this.hintText = new Text(
+    this.popupText = new Text(
       "Press F to enter",
       this.font,
       0.3,
       0xffffff,
-      new Vector3(
-        this.itemPosition.x - 1.4,
-        this.itemPosition.y,
-        this.itemPosition.z - 2
-      )
+      new Vector3(-1.5, 0, 0)
     );
 
-    this.hintText.mesh.castShadow = false;
+    this.popupText.mesh.castShadow = false;
+
+    this.popupGroup.add(this.popupText.mesh);
+
+    this.nameText = new Text(
+      this.ID,
+      this.font,
+      0.3,
+      0xffffff,
+      new Vector3(0, 0.75, 0)
+    );
+
+    this.nameText.geo.computeBoundingBox();
+    this.nameText.geo.center();
+    this.nameText.mesh.castShadow = false;
+
+    this.popupGroup.add(this.nameText.mesh);
+
+    this.popupGroup.position.set(
+      this.itemPosition.x,
+      this.itemPosition.y,
+      this.itemPosition.z - 1
+    );
   }
 
   checkPlayerOnPlatform() {
@@ -203,12 +225,11 @@ export default class PortfolioItem extends THREE.Object3D {
   }
 
   addToScene(pScene, pPhysicsWorld) {
-    pScene.add(this.background.mesh);
+    pScene.add(this.imageCanvas.mesh);
+    pScene.add(this.image.mesh);
     pScene.add(this.bridge.mesh);
     pPhysicsWorld.add(this.bridge.body);
 
-    pScene.add(this.image.mesh);
-
-    pScene.add(this.hintText.mesh);
+    pScene.add(this.popupGroup);
   }
 }

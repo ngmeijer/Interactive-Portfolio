@@ -13,7 +13,6 @@ export function showModal(pSrc) {
 }
 
 export function closeModal() {
-  console.log("closing modal");
   modal[0].style.display = "none";
   modalActive = false;
   iFrame[0].src = "";

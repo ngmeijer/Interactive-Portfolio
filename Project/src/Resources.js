@@ -13,10 +13,20 @@ export default class Resources extends EventEmitter {
   sources;
   loaders;
   loadingBar;
+  loadingText;
+  randomLoadingText;
+  boundRandomText;
+  unboundRandomText;
+  interval;
+
+  randomLoadingSentences = [
+    "Swapping time and space...",
+    "I feel like I'm supposed to be loading something...",
+    "Distracted by cat GIFs",
+  ];
 
   constructor(sources) {
     super();
-
     this.sources = sources;
 
     this.items = {};
@@ -24,6 +34,12 @@ export default class Resources extends EventEmitter {
     this.loaded = 0;
 
     this.loadingBar = document.querySelector(".loadingBar");
+    this.loadingText = document.querySelector(".progressLoadingText");
+    this.randomLoadingText = document.querySelector(".randomLoadingText");
+    this.boundRandomText = this.chooseRandomText.bind(this);
+    this.unboundRandomText = this.stopRandomText.bind(this);
+    this.interval = window.setInterval(this.boundRandomText, 2500);
+
     this.setLoaders();
     this.startLoading();
   }
@@ -35,14 +51,22 @@ export default class Resources extends EventEmitter {
       () => {
         this.loadingBar.classList.add("ended");
         this.loadingBar.style.transform = "";
+        this.loadingText.innerHTML = "";
+
+        window.clearInterval(this.interval);
+        this.randomLoadingText.innerHTML = "";
       },
 
       //Progress
       (itemUrl, itemsLoaded, itemsTotal) => {
         const progressRatio = itemsLoaded / itemsTotal;
         this.loadingBar.style.transform = `scaleX(${progressRatio})`;
+
+        const textProgressRatio = Number.parseFloat(progressRatio).toFixed(2);
+        this.loadingText.innerHTML = `${textProgressRatio * 100}%`;
       }
     );
+
     this.loaders.fontLoader = new FontLoader(this.loaders.loadingManager);
     this.loaders.textureLoader = new THREE.TextureLoader(
       this.loaders.loadingManager
@@ -52,6 +76,16 @@ export default class Resources extends EventEmitter {
     this.loaders.gltfLoader = new GLTFLoader(this.loaders.loadingManager);
     this.loaders.gltfLoader.setDRACOLoader(this.loaders.dracoLoader);
     this.loaders.svgLoader = new SVGLoader(this.loaders.loadingManager);
+  }
+
+  chooseRandomText() {
+    const randomIndex = Math.floor(Math.random() * this.randomLoadingSentences.length);
+    const randomSentence = this.randomLoadingSentences[randomIndex];
+    this.randomLoadingText.innerHTML = randomSentence;
+  }
+
+  stopRandomText(){
+    window.clearInterval(this.boundRandomText);
   }
 
   startLoading() {

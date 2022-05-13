@@ -4,9 +4,11 @@ import TWEEN from "@tweenjs/tween.js";
 
 import Resources from "./Resources.js";
 import sources from "./sources.js";
-import MainScene from "./MainScene.js";
-import TDWE_Scene from "./TDWE_Scene.js";
-import NetherFights_Scene from "./NetherFights_Scene.js";
+import MainScene from "./Scenes/MainScene.js";
+import TDWE_Scene from "./Scenes/TDWE_Scene.js";
+import NetherFights_Scene from "./Scenes/NetherFights_Scene.js";
+import ProcArt_Scene from "./Scenes/ProcArt_Scene.js";
+import HiveLife_Scene from "./Scenes/HiveLife_Scene.js";
 
 THREE.Cache.enabled = true;
 const eventManager = new THREE.EventDispatcher();
@@ -17,6 +19,9 @@ resources.on("ready", () => {
 const mainScene = new MainScene(resources);
 const tdweScene = new TDWE_Scene(resources);
 const netherFightsScene = new NetherFights_Scene(resources);
+const procArtScene = new ProcArt_Scene(resources);
+const hiveLifeScene = new HiveLife_Scene(resources);
+
 mainScene.eventManager = eventManager;
 tdweScene.eventManager = eventManager;
 
@@ -97,18 +102,17 @@ function fadeSceneOut(pCurrentOpacity) {
       let newScene = mainScene.portfolioArea.newScene;
 
       switch (newScene) {
-        case "TDWE":
+        case "The Day We Escaped":
           activeScene = tdweScene;
           break;
-        case "NetherFights":
+        case "Nether Fights":
           activeScene = netherFightsScene;
           break;
-        case "HiveLife":
+        case "Hive Life":
+          activeScene = hiveLifeScene;
           break;
-        case "ProceduralArt":
-          break;
-        default:
-          activeScene = mainScene;
+        case "Procedural Art":
+          activeScene = procArtScene;
           break;
       }
 
@@ -136,6 +140,9 @@ function cameraFollowPlayer() {
 function initializeScenes() {
   mainScene.initalizeScene(camera);
   tdweScene.initalizeScene(camera);
+  procArtScene.initalizeScene(camera);
+  hiveLifeScene.initalizeScene(camera);
+  netherFightsScene.initalizeScene(camera);
 }
 
 const frameClock = new THREE.Clock();
@@ -148,17 +155,17 @@ async function initialize() {
   fadeInTween.start();
   initializeScenes();
 
-  activeScene = mainScene;
+  activeScene = hiveLifeScene;
   activePhysicsWorld = activeScene.physicsWorld;
   activeScene.currentScene = true;
-
+  
   animate();
 }
 
 let countedFrames = 0;
 function animate() {
   requestAnimationFrame(animate);
-
+  
   delta = Math.min(frameClock.getDelta(), 0.1);
   canEnterItem = mainScene.portfolioArea.canEnterItem;
   activePhysicsWorld.step(delta);

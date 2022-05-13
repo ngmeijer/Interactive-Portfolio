@@ -66,9 +66,9 @@ export default class Portfolio {
   }
 
   createPortfolioItems() {
-    const TWDE_Item = new PortfolioItem(
-      "TDWE",
-      this.resources.items.TDWE_Image,
+    const ProcArt_Item = new PortfolioItem(
+      "Procedural Art",
+      this.resources.items.ProcArt_Image,
       this.resources.items.ElMessiri,
       new THREE.Vector2(5, 2.95),
       new THREE.Vector3(4.875, 2.75),
@@ -77,9 +77,9 @@ export default class Portfolio {
       this.platformColor
     );
 
-    const NetherFights_Item = new PortfolioItem(
-      "NetherFights",
-      this.resources.items.NetherFights_Image,
+    const hiveLife_Item = new PortfolioItem(
+      "Hive Life",
+      this.resources.items.HiveLife_Image,
       this.resources.items.ElMessiri,
       new THREE.Vector2(5, 2.95),
       new THREE.Vector3(4.875, 2.75),
@@ -88,9 +88,9 @@ export default class Portfolio {
       this.platformColor
     );
 
-    const TWDE_Item3 = new PortfolioItem(
-      "TDWE",
-      this.resources.items.NetherFights_Image,
+    const TWDE_Item = new PortfolioItem(
+      "The Day We Escaped",
+      this.resources.items.TDWE_Image,
       this.resources.items.ElMessiri,
       new THREE.Vector2(5, 2.95),
       new THREE.Vector3(4.875, 2.75),
@@ -99,17 +99,32 @@ export default class Portfolio {
       this.platformColor
     );
 
+    const NetherFights_Item = new PortfolioItem(
+      "Nether Fights",
+      this.resources.items.NetherFights_Image,
+      this.resources.items.ElMessiri,
+      new THREE.Vector2(5, 2.95),
+      new THREE.Vector3(4.875, 2.75),
+      new THREE.Vector3(32.5, 0.75, -1),
+      this.instructionTextColor,
+      this.platformColor
+    );
+
     TWDE_Item.addToScene(this.scene, this.physicsWorld);
     TWDE_Item.playerInstance = this.playerInstance;
     this.portfolioItems.push(TWDE_Item);
 
+    ProcArt_Item.addToScene(this.scene, this.physicsWorld);
+    ProcArt_Item.playerInstance = this.playerInstance;
+    this.portfolioItems.push(ProcArt_Item);
+
+    hiveLife_Item.addToScene(this.scene, this.physicsWorld);
+    hiveLife_Item.playerInstance = this.playerInstance;
+    this.portfolioItems.push(hiveLife_Item);
+
     NetherFights_Item.addToScene(this.scene, this.physicsWorld);
     NetherFights_Item.playerInstance = this.playerInstance;
     this.portfolioItems.push(NetherFights_Item);
-
-    TWDE_Item3.addToScene(this.scene, this.physicsWorld);
-    TWDE_Item3.playerInstance = this.playerInstance;
-    this.portfolioItems.push(TWDE_Item3);
   }
 
   createLighting() {

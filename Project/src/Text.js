@@ -3,18 +3,19 @@ import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 
 export default class Text extends THREE.Object3D {
   mesh;
-  
+  geo;
+
   constructor(pTextContent, pFont, pFontSize, pColour, pPosition) {
     super();
 
-    const geo = new TextGeometry(pTextContent, {
+    this.geo = new TextGeometry(pTextContent, {
       font: pFont,
       size: pFontSize,
       height: 0.01,
     });
-    this.mesh = new THREE.Mesh(geo, [
-      new THREE.MeshStandardMaterial({ color: pColour }),
-      new THREE.MeshStandardMaterial({ color: pColour }),
+    this.mesh = new THREE.Mesh(this.geo, [
+      new THREE.MeshBasicMaterial({ color: pColour }),
+      new THREE.MeshBasicMaterial({ color: pColour }),
     ]);
 
     this.mesh.position.x = pPosition.x;

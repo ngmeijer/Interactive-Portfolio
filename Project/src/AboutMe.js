@@ -5,7 +5,7 @@ import Cube from "./Cube.js";
 import Text from "./Text.js";
 import Door from "./Door.js";
 import { Vector2, Vector3 } from "three";
-import Image from "./Image.js";
+import Image from "./ImageContainer.js";
 
 export default class AboutMe {
   door;
