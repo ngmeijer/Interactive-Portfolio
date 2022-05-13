@@ -30,18 +30,27 @@ let camera, renderer;
 let fadeImage = document.getElementById("fadeImage");
 
 let activeScene = mainScene;
+let newScene;
 let activePhysicsWorld;
 
 let canEnterItem = false;
 let currentlyEntering = false;
+let inPortfolioScene = false;
+let lastPlayerPosition;
 
 document.addEventListener("keydown", function (event) {
   if (event.key == "f" || event.key == "F") {
-    if (!canEnterItem || currentlyEntering) return;
-    currentlyEntering = true;
-    activeScene.playerInstance.saveCurrentPosition();
-    activeScene.playerInstance.moveIntoPortfolioItem();
-    switchScene();
+    if (activeScene.name != "Main Scene") {
+      newScene = mainScene;
+      mainScene.playerInstance.setPosition(lastPlayerPosition);
+      switchScene();
+    } else if (!canEnterItem || currentlyEntering) return;
+    else {
+      currentlyEntering = true;
+      lastPlayerPosition = mainScene.playerInstance.group.position;
+      mainScene.playerInstance.moveIntoPortfolioItem();
+      switchScene();
+    }
   }
 });
 
@@ -90,6 +99,7 @@ function fadeSceneIn(pCurrentOpacity) {
 }
 
 function fadeSceneOut(pCurrentOpacity) {
+  console.log("calling fade out");
   fadeOutTween = new TWEEN.Tween(pCurrentOpacity)
     .to({ opacity: 1 }, 1500)
     .easing(TWEEN.Easing.Quadratic.Out)
@@ -98,9 +108,13 @@ function fadeSceneOut(pCurrentOpacity) {
     })
     .onComplete(function () {
       activeScene.currentScene = false;
+      activeScene.playerInstance.resetPlayer();
 
-      let newScene = mainScene.portfolioArea.newScene;
+      newScene = mainScene.portfolioArea.newScene;
 
+      if (activeScene.name != "Main Scene") newScene = "Main Scene";
+
+      console.log(newScene);
       switch (newScene) {
         case "The Day We Escaped":
           activeScene = tdweScene;
@@ -114,11 +128,16 @@ function fadeSceneOut(pCurrentOpacity) {
         case "Procedural Art":
           activeScene = procArtScene;
           break;
+        case "Main Scene":
+          activeScene = mainScene;
+          inPortfolioScene = false;
+          break;
       }
+
+      activeScene.playerInstance.resetPlayer();
 
       activeScene.currentScene = true;
       activePhysicsWorld = activeScene.physicsWorld;
-      // activeScene.playerInstance.resetPlayer();
     });
 }
 
@@ -155,17 +174,17 @@ async function initialize() {
   fadeInTween.start();
   initializeScenes();
 
-  activeScene = hiveLifeScene;
+  activeScene = mainScene;
   activePhysicsWorld = activeScene.physicsWorld;
   activeScene.currentScene = true;
-  
+
   animate();
 }
 
 let countedFrames = 0;
 function animate() {
   requestAnimationFrame(animate);
-  
+
   delta = Math.min(frameClock.getDelta(), 0.1);
   canEnterItem = mainScene.portfolioArea.canEnterItem;
   activePhysicsWorld.step(delta);

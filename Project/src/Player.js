@@ -50,6 +50,7 @@ export default class Player extends THREE.Object3D {
   currentItemTarget;
 
   characterMesh;
+  sceneName;
 
   constructor(pMoveSpeed, pJumpForce, pPosition, pCharacterMesh) {
     super();
@@ -90,14 +91,21 @@ export default class Player extends THREE.Object3D {
     this.playerBody.velocity = this.velocity;
   }
 
-  createMesh() {}
-
   resetPlayer() {
     this.playerBody.position.x = this.startPos.x;
     this.playerBody.position.y = this.startPos.y;
     this.playerBody.position.z = this.startPos.z;
 
     this.canMove = true;
+  }
+
+  setPosition(pPosition) {
+    this.playerBody.position.x = pPosition.x;
+    this.playerBody.position.y = pPosition.y;
+    this.playerBody.position.z = pPosition.z;
+
+    this.canMove = true;
+    console.log("set position.");
   }
 
   setTargetPosition() {

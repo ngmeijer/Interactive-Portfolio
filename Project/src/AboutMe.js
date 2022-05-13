@@ -17,7 +17,7 @@ export default class AboutMe {
   scene;
   physicsWorld;
 
-  instructionTextColor = 0x9d0208;
+  instructionTextColor = 0xffffff;
   platformColor = 0xe85d04;
   environmentColor = 0x100b13;
 

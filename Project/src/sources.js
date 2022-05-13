@@ -3,32 +3,57 @@ export default [
   {
     name: "TDWE_Image",
     type: "texture",
-    path: "Portfolio Media/TDWE.png",
+    path: "Portfolio Media/TheDayWeEscaped/TDWE.png",
   },
   {
     name: "NetherFights_Image",
     type: "texture",
-    path: "Portfolio Media/NetherFights.png",
+    path: "Portfolio Media/NetherFights/NetherFights.png",
   },
   {
     name: "ProcArt_Image",
     type: "texture",
-    path: "Portfolio Media/ProcArt.png",
+    path: "Portfolio Media/ProcArt/ProcArt.png",
+  },
+  {
+    name: "ProcArt_Editor",
+    type: "texture",
+    path: "Portfolio Media/ProcArt/ProcArt_Editor.png",
+  },
+  {
+    name: "NodeSystem",
+    type: "texture",
+    path: "Portfolio Media/ProcArt/NodeSystem.png",
+  },
+  {
+    name: "RoadGenerator",
+    type: "texture",
+    path: "Portfolio Media/ProcArt/RoadGenerator.png",
+  },
+  {
+    name: "Spawnpoints",
+    type: "texture",
+    path: "Portfolio Media/ProcArt/Spawnpoints.png",
+  },
+  {
+    name: "CityBlock",
+    type: "texture",
+    path: "Portfolio Media/ProcArt/CityBlock.png",
   },
   {
     name: "HiveLife_Image",
     type: "texture",
-    path: "Portfolio Media/HiveLife.png",
+    path: "Portfolio Media/HiveLife/HiveLife.png",
   },
   {
     name: "Minecraft_Prototype",
     type: "texture",
-    path: "Portfolio Media/Minecraft_Prototype.png",
+    path: "Portfolio Media/HiveLife/Minecraft_Prototype.png",
   },
   {
     name: "VoxelTool_Prototype",
     type: "texture",
-    path: "Portfolio Media/VoxelTool_Prototype.png",
+    path: "Portfolio Media/HiveLife/VoxelTool_Prototype.png",
   },
 
   {

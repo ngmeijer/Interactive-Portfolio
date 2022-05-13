@@ -6,8 +6,10 @@ import CubeBody from "../CubeBody.js";
 import Player from "../Player.js";
 import Text from "../Text.js";
 import InformationContainer from "../InformationContainer.js";
+import AnimatedModel from "../AnimatedModel.js";
 
 import { showModal } from "../modal.js";
+import Image from "../ImageContainer.js";
 
 export default class TDWE_Scene extends THREE.Scene {
   light;
@@ -18,23 +20,10 @@ export default class TDWE_Scene extends THREE.Scene {
   playerInstance;
   playerPosition = new THREE.Vector3(0, 0.5, 1);
 
-  instructionTextColor = 0x9d0208;
+  instructionTextColor = 0xffffff;
   platformColor = 0xe85d04;
   environmentColor = 0x100b13;
 
-  videoTexture;
-  videoContainer;
-  videoSource;
-  videoIsPlaying;
-  playButton;
-  pauseButton;
-  replayButton;
-  nextButton;
-  previousButton;
-  currentVideoIndex = 0;
-  maxVideoIndex = 2;
-  movieMaterial;
-  videoSources = ["TestVideo.mp4", "Test2Video.mp4", "Test3Video.mp4"];
   rayCaster;
   rayDirection;
   mousePosition = new THREE.Vector2();
@@ -48,6 +37,7 @@ export default class TDWE_Scene extends THREE.Scene {
   constructor(pResources) {
     super();
     this.resources = pResources;
+    this.name = "Procedural Art";
   }
 
   initalizeScene(pCamera) {
@@ -83,6 +73,7 @@ export default class TDWE_Scene extends THREE.Scene {
     this.createMovementInput(this.playerInstance);
     this.playerInstance.leftBorder = -6;
     this.playerInstance.rightBorder = 65;
+    this.playerInstance.sceneName = this.name;
   }
 
   createMovementInput(pPlayer) {
@@ -122,6 +113,18 @@ export default class TDWE_Scene extends THREE.Scene {
   }
 
   createStartText() {
+    {
+      const exitSceneText = new Text(
+        "Press F again at any time to exit the scene",
+        this.resources.items.ElMessiri,
+        0.2,
+        0xffffff,
+        new THREE.Vector3(-5.5, -1, 1.8)
+      );
+      exitSceneText.mesh.castShadow = false;
+      this.add(exitSceneText.mesh);
+    }
+
     {
       const projectDescription = new InformationContainer(
         new THREE.Vector3(3.3, 7.3, -3),
@@ -169,44 +172,43 @@ export default class TDWE_Scene extends THREE.Scene {
     }
 
     {
-      const gitHeader = new Text(
-        "Git repository",
-        this.resources.items.ElMessiri,
-        0.2,
-        this.instructionTextColor,
-        new THREE.Vector3(7.6, 5.4, -3)
+      let gitButton = new AnimatedModel(
+        "Git_Repo",
+        this.resources.items.git.clone(),
+        new THREE.Vector3(8.5, 3.5, -3),
+        true,
+        {
+          pHeaderContent: "Git repository",
+          pFont: this.resources.items.ElMessiri,
+        }
       );
-      this.add(gitHeader.mesh);
-
-      let gitButton = this.resources.items.git.clone();
-      this.add(gitButton);
-      gitButton.position.set(8.5, 4, -3);
-      gitButton.children[0].name = "Git_Repo";
-      this.externalLinksButtons.push(gitButton);
+      this.externalLinksButtons.push(gitButton.group.children[0]);
+      this.add(gitButton.group);
     }
 
     {
-      const youtubeHeader = new Text(
-        "Trailer",
-        this.resources.items.ElMessiri,
-        0.2,
-        this.instructionTextColor,
-        new THREE.Vector3(8, 1.9, -3)
+      let youtubeButton = new AnimatedModel(
+        "VoxelTool_Video",
+        this.resources.items.youtube.clone(),
+        new THREE.Vector3(8.5, 0.2, -3),
+        true,
+        {
+          pHeaderContent: "Trailer",
+          pFont: this.resources.items.ElMessiri,
+        }
       );
-      this.add(youtubeHeader.mesh);
-
-      let youtubeButton = this.resources.items.youtube.clone();
-      this.add(youtubeButton);
-      youtubeButton.position.set(8.5, 0.6, -3);
-      youtubeButton.children[0].name = "Trailer";
-      this.externalLinksButtons.push(youtubeButton);
+      this.externalLinksButtons.push(youtubeButton.group.children[0]);
+      this.add(youtubeButton.group);
     }
 
-    this.toolBreakdown();
+    this.generalToolBreakdown();
+    this.nodeSystemBreakdown();
+    this.roadGeneratorBreakdown();
+    this.cityBlocksBreakdown();
     this.createButtonEventListeners();
   }
 
-  toolBreakdown() {
+  generalToolBreakdown() {
     {
       const systemDescription = new InformationContainer(
         new THREE.Vector3(12, 7.3, -3),
@@ -215,12 +217,158 @@ export default class TDWE_Scene extends THREE.Scene {
       );
       systemDescription.headerContent = "Editor tooling";
       systemDescription.paragraphContent =
-        "Since I chose the programming direction for this course, I made" +
-        "\nan extensive in-editor tool. Below, you can see the different" +
-        "\nphases you're going through to generate a city.";
+        "Since I chose the programming direction \nfor this course, I made an extensive \nin-editor tool. On the right, you can see \nthe editor with all available functionality.";
 
       systemDescription.createContent();
       this.add(systemDescription.group);
+    }
+
+    const screenshot = new Image(
+      new THREE.Vector2(5, 9),
+      new THREE.Vector3(19.8, 3.2, -3),
+      this.resources.items.ProcArt_Editor
+    );
+    this.add(screenshot.mesh);
+
+    {
+      let gitButton = new AnimatedModel(
+        "Editor",
+        this.resources.items.git.clone(),
+        new THREE.Vector3(14.5, 3.5, -3),
+        true,
+        {
+          pHeaderContent: "Editor script",
+          pFont: this.resources.items.ElMessiri,
+        }
+      );
+      this.externalLinksButtons.push(gitButton.group.children[0]);
+      this.add(gitButton.group);
+    }
+  }
+
+  nodeSystemBreakdown() {
+    {
+      const systemDescription = new InformationContainer(
+        new THREE.Vector3(23.5, 7.3, -3),
+        this.resources.items.ElMessiri,
+        this.instructionTextColor
+      );
+      systemDescription.headerContent = "Node System";
+      systemDescription.paragraphContent =
+        "As the skeleton of the procedural city, I came up" +
+        "\nwith a node-placement system. These nodes represent" +
+        "\nthe crossroads/intersections. They can be placed, removed," +
+        "\nconnected/disconnected and moved at will.";
+
+      systemDescription.createContent();
+      this.add(systemDescription.group);
+    }
+
+    const screenshot = new Image(
+      new THREE.Vector2(10, 6.19),
+      new THREE.Vector3(28.5, 1.7, -3),
+      this.resources.items.NodeSystem
+    );
+    this.add(screenshot.mesh);
+
+    {
+      let gitButton = new AnimatedModel(
+        "NodeSystem",
+        this.resources.items.git.clone(),
+        new THREE.Vector3(32.5, 6.2, -3),
+        true,
+        {
+          pHeaderContent: "Main script",
+          pFont: this.resources.items.ElMessiri,
+        }
+      );
+      this.externalLinksButtons.push(gitButton.group.children[0]);
+      this.add(gitButton.group);
+    }
+  }
+
+  roadGeneratorBreakdown() {
+    {
+      const systemDescription = new InformationContainer(
+        new THREE.Vector3(35.5, 7.3, -3),
+        this.resources.items.ElMessiri,
+        this.instructionTextColor
+      );
+      systemDescription.headerContent = "Road Generator";
+      systemDescription.paragraphContent =
+        "Of course, these intersections have to be \nvisually connected with each other as well. The \nroads are generated on demand, based on the \nrelative direction of the connected node. A road is \nreally just a simple quad, with 2 vertices connected to \nthe 'main node'and 2 vertices to the other node.";
+
+      systemDescription.createContent();
+      this.add(systemDescription.group);
+    }
+
+    const screenshot = new Image(
+      new THREE.Vector2(8, 6),
+      new THREE.Vector3(39.5, 1.6, -3),
+      this.resources.items.RoadGenerator
+    );
+    this.add(screenshot.mesh);
+
+    {
+      let gitButton = new AnimatedModel(
+        "RoadGenerator",
+        this.resources.items.git.clone(),
+        new THREE.Vector3(42.8, 6.2, -3),
+        true,
+        {
+          pHeaderContent: "Main script",
+          pFont: this.resources.items.ElMessiri,
+        }
+      );
+      this.externalLinksButtons.push(gitButton.group.children[0]);
+      this.add(gitButton.group);
+    }
+  }
+
+  cityBlocksBreakdown() {
+    {
+      const systemDescription = new InformationContainer(
+        new THREE.Vector3(45, 7.3, -3),
+        this.resources.items.ElMessiri,
+        this.instructionTextColor
+      );
+      systemDescription.headerContent = "City Blocks";
+      systemDescription.paragraphContent =
+        "At first, I wanted automatic spawnpoint generation based on the nodes" +
+        "\nselected, but I found manual selection was more user-friendly and" +
+        "\nallowed for much more flexibility.";
+
+      systemDescription.createContent();
+      this.add(systemDescription.group);
+    }
+
+    const screenshot = new Image(
+      new THREE.Vector2(5, 7),
+      new THREE.Vector3(47.5, 2, -3),
+      this.resources.items.Spawnpoints
+    );
+    this.add(screenshot.mesh);
+
+    const screenshot2 = new Image(
+      new THREE.Vector2(6, 6),
+      new THREE.Vector3(53.5, 1.5, -3),
+      this.resources.items.CityBlock
+    );
+    this.add(screenshot2.mesh);
+
+    {
+      let gitButton = new AnimatedModel(
+        "CityBlockGenerator",
+        this.resources.items.git.clone(),
+        new THREE.Vector3(55, 6.2, -3),
+        true,
+        {
+          pHeaderContent: "Main script",
+          pFont: this.resources.items.ElMessiri,
+        }
+      );
+      this.externalLinksButtons.push(gitButton.group.children[0]);
+      this.add(gitButton.group);
     }
   }
 
@@ -229,16 +377,35 @@ export default class TDWE_Scene extends THREE.Scene {
       this.mousePosition.x = (event.clientX / window.innerWidth) * 2 - 1;
       this.mousePosition.y = -(event.clientY / window.innerHeight) * 2 + 1;
     });
-    
+
     window.addEventListener("click", () => {
       if (this.currentIntersect) {
         switch (this.currentIntersect.object.name) {
           case "Trailer":
+            console.log("clicked youtube");
             showModal("https://www.youtube.com/embed/mhs_hoBcfrw");
             break;
-
           case "Git_Repo":
             window.open("https://github.com/ngmeijer/Procedural-Art-Course");
+            break;
+          case "Editor":
+            window.open(
+              "https://github.com/ngmeijer/Procedural-Art-Course/blob/main/Assignments/ProceduralArtCity/Assets/Editor/CityGenerationWindow.cs              "
+            );
+          case "NodeSystem":
+            window.open(
+              "https://github.com/ngmeijer/Procedural-Art-Course/blob/main/Assignments/ProceduralArtCity/Assets/Scripts/NodeEditor.cs"
+            );
+            break;
+          case "RoadGenerator":
+            window.open(
+              "https://github.com/ngmeijer/Procedural-Art-Course/blob/main/Assignments/ProceduralArtCity/Assets/Scripts/RoadGenerator.cs"
+            );
+            break;
+          case "CityBlockGenerator":
+            window.open(
+              "https://github.com/ngmeijer/Procedural-Art-Course/blob/main/Assignments/ProceduralArtCity/Assets/Scripts/CityBlockGenerator.cs"
+            );
             break;
         }
       }

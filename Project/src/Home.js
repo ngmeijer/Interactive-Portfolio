@@ -10,7 +10,7 @@ export default class Home {
   fontLoader;
   eventManager;
 
-  instructionTextColor = 0xe85d04;
+  instructionTextColor = 0xffffff;
   platformColor = 0x370617;
   environmentColor = 0x6a040f;
 

@@ -39,6 +39,7 @@ export default class NetherFights_Scene extends THREE.Scene {
   constructor(pResources) {
     super();
     this.resources = pResources;
+    this.name = "Nether Fights";
     this.rayCaster = new THREE.Raycaster();
   }
 
@@ -52,7 +53,6 @@ export default class NetherFights_Scene extends THREE.Scene {
     this.createLighting();
     this.createStartText();
     this.createImage();
-    //this.createVideo();
     this.createRepositoryReference();
   }
 
@@ -77,6 +77,7 @@ export default class NetherFights_Scene extends THREE.Scene {
     this.createMovementInput(this.playerInstance);
     this.playerInstance.leftBorder = -6;
     this.playerInstance.rightBorder = 35;
+    this.playerInstance.sceneName = this.name;
   }
 
   createMovementInput(pPlayer) {

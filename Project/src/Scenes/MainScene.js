@@ -40,6 +40,7 @@ export default class MainScene extends THREE.Scene {
   constructor(pResources) {
     super();
     this.resources = pResources;
+    this.name = "Main Scene";
     this.boundLockPlayer = this.lockPlayerPosition.bind(this);
     this.boundUnlockPlayer = this.unlockPlayerPosition.bind(this);
   }
@@ -138,6 +139,7 @@ export default class MainScene extends THREE.Scene {
     this.createMovementInput(this.playerInstance);
     this.playerInstance.leftBorder = -5.5;
     this.playerInstance.rightBorder = 50;
+    this.playerInstance.sceneName = this.name;
   }
 
   createMovementInput(pPlayer) {

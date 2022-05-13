@@ -48,6 +48,7 @@ export default class TDWE_Scene extends THREE.Scene {
   constructor(pResources) {
     super();
     this.resources = pResources;
+    this.name = "The Day We Escaped";
   }
 
   initalizeScene(pCamera) {
@@ -88,6 +89,7 @@ export default class TDWE_Scene extends THREE.Scene {
     this.createMovementInput(this.playerInstance);
     this.playerInstance.leftBorder = -6;
     this.playerInstance.rightBorder = 65;
+    this.playerInstance.sceneName = this.name;
   }
 
   createMovementInput(pPlayer) {

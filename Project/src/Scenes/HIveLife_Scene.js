@@ -7,9 +7,9 @@ import Player from "../Player.js";
 import Text from "../Text.js";
 import InformationContainer from "../InformationContainer.js";
 import Image from "../ImageContainer.js";
+import AnimatedModel from "../AnimatedModel.js";
 
 import { showModal } from "../modal.js";
-import AnimatedModel from "../AnimatedModel.js";
 
 export default class HiveLife_Scene extends THREE.Scene {
   light;
@@ -37,6 +37,7 @@ export default class HiveLife_Scene extends THREE.Scene {
   constructor(pResources) {
     super();
     this.resources = pResources;
+    this.name = "Hive Life";
   }
 
   initalizeScene(pCamera) {
@@ -83,6 +84,7 @@ export default class HiveLife_Scene extends THREE.Scene {
     this.createMovementInput(this.playerInstance);
     this.playerInstance.leftBorder = -6;
     this.playerInstance.rightBorder = 65;
+    this.playerInstance.sceneName = this.name;
   }
 
   createMovementInput(pPlayer) {
