@@ -9,6 +9,7 @@ import InformationContainer from "../InformationContainer.js";
 import Image from "../ImageContainer.js";
 
 import { showModal } from "../modal.js";
+import AnimatedModel from "../AnimatedModel.js";
 
 export default class HiveLife_Scene extends THREE.Scene {
   light;
@@ -17,7 +18,7 @@ export default class HiveLife_Scene extends THREE.Scene {
   camera;
 
   playerInstance;
-  playerPosition = new THREE.Vector3(35, 0.5, 1);
+  playerPosition = new THREE.Vector3(0, 0.5, 1);
 
   instructionTextColor = 0xffffff;
   platformColor = 0xe85d04;
@@ -168,37 +169,33 @@ export default class HiveLife_Scene extends THREE.Scene {
     }
 
     {
-      const gitHeader = new Text(
-        "Git repository",
-        this.resources.items.ElMessiri,
-        0.2,
-        this.instructionTextColor,
-        new THREE.Vector3(7.6, 5, -3)
+      let gitButton = new AnimatedModel(
+        "Git_Repo",
+        this.resources.items.git.clone(),
+        new THREE.Vector3(8.5, 3.5, -3),
+        true,
+        {
+          pHeaderContent: "Git repository",
+          pFont: this.resources.items.ElMessiri,
+        }
       );
-      this.add(gitHeader.mesh);
-
-      let gitButton = this.resources.items.git.clone();
-      this.add(gitButton);
-      gitButton.position.set(8.5, 4.6, -3);
-      gitButton.children[0].name = "Git_Repo";
-      this.externalLinksButtons.push(gitButton);
+      this.externalLinksButtons.push(gitButton.group.children[0]);
+      this.add(gitButton.group);
     }
 
     {
-      const youtubeHeader = new Text(
-        "Trailer",
-        this.resources.items.ElMessiri,
-        0.2,
-        this.instructionTextColor,
-        new THREE.Vector3(8, 1.5, -3)
+      let youtubeButton = new AnimatedModel(
+        "VoxelTool_Video",
+        this.resources.items.youtube.clone(),
+        new THREE.Vector3(8.5, 0.2, -3),
+        true,
+        {
+          pHeaderContent: "Trailer",
+          pFont: this.resources.items.ElMessiri,
+        }
       );
-      this.add(youtubeHeader.mesh);
-
-      let youtubeButton = this.resources.items.youtube.clone();
-      this.add(youtubeButton);
-      youtubeButton.position.set(8.5, 0.2, -3);
-      youtubeButton.children[0].name = "Trailer";
-      this.externalLinksButtons.push(youtubeButton);
+      this.externalLinksButtons.push(youtubeButton.group.children[0]);
+      this.add(youtubeButton.group);
     }
 
     this.voxelToolBreakdown();
@@ -233,21 +230,18 @@ export default class HiveLife_Scene extends THREE.Scene {
     this.add(screenshot.mesh);
 
     {
-      const youtubeHeader = new Text(
-        "Demonstration",
-        this.resources.items.ElMessiri,
-        0.2,
-        this.instructionTextColor,
-        new THREE.Vector3(20.5, 7.2, -3)
+      let youtubeButton = new AnimatedModel(
+        "VoxelTool_Video",
+        this.resources.items.youtube.clone(),
+        new THREE.Vector3(21.5, 6, -3),
+        true,
+        {
+          pHeaderContent: "Demonstration",
+          pFont: this.resources.items.ElMessiri,
+        }
       );
-      this.add(youtubeHeader.mesh);
-
-      let youtubeButton = this.resources.items.youtube.clone();
-      this.add(youtubeButton);
-      youtubeButton.position.set(21.5, 6, -3);
-      youtubeButton.children[0].name = "VoxelTool_Video";
-
-      this.externalLinksButtons.push(youtubeButton);
+      this.externalLinksButtons.push(youtubeButton.group.children[0]);
+      this.add(youtubeButton.group);
     }
   }
 
@@ -278,21 +272,19 @@ export default class HiveLife_Scene extends THREE.Scene {
     this.add(screenshot.mesh);
 
     {
-      const youtubeHeader = new Text(
-        "Demonstration",
-        this.resources.items.ElMessiri,
-        0.2,
-        this.instructionTextColor,
-        new THREE.Vector3(33, 7.2, -3)
+      let youtubeButton = new AnimatedModel(
+        "Minecraft_Prototype",
+        this.resources.items.youtube.clone(),
+        new THREE.Vector3(34, 6, -3),
+        true,
+        {
+          pHeaderContent: "Demonstration",
+          pFont: this.resources.items.ElMessiri,
+        }
       );
-      this.add(youtubeHeader.mesh);
 
-      let youtubeButton = this.resources.items.youtube.clone();
-      this.add(youtubeButton);
-      youtubeButton.position.set(34.2, 6, -3);
-      youtubeButton.children[0].name = "Minecraft_Prototype";
-
-      this.externalLinksButtons.push(youtubeButton);
+      this.externalLinksButtons.push(youtubeButton.group.children[0]);
+      this.add(youtubeButton.group);
     }
   }
 
@@ -315,21 +307,18 @@ export default class HiveLife_Scene extends THREE.Scene {
     }
 
     {
-      const youtubeHeader = new Text(
-        "Demonstration",
-        this.resources.items.ElMessiri,
-        0.2,
-        this.instructionTextColor,
-        new THREE.Vector3(47, 7.2, -3)
+      let youtubeButton = new AnimatedModel(
+        "FSM_Video",
+        this.resources.items.youtube.clone(),
+        new THREE.Vector3(47, 6, -3),
+        true,
+        {
+          pHeaderContent: "Demonstration",
+          pFont: this.resources.items.ElMessiri,
+        }
       );
-      this.add(youtubeHeader.mesh);
-
-      let youtubeButton = this.resources.items.youtube.clone();
-      this.add(youtubeButton);
-      youtubeButton.position.set(55, 6, -3);
-      youtubeButton.children[0].name = "FSM_Video";
-
-      this.externalLinksButtons.push(youtubeButton);
+      this.externalLinksButtons.push(youtubeButton.group.children[0]);
+      this.add(youtubeButton.group);
     }
   }
 
