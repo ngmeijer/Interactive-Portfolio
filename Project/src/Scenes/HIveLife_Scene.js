@@ -133,7 +133,7 @@ export default class HiveLife_Scene extends THREE.Scene {
       projectDescription.headerContent = "Project Description";
       projectDescription.paragraphContent =
         "The final project in my 2nd year." +
-        "\none where we were completely free to make what we wanted," +
+        "\nOne where we were completely free to make what we wanted," +
         "\nin every possible creative way. I mostly worked on AI.";
 
       projectDescription.createContent();
@@ -176,10 +176,9 @@ export default class HiveLife_Scene extends THREE.Scene {
         this.resources.items.git.clone(),
         new THREE.Vector3(8.5, 3.5, -3),
         true,
-        {
-          pHeaderContent: "Git repository",
-          pFont: this.resources.items.ElMessiri,
-        }
+        0.15,
+        "Git repository",
+        this.resources.items.ElMessiri
       );
       this.externalLinksButtons.push(gitButton.group.children[0]);
       this.add(gitButton.group);
@@ -191,10 +190,9 @@ export default class HiveLife_Scene extends THREE.Scene {
         this.resources.items.youtube.clone(),
         new THREE.Vector3(8.5, 0.2, -3),
         true,
-        {
-          pHeaderContent: "Trailer",
-          pFont: this.resources.items.ElMessiri,
-        }
+        0.15,
+        "Trailer",
+        this.resources.items.ElMessiri
       );
       this.externalLinksButtons.push(youtubeButton.group.children[0]);
       this.add(youtubeButton.group);
@@ -237,10 +235,9 @@ export default class HiveLife_Scene extends THREE.Scene {
         this.resources.items.youtube.clone(),
         new THREE.Vector3(21.5, 6, -3),
         true,
-        {
-          pHeaderContent: "Demonstration",
-          pFont: this.resources.items.ElMessiri,
-        }
+        0.15,
+        "Demonstration",
+        this.resources.items.ElMessiri
       );
       this.externalLinksButtons.push(youtubeButton.group.children[0]);
       this.add(youtubeButton.group);
@@ -279,10 +276,9 @@ export default class HiveLife_Scene extends THREE.Scene {
         this.resources.items.youtube.clone(),
         new THREE.Vector3(34, 6, -3),
         true,
-        {
-          pHeaderContent: "Demonstration",
-          pFont: this.resources.items.ElMessiri,
-        }
+        0.15,
+        "Demonstration",
+        this.resources.items.ElMessiri
       );
 
       this.externalLinksButtons.push(youtubeButton.group.children[0]);
@@ -314,10 +310,9 @@ export default class HiveLife_Scene extends THREE.Scene {
         this.resources.items.youtube.clone(),
         new THREE.Vector3(47, 6, -3),
         true,
-        {
-          pHeaderContent: "Demonstration",
-          pFont: this.resources.items.ElMessiri,
-        }
+        0.15,
+        "Demonstration",
+        this.resources.items.ElMessiri
       );
       this.externalLinksButtons.push(youtubeButton.group.children[0]);
       this.add(youtubeButton.group);

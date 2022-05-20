@@ -119,8 +119,8 @@ export default class MainScene extends THREE.Scene {
 
   createPlayer() {
     this.playerInstance = new Player(
+      8,
       6,
-      7,
       this.playerPosition,
       this.resources.items.characterMesh
     );

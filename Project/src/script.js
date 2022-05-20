@@ -99,7 +99,6 @@ function fadeSceneIn(pCurrentOpacity) {
 }
 
 function fadeSceneOut(pCurrentOpacity) {
-  console.log("calling fade out");
   fadeOutTween = new TWEEN.Tween(pCurrentOpacity)
     .to({ opacity: 1 }, 1500)
     .easing(TWEEN.Easing.Quadratic.Out)
@@ -114,7 +113,6 @@ function fadeSceneOut(pCurrentOpacity) {
 
       if (activeScene.name != "Main Scene") newScene = "Main Scene";
 
-      console.log(newScene);
       switch (newScene) {
         case "The Day We Escaped":
           activeScene = tdweScene;

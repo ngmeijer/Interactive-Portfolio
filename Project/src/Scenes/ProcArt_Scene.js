@@ -177,10 +177,9 @@ export default class TDWE_Scene extends THREE.Scene {
         this.resources.items.git.clone(),
         new THREE.Vector3(8.5, 3.5, -3),
         true,
-        {
-          pHeaderContent: "Git repository",
-          pFont: this.resources.items.ElMessiri,
-        }
+        0.15,
+        "Git repository",
+        this.resources.items.ElMessiri
       );
       this.externalLinksButtons.push(gitButton.group.children[0]);
       this.add(gitButton.group);
@@ -192,10 +191,9 @@ export default class TDWE_Scene extends THREE.Scene {
         this.resources.items.youtube.clone(),
         new THREE.Vector3(8.5, 0.2, -3),
         true,
-        {
-          pHeaderContent: "Trailer",
-          pFont: this.resources.items.ElMessiri,
-        }
+        0.15,
+        "Trailer",
+        this.resources.items.ElMessiri
       );
       this.externalLinksButtons.push(youtubeButton.group.children[0]);
       this.add(youtubeButton.group);
@@ -236,10 +234,9 @@ export default class TDWE_Scene extends THREE.Scene {
         this.resources.items.git.clone(),
         new THREE.Vector3(14.5, 3.5, -3),
         true,
-        {
-          pHeaderContent: "Editor script",
-          pFont: this.resources.items.ElMessiri,
-        }
+        0.15,
+        "Editor script",
+        this.resources.items.ElMessiri
       );
       this.externalLinksButtons.push(gitButton.group.children[0]);
       this.add(gitButton.group);
@@ -277,10 +274,9 @@ export default class TDWE_Scene extends THREE.Scene {
         this.resources.items.git.clone(),
         new THREE.Vector3(32.5, 6.2, -3),
         true,
-        {
-          pHeaderContent: "Main script",
-          pFont: this.resources.items.ElMessiri,
-        }
+        0.15,
+        "Main script",
+        this.resources.items.ElMessiri
       );
       this.externalLinksButtons.push(gitButton.group.children[0]);
       this.add(gitButton.group);
@@ -315,10 +311,9 @@ export default class TDWE_Scene extends THREE.Scene {
         this.resources.items.git.clone(),
         new THREE.Vector3(42.8, 6.2, -3),
         true,
-        {
-          pHeaderContent: "Main script",
-          pFont: this.resources.items.ElMessiri,
-        }
+        0.15,
+        "Main script",
+        this.resources.items.ElMessiri
       );
       this.externalLinksButtons.push(gitButton.group.children[0]);
       this.add(gitButton.group);
@@ -362,10 +357,9 @@ export default class TDWE_Scene extends THREE.Scene {
         this.resources.items.git.clone(),
         new THREE.Vector3(55, 6.2, -3),
         true,
-        {
-          pHeaderContent: "Main script",
-          pFont: this.resources.items.ElMessiri,
-        }
+        0.15,
+        "Main script",
+        this.resources.items.ElMessiri
       );
       this.externalLinksButtons.push(gitButton.group.children[0]);
       this.add(gitButton.group);

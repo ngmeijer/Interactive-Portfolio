@@ -6,6 +6,7 @@ import CubeBody from "../CubeBody.js";
 import Player from "../Player.js";
 import Text from "../Text.js";
 import InformationContainer from "../InformationContainer.js";
+import AnimatedModel from "../AnimatedModel.js";
 
 import { showModal } from "../modal.js";
 
@@ -133,13 +134,13 @@ export default class TDWE_Scene extends THREE.Scene {
       const projectDescription = new InformationContainer(
         new THREE.Vector3(3.3, 7.3, -3),
         this.resources.items.ElMessiri,
-        this.instructionTextColor
+        0xffffff
       );
       projectDescription.headerContent = "Project Description";
       projectDescription.paragraphContent =
         "This was the 3rd project in my 2nd year, and the first" +
-        "\none where we were completely free to make what we wanted, in every possible" +
-        "\ncreative way. I mostly worked on AI.";
+        "\none where we were completely free to make what we wanted" +
+        "\nin every possible creative way. I mostly worked on AI.";
 
       projectDescription.createContent();
       this.add(projectDescription.group);
@@ -149,7 +150,7 @@ export default class TDWE_Scene extends THREE.Scene {
       const teamStructure = new InformationContainer(
         new THREE.Vector3(3.3, 2, -3),
         this.resources.items.ElMessiri,
-        this.instructionTextColor
+        0xffffff
       );
       teamStructure.headerContent = "Team Structure";
       teamStructure.paragraphContent = "3 Artists \n1 Designer \n2 Engineers";
@@ -162,7 +163,7 @@ export default class TDWE_Scene extends THREE.Scene {
       const projectDetails = new InformationContainer(
         new THREE.Vector3(3.3, 4.8, -3),
         this.resources.items.ElMessiri,
-        this.instructionTextColor
+        0xffffff
       );
       projectDetails.headerContent = "Project details";
       projectDetails.paragraphContent =
@@ -176,37 +177,31 @@ export default class TDWE_Scene extends THREE.Scene {
     }
 
     {
-      const gitHeader = new Text(
-        "Git repository",
-        this.resources.items.ElMessiri,
-        0.2,
-        this.instructionTextColor,
-        new THREE.Vector3(7.6, 5.4, -3)
+      let gitButton = new AnimatedModel(
+        "Git_Repo",
+        this.resources.items.git.clone(),
+        new THREE.Vector3(8.5, 4, -3),
+        true,
+        0.15,
+        "Repository",
+        this.resources.items.ElMessiri
       );
-      this.add(gitHeader.mesh);
-
-      let gitButton = this.resources.items.git.clone();
-      this.add(gitButton);
-      gitButton.position.set(8.5, 4, -3);
-      gitButton.children[0].name = "Git_Repo";
-      this.externalLinksButtons.push(gitButton);
+      this.externalLinksButtons.push(gitButton.group.children[0]);
+      this.add(gitButton.group);
     }
 
     {
-      const youtubeHeader = new Text(
+      let youtubeButton = new AnimatedModel(
         "Trailer",
-        this.resources.items.ElMessiri,
-        0.2,
-        this.instructionTextColor,
-        new THREE.Vector3(8, 1.9, -3)
+        this.resources.items.youtube.clone(),
+        new THREE.Vector3(8.5, 0.6, -3),
+        true,
+        0.15,
+        "Trailer",
+        this.resources.items.ElMessiri
       );
-      this.add(youtubeHeader.mesh);
-
-      let youtubeButton = this.resources.items.youtube.clone();
-      this.add(youtubeButton);
-      youtubeButton.position.set(8.5, 0.6, -3);
-      youtubeButton.children[0].name = "Trailer";
-      this.externalLinksButtons.push(youtubeButton);
+      this.externalLinksButtons.push(youtubeButton.group.children[0]);
+      this.add(youtubeButton.group);
     }
 
     this.aiSystemBreakdown();
@@ -219,35 +214,30 @@ export default class TDWE_Scene extends THREE.Scene {
       const systemDescription = new InformationContainer(
         new THREE.Vector3(13, 7.3, -3),
         this.resources.items.ElMessiri,
-        this.instructionTextColor
+        0xffffff
       );
       systemDescription.headerContent = "AI System";
       systemDescription.paragraphContent =
-        "I developed a Unity editor tool, which can be used to calculate a" +
-        "\nvoxel area. This 3D grid can be used by (airborne) AI agents to" +
-        "\ndetermine where they can fly. That data is saved to a Scriptable" +
-        "\nObject, so that it's reusable.";
+        "I worked on a navmesh-based AI system. The agents roam around the" +
+        "\nmap. Combined with the Field of View system, they are always on" +
+        "\non the lookout for the players.";
 
       systemDescription.createContent();
       this.add(systemDescription.group);
     }
 
     {
-      const youtubeHeader = new Text(
+      let youtubeButton = new AnimatedModel(
         "Demonstration",
-        this.resources.items.ElMessiri,
-        0.2,
-        this.instructionTextColor,
-        new THREE.Vector3(13, 1.9, -3)
+        this.resources.items.youtube.clone(),
+        new THREE.Vector3(14, 0.6, -3),
+        true,
+        0.15,
+        "VoxelTool_Video",
+        this.resources.items.ElMessiri
       );
-      this.add(youtubeHeader.mesh);
-
-      let youtubeButton = this.resources.items.youtube.clone();
-      this.add(youtubeButton);
-      youtubeButton.position.set(14, 0.6, -3);
-      youtubeButton.children[0].name = "VoxelTool_Video";
-
-      this.externalLinksButtons.push(youtubeButton);
+      this.externalLinksButtons.push(youtubeButton.group.children[0]);
+      this.add(youtubeButton.group);
     }
   }
 
@@ -256,7 +246,7 @@ export default class TDWE_Scene extends THREE.Scene {
       const systemDescription = new InformationContainer(
         new THREE.Vector3(22, 7.3, -3),
         this.resources.items.ElMessiri,
-        this.instructionTextColor
+        0xffffff
       );
       systemDescription.headerContent = "FOV View";
       systemDescription.paragraphContent =
@@ -270,20 +260,17 @@ export default class TDWE_Scene extends THREE.Scene {
     }
 
     {
-      const youtubeHeader = new Text(
+      let youtubeButton = new AnimatedModel(
         "Demonstration",
-        this.resources.items.ElMessiri,
-        0.2,
-        this.instructionTextColor,
-        new THREE.Vector3(22, 1.9, -3)
+        this.resources.items.youtube.clone(),
+        new THREE.Vector3(23.5, 0.6, -3),
+        true,
+        0.15,
+        "FSM_Video",
+        this.resources.items.ElMessiri
       );
-      this.add(youtubeHeader.mesh);
-
-      let youtubeButton = this.resources.items.youtube.clone();
-      this.add(youtubeButton);
-      youtubeButton.position.set(23.5, 0.6, -3);
-      youtubeButton.children[0].name = "FSM_Video";
-      this.externalLinksButtons.push(youtubeButton);
+      this.externalLinksButtons.push(youtubeButton.group.children[0]);
+      this.add(youtubeButton.group);
     }
   }
 

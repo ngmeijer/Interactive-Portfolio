@@ -2,6 +2,7 @@ import * as THREE from "three";
 import TWEEN from "@tweenjs/tween.js";
 import CubeBody from "./CubeBody.js";
 import Text from "./Text.js";
+import AnimatedModel from "./AnimatedModel.js";
 
 export default class ContactMe {
   scene;
@@ -58,52 +59,74 @@ export default class ContactMe {
   }
 
   createSocialMedia() {
-    this.twitter = this.resources.items.twitter.clone();
-    this.scene.add(this.twitter);
-    this.twitter.position.set(17, 26, -6);
+    this.twitter = new AnimatedModel(
+      "twitter",
+      this.resources.items.twitter.clone(),
+      new THREE.Vector3(17, 26, -6),
+      true,
+      0.2
+    );
+    this.scene.add(this.twitter.group);
 
-    this.linkedin = this.resources.items.linkedin.clone();
-    this.scene.add(this.linkedin);
-    this.linkedin.position.set(20, 26, -6);
+    this.linkedin = new AnimatedModel(
+      "linkedin",
+      this.resources.items.linkedin.clone(),
+      new THREE.Vector3(20, 26, -6),
+      true,
+      0.2
+    );
+    this.scene.add(this.linkedin.group);
 
-    this.git = this.resources.items.git.clone();
-    this.scene.add(this.git);
-    this.git.position.set(23, 26, -6);
+    this.git = new AnimatedModel(
+      "git",
+      this.resources.items.git.clone(),
+      new THREE.Vector3(23, 26, -6),
+      true,
+      0.2
+    );
+    this.scene.add(this.git.group);
 
-    this.discord = this.resources.items.discord.clone();
-    this.scene.add(this.discord);
-    this.discord.position.set(26, 26, -6);
+    this.discord = new AnimatedModel(
+      "discord",
+      this.resources.items.discord.clone(),
+      new THREE.Vector3(26, 26, -6),
+      true,
+      0.15
+    );
+    this.scene.add(this.discord.group);
 
-    this.playstore = this.resources.items.playstore.clone();
-    this.scene.add(this.playstore);
-    this.playstore.position.set(29, 26, -6);
+    this.playstore = new AnimatedModel(
+      "playstore",
+      this.resources.items.playstore.clone(),
+      new THREE.Vector3(29, 26, -6),
+      true,
+      0.15
+    );
+    this.scene.add(this.playstore.group);
   }
 
   checkSocialMediaMouseOver() {
     if (this.mousePosition == null) return;
     this.rayCaster.setFromCamera(this.mousePosition, this.camera);
     const objectsToTest = [
-      this.twitter,
-      this.linkedin,
-      this.git,
-      this.discord,
-      this.playstore,
+      this.twitter.group.children[0],
+      this.linkedin.group.children[0],
+      this.git.group.children[0],
+      this.discord.group.children[0],
+      this.playstore.group.children[0],
     ];
-    const intersects = this.rayCaster.intersectObjects(objectsToTest);
+    const intersectedObjects = this.rayCaster.intersectObjects(objectsToTest);
 
-    if (intersects.length) {
-      this.currentIntersect = intersects[0];
+    if (intersectedObjects.length) {
+      this.currentIntersect = intersectedObjects[0];
     } else {
       this.currentIntersect = null;
     }
 
-    for (const currentObject of objectsToTest) {
-      if (!intersects.find((intersect) => intersect.object === currentObject)) {
-        currentObject.children[0].material.color.set("#DC2F02");
-      }
-    }
-    for (const intersect of intersects) {
-      intersect.object.material.color.set("#ff0000");
+    if (intersectedObjects.length) {
+      this.currentIntersect = intersectedObjects[0];
+    } else {
+      this.currentIntersect = null;
     }
   }
 
@@ -111,9 +134,9 @@ export default class ContactMe {
     this.usernameText = new Text(
       "ActOfRagex#4817",
       this.resources.items.ElMessiri,
-      0.23,
+      0.18,
       0xffffff,
-      new THREE.Vector3(24.65, 27, -6)
+      new THREE.Vector3(24.95, 26.85, -6)
     );
 
     this.usernameText.mesh.castShadow = false;
@@ -121,7 +144,7 @@ export default class ContactMe {
 
     const targetShowTextPosition = new THREE.Vector3(
       this.usernameText.mesh.position.x,
-      this.usernameText.mesh.position.y + 0.5,
+      this.usernameText.mesh.position.y + 0.6,
       this.usernameText.mesh.position.z
     );
     const targetHideTextPosition = new THREE.Vector3(
@@ -180,7 +203,7 @@ export default class ContactMe {
             break;
 
           case "discord":
-            if(!this.currentlyHoveringDiscord){
+            if (!this.currentlyHoveringDiscord) {
               this.tweenUsernameUp.start();
             }
             break;

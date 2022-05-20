@@ -104,8 +104,11 @@ export default class Player extends THREE.Object3D {
     this.playerBody.position.y = pPosition.y;
     this.playerBody.position.z = pPosition.z;
 
-    this.canMove = true;
-    console.log("set position.");
+    this.canMove = true;4
+  }
+
+  resetRotation(){
+    this.group.rotation.set(this.startRot.x, this.startRot.y, this.startRot.z);
   }
 
   setTargetPosition() {

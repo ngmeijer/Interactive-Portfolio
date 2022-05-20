@@ -12,7 +12,9 @@ export default class AnimatedModel extends THREE.Object3D {
     pModel,
     pPosition,
     pAnimate,
-    { pHeaderContent, pFont } = null
+    pAnimationIntensity,
+    pHeaderContent,
+    pFont
   ) {
     super();
 
@@ -23,18 +25,14 @@ export default class AnimatedModel extends THREE.Object3D {
     pModel.children[0].name = pName;
     this.group.add(pModel);
 
-    if (pAnimate) this.prepareTweens();
-    if (pHeaderContent != null) this.createHeader(pHeaderContent, pFont);
+    if (pAnimate) this.prepareTweens(pAnimationIntensity);
+    if (typeof pHeaderContent !== "undefined")
+      this.createHeader(pHeaderContent, pFont);
   }
 
   createHeader(pHeaderContent, pFont) {
     let groupPos = this.group.position;
     let offset = new THREE.Vector3(0, 1.4, 0);
-    let finalPos = new THREE.Vector3(
-      groupPos.x + offset.x,
-      groupPos.y + offset.y,
-      groupPos.z + offset.z
-    );
 
     this.header = new Text(pHeaderContent, pFont, 0.2, 0xffffff, offset);
     this.header.geo.computeBoundingBox();
@@ -42,26 +40,27 @@ export default class AnimatedModel extends THREE.Object3D {
     this.group.add(this.header.mesh);
   }
 
-  prepareTweens() {
+  prepareTweens(pAnimationIntensity) {
+    if (pAnimationIntensity === "undefined") pAnimationIntensity = 1;
     const startScale = this.group.scale;
-    const positionDown = new THREE.Vector3(
-      startScale.x - 0.05,
-      startScale.y - 0.05,
-      startScale.z - 0.05
+    const newScale = new THREE.Vector3(
+      startScale.x - pAnimationIntensity,
+      startScale.y - pAnimationIntensity,
+      startScale.z - pAnimationIntensity
     );
 
-    const tweenMoveDown = new TWEEN.Tween(this.group.scale)
+    const tweenScaleDown = new TWEEN.Tween(this.group.scale)
       .to(
         {
-          x: positionDown.x,
-          y: positionDown.y,
-          z: positionDown.z,
+          x: newScale.x,
+          y: newScale.y,
+          z: newScale.z,
         },
         1000
       )
       .easing(TWEEN.Easing.Sinusoidal.InOut);
 
-    const tweenMoveUp = new TWEEN.Tween(this.group.scale)
+    const tweenScaleUp = new TWEEN.Tween(this.group.scale)
       .to(
         {
           x: startScale.x,
@@ -72,9 +71,9 @@ export default class AnimatedModel extends THREE.Object3D {
       )
       .easing(TWEEN.Easing.Sinusoidal.InOut);
 
-    tweenMoveDown.chain(tweenMoveUp);
-    tweenMoveUp.chain(tweenMoveDown);
+    tweenScaleDown.chain(tweenScaleUp);
+    tweenScaleUp.chain(tweenScaleDown);
 
-    tweenMoveDown.start();
+    tweenScaleDown.start();
   }
 }
