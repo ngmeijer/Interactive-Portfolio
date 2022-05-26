@@ -232,8 +232,8 @@ export default class ContactMe {
     this.scene.add(this.light.target);
     this.light.target = lightTarget;
 
-    this.light.shadow.mapSize.width = 1024;
-    this.light.shadow.mapSize.height = 1024;
+    this.light.shadow.mapSize.width = 512;
+    this.light.shadow.mapSize.height = 512;
 
     const rectLight = new THREE.RectAreaLight(0xffffff, 10, 22, 8);
     rectLight.position.set(20, 25, -2);

@@ -131,8 +131,8 @@ export default class Home {
     this.scene.add(this.bottomLight.target);
     this.scene.add(this.bottomLight);
 
-    this.bottomLight.shadow.mapSize.width = 1024;
-    this.bottomLight.shadow.mapSize.height = 1024;
+    this.bottomLight.shadow.mapSize.width = 512;
+    this.bottomLight.shadow.mapSize.height = 512;
 
     const backLightTarget = new THREE.Object3D();
     backLightTarget.position.set(0, 1, -5);
@@ -147,7 +147,7 @@ export default class Home {
     // this.scene.add(this.frontLight.target);
     this.scene.add(this.frontLight);
 
-    this.frontLight.shadow.mapSize.width = 2048;
-    this.frontLight.shadow.mapSize.height = 2048;
+    this.frontLight.shadow.mapSize.width = 512;
+    this.frontLight.shadow.mapSize.height = 512;
   }
 }

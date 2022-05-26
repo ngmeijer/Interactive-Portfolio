@@ -148,8 +148,8 @@ export default class Portfolio {
     this.scene.add(this.frontLight.target);
     this.frontLight.target = lightTarget;
 
-    this.frontLight.shadow.mapSize.width = 1024;
-    this.frontLight.shadow.mapSize.height = 1024;
+    this.frontLight.shadow.mapSize.width = 512;
+    this.frontLight.shadow.mapSize.height = 512;
 
     this.bottomLight = new THREE.SpotLight(
       0xdc2f02,
@@ -168,8 +168,8 @@ export default class Portfolio {
     this.scene.add(this.bottomLight.target);
     this.bottomLight.target = lightTarget;
 
-    this.bottomLight.shadow.mapSize.width = 1024;
-    this.bottomLight.shadow.mapSize.height = 1024;
+    this.bottomLight.shadow.mapSize.width = 512;
+    this.bottomLight.shadow.mapSize.height = 512;
 
     const rectLight = new THREE.RectAreaLight(0xffffff, 2, 22, 8);
     rectLight.position.set(15, 3, 2);

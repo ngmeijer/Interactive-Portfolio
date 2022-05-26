@@ -59,7 +59,7 @@ function createRenderingComponents() {
     50,
     window.innerWidth / window.innerHeight,
     0.1,
-    1000
+    20
   );
 
   camera.position.set(0, 3, 9.5);
@@ -67,10 +67,12 @@ function createRenderingComponents() {
   renderer = new THREE.WebGLRenderer({
     powerPreference: "high-performance",
     logarithmicDepthBuffer: true,
-    antialias: true,
+    antialias: false,
   });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
+  renderer.shadowMap.autoUpdate = false;
+  renderer.shadowMap.needsUpdate = true;
   renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   document.body.appendChild(renderer.domElement);
 }
@@ -179,7 +181,6 @@ async function initialize() {
   animate();
 }
 
-let countedFrames = 0;
 function animate() {
   requestAnimationFrame(animate);
 
@@ -187,11 +188,6 @@ function animate() {
   canEnterItem = mainScene.portfolioArea.canEnterItem;
   activePhysicsWorld.step(delta);
   activeScene.update(delta);
-
-  countedFrames++;
-
-  let fps = countedFrames / frameClock.getElapsedTime();
-  //console.log(fps);
 
   cameraFollowPlayer();
 

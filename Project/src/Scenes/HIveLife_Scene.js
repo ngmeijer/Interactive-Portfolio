@@ -367,7 +367,7 @@ export default class HiveLife_Scene extends THREE.Scene {
     this.light.position.set(0, 7, 4);
     this.light.castShadow = true;
     this.add(this.light);
-    this.light.shadow.mapSize.width = 1024;
-    this.light.shadow.mapSize.height = 1024;
+    this.light.shadow.mapSize.width = 512;
+    this.light.shadow.mapSize.height = 512;
   }
 }
