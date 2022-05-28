@@ -187,12 +187,12 @@ export default class TDWE_Scene extends THREE.Scene {
 
     {
       let youtubeButton = new AnimatedModel(
-        "VoxelTool_Video",
+        "Demonstration",
         this.resources.items.youtube.clone(),
         new THREE.Vector3(8.5, 0.2, -3),
         true,
         0.15,
-        "Trailer",
+        "Demonstration",
         this.resources.items.ElMessiri
       );
       this.externalLinksButtons.push(youtubeButton.group.children[0]);
@@ -375,8 +375,7 @@ export default class TDWE_Scene extends THREE.Scene {
     window.addEventListener("click", () => {
       if (this.currentIntersect) {
         switch (this.currentIntersect.object.name) {
-          case "Trailer":
-            console.log("clicked youtube");
+          case "Demonstration":
             showModal("https://www.youtube.com/embed/mhs_hoBcfrw");
             break;
           case "Git_Repo":

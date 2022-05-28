@@ -61,9 +61,9 @@ export default class Home {
     this.scene.add(this.arrowsHorizontal);
     this.arrowsHorizontal.position.set(-6.3, 1, -2.5);
 
-    this.background = this.resources.items.CubeBackground.clone();
-    this.scene.add(this.background);
-    this.background.position.set(-20, -10, -9);
+    // this.background = this.resources.items.CubeBackground.clone();
+    // this.scene.add(this.background);
+    // this.background.position.set(-20, -10, -9);
     this.elevator = new Elevator(
       new THREE.Vector3(4.5, 0, -2),
       0x6a040f,

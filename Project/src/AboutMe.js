@@ -58,17 +58,6 @@ export default class AboutMe {
       0
     );
     ground.addToScene(this.scene, this.physicsWorld);
-
-    let background = new Cube(
-      "AboutMe_Background",
-      new THREE.Vector3(25, 12, 0.1),
-      new THREE.Vector3(24, 10, -7),
-      0x03071e,
-      true,
-      0
-    );
-
-    background.addToScene(this.scene);
   }
 
   createPhoto() {
@@ -77,7 +66,7 @@ export default class AboutMe {
       new Vector3(16.5, 16, -6),
       this.resources.items.Photo
     );
-    this.scene.add(photo.mesh);
+    //this.scene.add(photo.mesh);
   }
 
   createLanguageDetails() {
@@ -86,14 +75,14 @@ export default class AboutMe {
       this.resources.items.ElMessiri,
       0.6,
       0xffffff,
-      new Vector3(19.8, 19.5, -6)
+      new Vector3(16.8, 19.5, -6)
     );
     this.scene.add(languagesText.mesh);
 
     //1st column
     let languagesMesh = this.resources.items.languages.clone();
     this.scene.add(languagesMesh);
-    languagesMesh.position.set(21, 15.2, -6);
+    languagesMesh.position.set(18, 15.2, -6);
   }
 
   createSoftwareDetails() {
@@ -102,25 +91,25 @@ export default class AboutMe {
       this.resources.items.ElMessiri,
       0.6,
       0xffffff,
-      new Vector3(28.2, 19.5, -6)
+      new Vector3(25.2, 19.5, -6)
     );
     this.scene.add(softwareText.mesh);
 
     //1st column
     let softwareMesh = this.resources.items.software.clone();
     this.scene.add(softwareMesh);
-    softwareMesh.position.set(29.5, 15.15, -6);
+    softwareMesh.position.set(26.5, 15.15, -6);
   }
 
   creatAboutMeText() {
     let textContent =
-      "Hi! My name is Nils Meijer, currently a \nstudent at Saxion Universities in \nEnschede, The Netherlands. \nI'm doing the engineering direction. \nI hope my website leaves a good \nimpression of the work I do!";
+      "Hi! My name is Nils Meijer, currently a \nGame Development student at Saxion\nUniversities in Enschede, The Netherlands. \nI'm doing the engineering direction. \n\nI hope my website leaves a good \nimpression of the work I do!";
     const informationText = new Text(
       textContent,
       this.resources.items.ElMessiri,
-      0.25,
+      0.23,
       this.instructionTextColor,
-      new THREE.Vector3(8.5, 14.5, -2.5)
+      new THREE.Vector3(8.8, 14.5, -2)
     );
     informationText.mesh.rotation.y = Math.PI * 0.15;
     this.scene.add(informationText.mesh);
@@ -143,7 +132,7 @@ export default class AboutMe {
     this.light.shadow.mapSize.width = 512;
     this.light.shadow.mapSize.height = 512;
 
-    const rectLight = new THREE.RectAreaLight(0xffffff, 5, 10, 8);
+    const rectLight = new THREE.RectAreaLight(0xffffff, 8, 22, 8);
     rectLight.position.set(27, 16, -2);
     this.scene.add(rectLight);
   }

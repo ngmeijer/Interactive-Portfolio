@@ -235,8 +235,8 @@ export default class ContactMe {
     this.light.shadow.mapSize.width = 512;
     this.light.shadow.mapSize.height = 512;
 
-    const rectLight = new THREE.RectAreaLight(0xffffff, 10, 22, 8);
-    rectLight.position.set(20, 25, -2);
-    //this.scene.add(rectLight);
+    const rectLight = new THREE.RectAreaLight(0xffffff, 8, 22, 8);
+    rectLight.position.set(21, 25, -2);
+    this.scene.add(rectLight);
   }
 }

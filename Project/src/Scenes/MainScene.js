@@ -6,6 +6,7 @@ import Portfolio from "../Portfolio.js";
 import AboutMe from "../AboutMe.js";
 import ContactMe from "../ContactMe.js";
 import Player from "../Player.js";
+import Cube from "../Cube.js";
 
 export default class MainScene extends THREE.Scene {
   light;
@@ -82,6 +83,17 @@ export default class MainScene extends THREE.Scene {
       this.websiteComponents[i].playerInstance = this.playerInstance;
       this.websiteComponents[i].initializeArea();
     }
+
+    let background = new Cube(
+      "GlobalBackground",
+      new THREE.Vector3(100, 100, 0.1),
+      new THREE.Vector3(0, -10, -7),
+      0x03071e,
+      true,
+      0
+    );
+
+    background.addToScene(this);
   }
 
   update(delta) {

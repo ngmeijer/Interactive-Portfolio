@@ -186,7 +186,7 @@ export default class HiveLife_Scene extends THREE.Scene {
 
     {
       let youtubeButton = new AnimatedModel(
-        "VoxelTool_Video",
+        "Trailer",
         this.resources.items.youtube.clone(),
         new THREE.Vector3(8.5, 0.2, -3),
         true,

@@ -5,7 +5,6 @@ import TWEEN from "@tweenjs/tween.js";
 import Resources from "./Resources.js";
 import sources from "./sources.js";
 import MainScene from "./Scenes/MainScene.js";
-import TDWE_Scene from "./Scenes/TDWE_Scene.js";
 import NetherFights_Scene from "./Scenes/NetherFights_Scene.js";
 import ProcArt_Scene from "./Scenes/ProcArt_Scene.js";
 import HiveLife_Scene from "./Scenes/HiveLife_Scene.js";
@@ -17,13 +16,11 @@ resources.on("ready", () => {
   initialize();
 });
 const mainScene = new MainScene(resources);
-const tdweScene = new TDWE_Scene(resources);
 const netherFightsScene = new NetherFights_Scene(resources);
 const procArtScene = new ProcArt_Scene(resources);
 const hiveLifeScene = new HiveLife_Scene(resources);
 
 mainScene.eventManager = eventManager;
-tdweScene.eventManager = eventManager;
 
 let camera, renderer;
 
@@ -116,9 +113,6 @@ function fadeSceneOut(pCurrentOpacity) {
       if (activeScene.name != "Main Scene") newScene = "Main Scene";
 
       switch (newScene) {
-        case "The Day We Escaped":
-          activeScene = tdweScene;
-          break;
         case "Nether Fights":
           activeScene = netherFightsScene;
           break;
@@ -158,7 +152,6 @@ function cameraFollowPlayer() {
 
 function initializeScenes() {
   mainScene.initalizeScene(camera);
-  tdweScene.initalizeScene(camera);
   procArtScene.initalizeScene(camera);
   hiveLifeScene.initalizeScene(camera);
   netherFightsScene.initalizeScene(camera);

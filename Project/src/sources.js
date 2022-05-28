@@ -1,15 +1,26 @@
 export default [
   //TEXTURES
   {
-    name: "TDWE_Image",
-    type: "texture",
-    path: "Portfolio Media/TheDayWeEscaped/TDWE.png",
-  },
-  {
     name: "NetherFights_Image",
     type: "texture",
     path: "Portfolio Media/NetherFights/NetherFights.png",
   },
+  {
+    name: "CharacterSelection",
+    type: "texture",
+    path: "Portfolio Media/NetherFights/CharacterSelection.png",
+  },
+  {
+    name: "FightScene",
+    type: "texture",
+    path: "Portfolio Media/NetherFights/FightScene.png",
+  },
+  {
+    name: "GameOver",
+    type: "texture",
+    path: "Portfolio Media/NetherFights/GameOver.png",
+  },
+
   {
     name: "ProcArt_Image",
     type: "texture",

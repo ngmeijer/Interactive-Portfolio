@@ -18,7 +18,7 @@ export default class NetherFights_Scene extends THREE.Scene {
   camera;
 
   playerInstance;
-  playerPosition = new THREE.Vector3(0, 0.5, 1);
+  playerPosition = new THREE.Vector3(20, 0.5, 1);
 
   instructionTextColor = 0xffffff;
   platformColor = 0xe85d04;
@@ -132,9 +132,9 @@ export default class NetherFights_Scene extends THREE.Scene {
       );
       projectDescription.headerContent = "Project Description";
       projectDescription.paragraphContent =
-        "The final project in my 2nd year." +
-        "\nOne where we were completely free to make what we wanted," +
-        "\nin every possible creative way. I mostly worked on AI.";
+        "We were tasked to create a 2D fighter in C++." +
+        "\nSince Doom Eternal had just come out," +
+        "\nI decided to use that theme.";
 
       projectDescription.createContent();
       this.add(projectDescription.group);
@@ -186,7 +186,7 @@ export default class NetherFights_Scene extends THREE.Scene {
 
     {
       let youtubeButton = new AnimatedModel(
-        "VoxelTool_Video",
+        "Trailer",
         this.resources.items.youtube.clone(),
         new THREE.Vector3(8.5, 0.2, -3),
         true,
@@ -199,8 +199,6 @@ export default class NetherFights_Scene extends THREE.Scene {
     }
 
     this.voxelToolBreakdown();
-    this.minecraftBreakdown();
-    this.fsmBreakdown();
     this.createButtonEventListeners();
   }
 
@@ -211,111 +209,65 @@ export default class NetherFights_Scene extends THREE.Scene {
         this.resources.items.ElMessiri,
         this.instructionTextColor
       );
-      systemDescription.headerContent = "Voxel Tool";
+      systemDescription.headerContent = "Character customization";
       systemDescription.paragraphContent =
-        "I developed a Unity editor tool, which can be used to calculate a" +
-        "\nvoxel area. This 3D grid can be used by (airborne) AI agents to" +
-        "\ndetermine where they can fly. That data is saved to a Scriptable" +
-        "\nObject, so that it's reusable.";
+        "In this game scene, the player is able to spend points on multiple traits \n" +
+        "(Strength, Endurance and Lethality), before going into battle.";
 
       systemDescription.createContent();
       this.add(systemDescription.group);
-    }
 
-    const screenshot = new Image(
-      new THREE.Vector2(11, 6.19),
-      new THREE.Vector3(17.5, 1.9, -3),
-      this.resources.items.VoxelTool_Prototype
-    );
-    this.add(screenshot.mesh);
-
-    {
-      let youtubeButton = new AnimatedModel(
-        "VoxelTool_Video",
-        this.resources.items.youtube.clone(),
-        new THREE.Vector3(21.5, 6, -3),
-        true,
-        0.15,
-        "Demonstration",
-        this.resources.items.ElMessiri
+      const screenshot = new Image(
+        new THREE.Vector2(11, 6.19),
+        new THREE.Vector3(17.5, 1.9, -3),
+        this.resources.items.CharacterSelection
       );
-      this.externalLinksButtons.push(youtubeButton.group.children[0]);
-      this.add(youtubeButton.group);
+      this.add(screenshot.mesh);
     }
-  }
 
-  minecraftBreakdown() {
     {
       const systemDescription = new InformationContainer(
-        new THREE.Vector3(24.5, 7.3, -3),
+        new THREE.Vector3(24, 7.3, -3),
         this.resources.items.ElMessiri,
         this.instructionTextColor
       );
-      systemDescription.headerContent = "Minecraft Prototype";
+      systemDescription.headerContent = "Fight scene";
       systemDescription.paragraphContent =
-        "Extending on my voxel tool, I worked on a very basic minecraft" +
-        "\nprototype in my free time because I saw some potential" +
-        "\nbesides the AI functionality. You're able to generate a" +
-        "\nterrain (just 1 block deep, with the 2D dimensions of" +
-        "\nthe grid) and place & remove blocks on that terrain.";
+        "In the arena, the player can perform multiple actions, which has" +
+        "\nan effect on either himself or the enemy. In my prototype, there" +
+        "\nis only a total of 2 enemies, a procedural enemy" +
+        "\ngeneration/selection system would have been a possible feature.";
 
       systemDescription.createContent();
       this.add(systemDescription.group);
-    }
 
-    const screenshot = new Image(
-      new THREE.Vector2(11, 6.19),
-      new THREE.Vector3(30, 1.9, -3),
-      this.resources.items.Minecraft_Prototype
-    );
-    this.add(screenshot.mesh);
-
-    {
-      let youtubeButton = new AnimatedModel(
-        "Minecraft_Prototype",
-        this.resources.items.youtube.clone(),
-        new THREE.Vector3(34, 6, -3),
-        true,
-        0.15,
-        "Demonstration",
-        this.resources.items.ElMessiri
+      const screenshot = new Image(
+        new THREE.Vector2(11, 6.19),
+        new THREE.Vector3(29.5, 1.9, -3),
+        this.resources.items.FightScene
       );
-
-      this.externalLinksButtons.push(youtubeButton.group.children[0]);
-      this.add(youtubeButton.group);
+      this.add(screenshot.mesh);
     }
-  }
 
-  fsmBreakdown() {
     {
       const systemDescription = new InformationContainer(
-        new THREE.Vector3(38, 7.3, -3),
+        new THREE.Vector3(36, 7.3, -3),
         this.resources.items.ElMessiri,
         this.instructionTextColor
       );
-      systemDescription.headerContent = "Finite State Machine";
+      systemDescription.headerContent = "You Won! Or Failed..?";
       systemDescription.paragraphContent =
-        "Working together with the voxel tool, every AI agent has a" +
-        "\nFinite State Machine (FSM) instance assigned to them." +
-        "\nDepending on external factors and settings for that AI type," +
-        "\nan action / new state is determined.";
+        "One of the requirements for the assignment was a score-saving/loading system.";
 
       systemDescription.createContent();
       this.add(systemDescription.group);
-    }
 
-    {
-      let youtubeButton = new AnimatedModel(
-        "FSM_Video",
-        this.resources.items.youtube.clone(),
-        new THREE.Vector3(47, 6, -3),
-        true,
-        0.15,
-        "Demonstration",
-        this.resources.items.ElMessiri
+      const screenshot = new Image(
+        new THREE.Vector2(11, 6.19),
+        new THREE.Vector3(41.5, 1.9, -3),
+        this.resources.items.GameOver
       );
-      this.externalLinksButtons.push(youtubeButton.group.children[0]);
-      this.add(youtubeButton.group);
+      this.add(screenshot.mesh);
     }
   }
 
@@ -329,20 +281,8 @@ export default class NetherFights_Scene extends THREE.Scene {
 
           case "Git_Repo":
             window.open(
-              "https://github.com/ngmeijer/CodeLibrary/tree/Voxel-AI/CodeAssets/Voxel%20Tool"
+              "https://github.com/ngmeijer/cplusplus-course/tree/master/SFML%20environment/cpp_assignment/cpp_assignment"
             );
-            break;
-
-          case "VoxelTool_Video":
-            showModal("https://www.youtube.com/embed/HvZZfY2vVEs");
-            break;
-
-          case "Minecraft_Prototype":
-            showModal("https://www.youtube.com/embed/F1ENdT8DLRE");
-            break;
-
-          case "FSM_Video":
-            showModal("https://www.youtube.com/embed/IdJxNQYtQVk");
             break;
         }
       }

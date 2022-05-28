@@ -88,9 +88,9 @@ export default class Portfolio {
       this.platformColor
     );
 
-    const TWDE_Item = new PortfolioItem(
-      "The Day We Escaped",
-      this.resources.items.TDWE_Image,
+    const NetherFights_Item = new PortfolioItem(
+      "Nether Fights",
+      this.resources.items.NetherFights_Image,
       this.resources.items.ElMessiri,
       new THREE.Vector2(5, 2.95),
       new THREE.Vector3(4.875, 2.75),
@@ -98,21 +98,6 @@ export default class Portfolio {
       this.instructionTextColor,
       this.platformColor
     );
-
-    const NetherFights_Item = new PortfolioItem(
-      "Nether Fights",
-      this.resources.items.NetherFights_Image,
-      this.resources.items.ElMessiri,
-      new THREE.Vector2(5, 2.95),
-      new THREE.Vector3(4.875, 2.75),
-      new THREE.Vector3(32.5, 0.75, -1),
-      this.instructionTextColor,
-      this.platformColor
-    );
-
-    TWDE_Item.addToScene(this.scene, this.physicsWorld);
-    TWDE_Item.playerInstance = this.playerInstance;
-    this.portfolioItems.push(TWDE_Item);
 
     ProcArt_Item.addToScene(this.scene, this.physicsWorld);
     ProcArt_Item.playerInstance = this.playerInstance;
@@ -153,13 +138,13 @@ export default class Portfolio {
 
     this.bottomLight = new THREE.SpotLight(
       0xdc2f02,
-      30,
+      75,
       20,
       Math.PI * 0.3,
       0.25,
       1
     );
-    this.bottomLight.position.set(28, -10, 1);
+    this.bottomLight.position.set(26, -10, 2);
     this.bottomLight.castShadow = true;
     this.bottomLight.shadow.far = 30;
 
@@ -170,12 +155,5 @@ export default class Portfolio {
 
     this.bottomLight.shadow.mapSize.width = 512;
     this.bottomLight.shadow.mapSize.height = 512;
-
-    const rectLight = new THREE.RectAreaLight(0xffffff, 2, 22, 8);
-    rectLight.position.set(15, 3, 2);
-    //this.scene.add(rectLight);
-
-    const helper = new RectAreaLightHelper(rectLight);
-    rectLight.add(helper);
   }
 }
