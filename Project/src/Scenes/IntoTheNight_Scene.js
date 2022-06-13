@@ -11,7 +11,7 @@ import AnimatedModel from "../AnimatedModel.js";
 
 import { showModal } from "../modal.js";
 
-export default class HiveLife_Scene extends THREE.Scene {
+export default class IntoTheNight_Scene extends THREE.Scene {
   light;
 
   physicsWorld;
@@ -37,7 +37,7 @@ export default class HiveLife_Scene extends THREE.Scene {
   constructor(pResources) {
     super();
     this.resources = pResources;
-    this.name = "Hive Life";
+    this.name = "Into The Night";
   }
 
   initalizeScene(pCamera) {
@@ -54,7 +54,7 @@ export default class HiveLife_Scene extends THREE.Scene {
     this.thumbnail = new Image(
       new THREE.Vector2(13, 7.319),
       new THREE.Vector3(-3.8, 4.15, -3),
-      this.resources.items.HiveLife_Image
+      this.resources.items.Shop
     );
     this.add(this.thumbnail.mesh);
 
@@ -144,9 +144,11 @@ export default class HiveLife_Scene extends THREE.Scene {
       );
       projectDescription.headerContent = "Project Description";
       projectDescription.paragraphContent =
-        "The final project in my 2nd year." +
-        "\nOne where we were completely free to make what we wanted," +
-        "\nin every possible creative way. I mostly worked on AI.";
+        "|| Project in progress - page not done ||"+
+        "\nA 'Personal Portfolio' project. I wanted" +
+        "\nto learn VR game development, so creating" +
+        "\na small VR horror shooter was my first learning goal." + 
+        "\nOptimizing this game was the second.";
 
       projectDescription.createContent();
       this.add(projectDescription.group);
@@ -154,12 +156,12 @@ export default class HiveLife_Scene extends THREE.Scene {
 
     {
       const teamStructure = new InformationContainer(
-        new THREE.Vector3(3.3, 2, -3),
+        new THREE.Vector3(3.3, 1.7, -3),
         this.resources.items.ElMessiri,
         this.instructionTextColor
       );
       teamStructure.headerContent = "Team Structure";
-      teamStructure.paragraphContent = "3 Artists \n3 Designers \n2 Engineers";
+      teamStructure.paragraphContent = "1 Engineer (me)";
 
       teamStructure.createContent();
       this.add(teamStructure.group);
@@ -167,7 +169,7 @@ export default class HiveLife_Scene extends THREE.Scene {
 
     {
       const projectDetails = new InformationContainer(
-        new THREE.Vector3(3.3, 4.8, -3),
+        new THREE.Vector3(3.3, 4.4, -3),
         this.resources.items.ElMessiri,
         this.instructionTextColor
       );
@@ -175,8 +177,8 @@ export default class HiveLife_Scene extends THREE.Scene {
       projectDetails.paragraphContent =
         "Project type: school\n" +
         "Language: C#\n" +
-        "Software: Unity 3D\n" +
-        "Project duration: 8 weeks";
+        "Software: Unity3D\n" +
+        "Project duration: 10 weeks";
 
       projectDetails.createContent();
       this.add(projectDetails.group);
@@ -211,8 +213,6 @@ export default class HiveLife_Scene extends THREE.Scene {
     }
 
     this.voxelToolBreakdown();
-    this.minecraftBreakdown();
-    this.fsmBreakdown();
     this.createButtonEventListeners();
   }
 
@@ -223,111 +223,65 @@ export default class HiveLife_Scene extends THREE.Scene {
         this.resources.items.ElMessiri,
         this.instructionTextColor
       );
-      systemDescription.headerContent = "Voxel Tool";
+      systemDescription.headerContent = "Weapon shop";
       systemDescription.paragraphContent =
-        "I developed a Unity editor tool, which can be used to calculate a" +
-        "\nvoxel area. This 3D grid can be used by (airborne) AI agents to" +
-        "\ndetermine where they can fly. That data is saved to a Scriptable" +
-        "\nObject, so that it's reusable.";
+        "To ensure a smooth gameplay experience (especially important with VR)" +
+        "\nI researched and applied various optimization techniques.";
 
       systemDescription.createContent();
       this.add(systemDescription.group);
-    }
 
-    const screenshot = new Image(
-      new THREE.Vector2(11, 6.19),
-      new THREE.Vector3(17.5, 1.9, -3),
-      this.resources.items.VoxelTool_Prototype
-    );
-    this.add(screenshot.mesh);
-
-    {
-      let youtubeButton = new AnimatedModel(
-        "VoxelTool_Video",
-        this.resources.items.youtube.clone(),
-        new THREE.Vector3(21.5, 6, -3),
-        true,
-        0.15,
-        "Demonstration",
-        this.resources.items.ElMessiri
+      const screenshot = new Image(
+        new THREE.Vector2(11, 6.19),
+        new THREE.Vector3(17.5, 1.9, -3),
+        this.resources.items.Shop
       );
-      this.externalLinksButtons.push(youtubeButton.group.children[0]);
-      this.add(youtubeButton.group);
+      this.add(screenshot.mesh);
     }
-  }
 
-  minecraftBreakdown() {
     {
       const systemDescription = new InformationContainer(
-        new THREE.Vector3(24.5, 7.3, -3),
+        new THREE.Vector3(24, 7.3, -3),
         this.resources.items.ElMessiri,
         this.instructionTextColor
       );
-      systemDescription.headerContent = "Minecraft Prototype";
+      systemDescription.headerContent = "Enemy FSM";
       systemDescription.paragraphContent =
-        "Extending on my voxel tool, I worked on a very basic minecraft" +
-        "\nprototype in my free time because I saw some potential" +
-        "\nbesides the AI functionality. You're able to generate a" +
-        "\nterrain (just 1 block deep, with the 2D dimensions of" +
-        "\nthe grid) and place & remove blocks on that terrain.";
+        "In the arena, the player can perform multiple actions, which has" +
+        "\nan effect on either himself or the enemy. In my prototype, there" +
+        "\nis only a total of 2 enemies, a procedural enemy" +
+        "\ngeneration/selection system would have been a possible feature.";
 
       systemDescription.createContent();
       this.add(systemDescription.group);
-    }
 
-    const screenshot = new Image(
-      new THREE.Vector2(11, 6.19),
-      new THREE.Vector3(30, 1.9, -3),
-      this.resources.items.Minecraft_Prototype
-    );
-    this.add(screenshot.mesh);
-
-    {
-      let youtubeButton = new AnimatedModel(
-        "Minecraft_Prototype",
-        this.resources.items.youtube.clone(),
-        new THREE.Vector3(34, 6, -3),
-        true,
-        0.15,
-        "Demonstration",
-        this.resources.items.ElMessiri
+      const screenshot = new Image(
+        new THREE.Vector2(11, 6.19),
+        new THREE.Vector3(29.5, 1.9, -3),
+        this.resources.items.FightScene
       );
-
-      this.externalLinksButtons.push(youtubeButton.group.children[0]);
-      this.add(youtubeButton.group);
+      this.add(screenshot.mesh);
     }
-  }
 
-  fsmBreakdown() {
     {
       const systemDescription = new InformationContainer(
-        new THREE.Vector3(38, 7.3, -3),
+        new THREE.Vector3(36, 7.3, -3),
         this.resources.items.ElMessiri,
         this.instructionTextColor
       );
-      systemDescription.headerContent = "Finite State Machine";
+      systemDescription.headerContent = "Applied optimizations";
       systemDescription.paragraphContent =
-        "Working together with the voxel tool, every AI agent has a" +
-        "\nFinite State Machine (FSM) instance assigned to them." +
-        "\nDepending on external factors and settings for that AI type," +
-        "\nan action / new state is determined.";
+        "One of the requirements for the assignment was a score-saving/loading system.";
 
       systemDescription.createContent();
       this.add(systemDescription.group);
-    }
 
-    {
-      let youtubeButton = new AnimatedModel(
-        "FSM_Video",
-        this.resources.items.youtube.clone(),
-        new THREE.Vector3(47, 6, -3),
-        true,
-        0.15,
-        "Demonstration",
-        this.resources.items.ElMessiri
+      const screenshot = new Image(
+        new THREE.Vector2(11, 6.19),
+        new THREE.Vector3(41.5, 1.9, -3),
+        this.resources.items.GameOver
       );
-      this.externalLinksButtons.push(youtubeButton.group.children[0]);
-      this.add(youtubeButton.group);
+      this.add(screenshot.mesh);
     }
   }
 
@@ -336,25 +290,13 @@ export default class HiveLife_Scene extends THREE.Scene {
       if (this.currentIntersect) {
         switch (this.currentIntersect.object.name) {
           case "Trailer":
-            showModal("https://www.youtube.com/embed/vR66tzICYdI");
+            showModal("https://www.youtube.com/embed/B6xdiYbhYiA");
             break;
 
           case "Git_Repo":
             window.open(
-              "https://github.com/ngmeijer/CodeLibrary/tree/Voxel-AI/CodeAssets/Voxel%20Tool"
+              "https://github.com/ngmeijer/cplusplus-course/tree/master/SFML%20environment/cpp_assignment/cpp_assignment"
             );
-            break;
-
-          case "VoxelTool_Video":
-            showModal("https://www.youtube.com/embed/HvZZfY2vVEs");
-            break;
-
-          case "Minecraft_Prototype":
-            showModal("https://www.youtube.com/embed/F1ENdT8DLRE");
-            break;
-
-          case "FSM_Video":
-            showModal("https://www.youtube.com/embed/IdJxNQYtQVk");
             break;
         }
       }

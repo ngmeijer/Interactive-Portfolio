@@ -8,6 +8,7 @@ import MainScene from "./Scenes/MainScene.js";
 import NetherFights_Scene from "./Scenes/NetherFights_Scene.js";
 import ProcArt_Scene from "./Scenes/ProcArt_Scene.js";
 import HiveLife_Scene from "./Scenes/HiveLife_Scene.js";
+import IntoTheNight_Scene from "./Scenes/IntoTheNight_Scene.js";
 
 THREE.Cache.enabled = true;
 const eventManager = new THREE.EventDispatcher();
@@ -19,6 +20,7 @@ const mainScene = new MainScene(resources);
 const netherFightsScene = new NetherFights_Scene(resources);
 const procArtScene = new ProcArt_Scene(resources);
 const hiveLifeScene = new HiveLife_Scene(resources);
+const intoTheNightScene = new IntoTheNight_Scene(resources);
 
 mainScene.eventManager = eventManager;
 
@@ -122,6 +124,8 @@ function fadeSceneOut(pCurrentOpacity) {
         case "Procedural Art":
           activeScene = procArtScene;
           break;
+        case "Into The Night":
+          activeScene = intoTheNightScene;
         case "Main Scene":
           activeScene = mainScene;
           inPortfolioScene = false;
@@ -155,6 +159,7 @@ function initializeScenes() {
   procArtScene.initalizeScene(camera);
   hiveLifeScene.initalizeScene(camera);
   netherFightsScene.initalizeScene(camera);
+  intoTheNightScene.initalizeScene(camera);
 }
 
 const frameClock = new THREE.Clock();

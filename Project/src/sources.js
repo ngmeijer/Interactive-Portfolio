@@ -1,6 +1,11 @@
 export default [
   //TEXTURES
   {
+    name: "Photo",
+    type: "texture",
+    path: "Portfolio Media/Photo.png",
+  },
+  {
     name: "NetherFights_Image",
     type: "texture",
     path: "Portfolio Media/NetherFights/NetherFights.png",
@@ -66,11 +71,10 @@ export default [
     type: "texture",
     path: "Portfolio Media/HiveLife/VoxelTool_Prototype.png",
   },
-
   {
-    name: "Photo",
+    name: "Shop",
     type: "texture",
-    path: "Photo.png",
+    path: "Portfolio Media/IntoTheNight/Shop.png",
   },
 
   //FONTS

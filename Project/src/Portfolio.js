@@ -72,7 +72,7 @@ export default class Portfolio {
       this.resources.items.ElMessiri,
       new THREE.Vector2(5, 2.95),
       new THREE.Vector3(4.875, 2.75),
-      new THREE.Vector3(16, 0.75, -1),
+      new THREE.Vector3(11, 0.75, -1),
       this.instructionTextColor,
       this.platformColor
     );
@@ -83,7 +83,18 @@ export default class Portfolio {
       this.resources.items.ElMessiri,
       new THREE.Vector2(5, 2.95),
       new THREE.Vector3(4.875, 2.75),
-      new THREE.Vector3(21.5, 0.75, -1),
+      new THREE.Vector3(16.5, 0.75, -1),
+      this.instructionTextColor,
+      this.platformColor
+    );
+
+    const intoTheNight_Item = new PortfolioItem(
+      "Into The Night",
+      this.resources.items.Shop,
+      this.resources.items.ElMessiri,
+      new THREE.Vector2(5, 2.95),
+      new THREE.Vector3(4.875, 2.75),
+      new THREE.Vector3(22, 0.75, -1),
       this.instructionTextColor,
       this.platformColor
     );
@@ -94,7 +105,7 @@ export default class Portfolio {
       this.resources.items.ElMessiri,
       new THREE.Vector2(5, 2.95),
       new THREE.Vector3(4.875, 2.75),
-      new THREE.Vector3(27, 0.75, -1),
+      new THREE.Vector3(27.5, 0.75, -1),
       this.instructionTextColor,
       this.platformColor
     );
@@ -110,6 +121,10 @@ export default class Portfolio {
     NetherFights_Item.addToScene(this.scene, this.physicsWorld);
     NetherFights_Item.playerInstance = this.playerInstance;
     this.portfolioItems.push(NetherFights_Item);
+
+    intoTheNight_Item.addToScene(this.scene, this.physicsWorld);
+    intoTheNight_Item.playerInstance = this.playerInstance;
+    this.portfolioItems.push(intoTheNight_Item);
   }
 
   createLighting() {

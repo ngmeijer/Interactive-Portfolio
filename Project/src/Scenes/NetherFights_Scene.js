@@ -18,7 +18,7 @@ export default class NetherFights_Scene extends THREE.Scene {
   camera;
 
   playerInstance;
-  playerPosition = new THREE.Vector3(20, 0.5, 1);
+  playerPosition = new THREE.Vector3(0, 0.5, 1);
 
   instructionTextColor = 0xffffff;
   platformColor = 0xe85d04;
@@ -112,6 +112,18 @@ export default class NetherFights_Scene extends THREE.Scene {
   }
 
   createGeneralGeometry() {
+    {
+      const exitSceneText = new Text(
+        "Press F again at any time to exit the scene",
+        this.resources.items.ElMessiri,
+        0.2,
+        0xffffff,
+        new THREE.Vector3(-5.5, -1, 1.8)
+      );
+      exitSceneText.mesh.castShadow = false;
+      this.add(exitSceneText.mesh);
+    }
+
     let groundBody = new CubeBody(
       new THREE.Vector3(30, -3, 1),
       new THREE.Vector3(150, 5, 1)
@@ -198,11 +210,11 @@ export default class NetherFights_Scene extends THREE.Scene {
       this.add(youtubeButton.group);
     }
 
-    this.voxelToolBreakdown();
+    this.gameBreakdown();
     this.createButtonEventListeners();
   }
 
-  voxelToolBreakdown() {
+  gameBreakdown() {
     {
       const systemDescription = new InformationContainer(
         new THREE.Vector3(12, 7.3, -3),
@@ -276,7 +288,7 @@ export default class NetherFights_Scene extends THREE.Scene {
       if (this.currentIntersect) {
         switch (this.currentIntersect.object.name) {
           case "Trailer":
-            showModal("https://www.youtube.com/embed/vR66tzICYdI");
+            showModal("https://www.youtube.com/embed/B6xdiYbhYiA");
             break;
 
           case "Git_Repo":

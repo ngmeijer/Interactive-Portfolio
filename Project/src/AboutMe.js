@@ -62,11 +62,11 @@ export default class AboutMe {
 
   createPhoto() {
     const photo = new Image(
-      new Vector2(4, 6),
-      new Vector3(16.5, 16, -6),
+      new Vector2(4, 7.82),
+      new Vector3(16.5, 15, -6),
       this.resources.items.Photo
     );
-    //this.scene.add(photo.mesh);
+    this.scene.add(photo.mesh);
   }
 
   createLanguageDetails() {
@@ -75,14 +75,14 @@ export default class AboutMe {
       this.resources.items.ElMessiri,
       0.6,
       0xffffff,
-      new Vector3(16.8, 19.5, -6)
+      new Vector3(19, 19.5, -6)
     );
     this.scene.add(languagesText.mesh);
 
     //1st column
     let languagesMesh = this.resources.items.languages.clone();
     this.scene.add(languagesMesh);
-    languagesMesh.position.set(18, 15.2, -6);
+    languagesMesh.position.set(20.5, 15.2, -6);
   }
 
   createSoftwareDetails() {
@@ -91,14 +91,14 @@ export default class AboutMe {
       this.resources.items.ElMessiri,
       0.6,
       0xffffff,
-      new Vector3(25.2, 19.5, -6)
+      new Vector3(27.5, 19.5, -6)
     );
     this.scene.add(softwareText.mesh);
 
     //1st column
     let softwareMesh = this.resources.items.software.clone();
     this.scene.add(softwareMesh);
-    softwareMesh.position.set(26.5, 15.15, -6);
+    softwareMesh.position.set(29, 15.15, -6);
   }
 
   creatAboutMeText() {
